@@ -32,6 +32,7 @@ const ControlledInputInner:FC<TextInputProps> = ({ name, label, rules, defaultVa
                     onChangeText={field.onChange}
                     onBlur={field.onBlur}
                     value={field.value}
+                    placeholderTextColor={'rgba(175,175,175,0.42)'}
                     {...inputProps}
                 />
 
