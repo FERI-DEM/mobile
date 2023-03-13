@@ -1,12 +1,12 @@
 import {ScrollView, Text, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import Button from "../components/Button";
-import {useEffect, useState} from "react";
-import {useColorScheme} from "nativewind";
-import {useForm, FormProvider, SubmitHandler, SubmitErrorHandler} from 'react-hook-form';
+import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form';
 import {ControlledInput} from "../components/ControlledInput";
 import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
 
 const RegisterDataSchema = z.object({
     email: z.string().min(1, { message: "Email is required" }).email({
@@ -28,7 +28,10 @@ const RegisterScreen = () => {
         defaultValues: DefaultRegisterData
     });
 
-    const onSubmit: SubmitHandler<RegisterDataType> = (data) => console.log({data});
+    const onSubmit: SubmitHandler<RegisterDataType> = (data) => {
+        console.log({data});
+        navigate(Routes.REGISTER_DETAILS)
+    };
 
     const onError: SubmitErrorHandler<RegisterDataType> = (errors, e) => {
         return console.log({errors})

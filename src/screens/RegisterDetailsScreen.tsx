@@ -47,6 +47,7 @@ const RegisterDetailsScreen = () => {
                         <ControlledInput
                             name="location"
                             label="Lokacija"
+                            placeholder="Ljubljana"
                             classNameContainer='mt-5'
                         />
                         <Button

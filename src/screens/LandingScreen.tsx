@@ -1,6 +1,8 @@
 import {Text, View} from "react-native";
 import Button from "../components/Button";
-import Svg, { Path } from 'react-native-svg';
+import Svg, {Path} from 'react-native-svg';
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
 
 const LandingScreen = () => {
     return (
@@ -13,7 +15,7 @@ const LandingScreen = () => {
             </View>
             <View className='flex flex-row items-center justify-center mt-28 w-full'>
                 <Button text='Prijava' onPress={() => {}} classname='self-center mr-7'/>
-                <Button text='Registracija' classname='bg-dark-element self-center' onPress={() => {}}/>
+                <Button text='Registracija' classname='bg-dark-element self-center' onPress={() => navigate(Routes.REGISTER)}/>
             </View>
         </View>
     )
