@@ -36,7 +36,7 @@ const RegisterDetailsScreen = () => {
                 </Svg>
                 <Text className='text-xl mr-5 text-white font-bold absolute ml-6'>Prosimo vnesite podatke o vaši elektrarni </Text>
             </View>
-            <ScrollView className='mt-5 w-full'>
+            <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
                 <View className='px-6'>
                     <FormProvider {...methods}>
                         <ControlledInput

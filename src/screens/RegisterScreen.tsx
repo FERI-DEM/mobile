@@ -47,7 +47,7 @@ const RegisterScreen = () => {
                 </Svg>
                 <Text className='text-4xl text-white font-bold text-center absolute ml-6'>Registracija</Text>
             </View>
-            <ScrollView className='mt-5 w-full'>
+            <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
                 <View className='px-6'>
                     <FormProvider {...methods}>
                         <ControlledInput
