@@ -61,7 +61,7 @@ const RegisterScreen = () => {
                             placeholder="**********"
                         />
                         <Button
-                            text="Login"
+                            text="Potrdi"
                             classname='mt-7'
                             onPress={methods.handleSubmit(onSubmit, onError)}
                         />
