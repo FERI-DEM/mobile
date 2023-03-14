@@ -8,8 +8,7 @@ import LandingScreen from "../screens/LandingScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import {initialRoute, Routes} from "./routes";
 import RegisterDetailsScreen from "../screens/RegisterDetailsScreen";
-
-export const navigationRef = createNavigationContainerRef()
+import {navigationRef} from "./navigate";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
