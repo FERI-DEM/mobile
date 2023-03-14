@@ -1,4 +1,4 @@
-import {NavigationContainer, DefaultTheme, DarkTheme, createNavigationContainerRef} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
 import {ColorSchemeName} from 'react-native';
@@ -13,6 +13,7 @@ import HeaderBar from "./HeaderBar";
 import {SafeAreaView} from "react-native-safe-area-context";
 import SideMenu from "./SideMenu";
 import DashboardScreen from "../screens/DashboardScreen";
+import CreateOrganizationScreen from "../screens/CreateOrganizationScreen";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -35,6 +36,7 @@ function RootNavigator() {
                 <Stack.Screen name={Routes.REGISTER} component={RegisterScreen} options={{ headerShown: false}} />
                 <Stack.Screen name={Routes.REGISTER_DETAILS} component={RegisterDetailsScreen} options={{ headerShown: false}} />
                 <Stack.Screen name={Routes.DASHBOARD} component={DashboardScreen} options={{ headerShown: true}} />
+                <Stack.Screen name={Routes.CREATE_ORGANIZATION} component={CreateOrganizationScreen} options={{ headerShown: true}} />
             </Stack.Navigator>
             <SideMenu/>
         </SafeAreaView>
