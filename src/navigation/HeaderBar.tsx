@@ -1,13 +1,15 @@
 import {Text, TouchableOpacity, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import {useSideMenuStore} from "../store/side-menu-store";
+import {useHeaderStore} from "../store/header-store";
 
-const Header = () => {
+const HeaderBar = () => {
     const {toggleOpened} = useSideMenuStore()
+    const {title} = useHeaderStore()
 
     return (
         <View className='flex justify-between items-center flex-row dark:bg-dark-main p-4'>
-            <Text className='text-2xl text-white font-bold'>Moja elektrarna</Text>
+            <Text className='text-2xl text-white font-bold'>{title}</Text>
             <TouchableOpacity activeOpacity={0.6} onPress={toggleOpened}>
                 <View className='w-7 h-7'>
                     <Svg width="100%" height='100%' viewBox="0 0 24 24" fill="none">
@@ -18,4 +20,4 @@ const Header = () => {
         </View>
     )
 }
-export default Header;
+export default HeaderBar;
