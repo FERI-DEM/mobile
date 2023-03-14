@@ -49,8 +49,8 @@ const SideMenu = () => {
                 <View className='w-48 dark:bg-dark-main h-full items-center'>
                     <Text className='text-white text-lg font-bold my-10'>Solar Cast</Text>
                     <View className='w-full px-8'>
-                        {sideMenuItems.map((sideMenuItem, index) => <View>
-                            <TouchableOpacity className='my-2 flex flex-row items-center' key={index}
+                        {sideMenuItems.map((sideMenuItem, index) => <View key={index}>
+                            <TouchableOpacity className='my-2 flex flex-row items-center'
                                               onPress={() => onPressOnItem(sideMenuItem)}>
                                 <View className='w-4 h-4'>
                                     {sideMenuItem.icon}
