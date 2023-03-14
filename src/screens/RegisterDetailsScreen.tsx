@@ -7,6 +7,8 @@ import {useForm, FormProvider, SubmitHandler, SubmitErrorHandler} from 'react-ho
 import {ControlledInput} from "../components/ControlledInput";
 import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
 
 const RegisterDetailsSchema = z.object({
     name: z.string().min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 30 characters long" }),
@@ -26,7 +28,9 @@ const RegisterDetailsScreen = () => {
         defaultValues: DefaultRegisterData
     });
 
-    const onSubmit: SubmitHandler<RegisterDetailsType> = (data) => console.log({data});
+    const onSubmit: SubmitHandler<RegisterDetailsType> = (data) => {
+        navigate(Routes.DASHBOARD)
+    };
 
     return (
         <View className='flex-1 items-center dark:bg-dark-main'>
