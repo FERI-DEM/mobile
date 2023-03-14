@@ -9,6 +9,9 @@ import RegisterScreen from "../screens/RegisterScreen";
 import {initialRoute, Routes} from "./routes";
 import RegisterDetailsScreen from "../screens/RegisterDetailsScreen";
 import {navigationRef} from "./navigate";
+import Header from "./Header";
+import {SafeAreaView} from "react-native-safe-area-context";
+import SideMenu from "./SideMenu";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -25,11 +28,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
     return (
-        <Stack.Navigator initialRouteName={initialRoute}>
-            <Stack.Screen name={Routes.LANDING} component={LandingScreen} options={{headerShown: false}}/>
-            <Stack.Screen name={Routes.REGISTER} component={RegisterScreen} options={{ headerShown: false}} />
-            <Stack.Screen name={Routes.REGISTER_DETAILS} component={RegisterDetailsScreen} options={{ headerShown: false}} />
-        </Stack.Navigator>
+        <SafeAreaView className='flex-1'>
+            <Stack.Navigator initialRouteName={initialRoute} screenOptions={{header: () => <Header/>}}>
+                <Stack.Screen name={Routes.LANDING} component={LandingScreen} options={{headerShown: false}}/>
+                <Stack.Screen name={Routes.REGISTER} component={RegisterScreen} options={{ headerShown: false}} />
+                <Stack.Screen name={Routes.REGISTER_DETAILS} component={RegisterDetailsScreen} options={{ headerShown: false}} />
+            </Stack.Navigator>
+            <SideMenu/>
+        </SafeAreaView>
+
     );
 }
 
