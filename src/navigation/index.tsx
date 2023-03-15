@@ -14,6 +14,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import SideMenu from "./SideMenu";
 import DashboardScreen from "../screens/DashboardScreen";
 import CreateOrganizationScreen from "../screens/CreateOrganizationScreen";
+import NotificationScreen from "../screens/NotificationScreen";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -37,6 +38,7 @@ function RootNavigator() {
                 <Stack.Screen name={Routes.REGISTER_DETAILS} component={RegisterDetailsScreen} options={{ headerShown: false}} />
                 <Stack.Screen name={Routes.DASHBOARD} component={DashboardScreen} options={{ headerShown: true}} />
                 <Stack.Screen name={Routes.CREATE_ORGANIZATION} component={CreateOrganizationScreen} options={{ headerShown: true}} />
+                <Stack.Screen name={Routes.NOTIFICATIONS} component={NotificationScreen} options={{ headerShown: true}} />
             </Stack.Navigator>
             <SideMenu/>
         </SafeAreaView>
