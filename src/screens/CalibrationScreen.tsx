@@ -5,6 +5,7 @@ import {ControlledInput} from "../components/ControlledInput";
 import Button from "../components/Button";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {Header} from "../store/header-store";
 
 const CalibrationDataSchema = z.object({
     production: z.coerce.number().min(0, { message: "Production cannot be lower than 0"}).max(1000000, { message: "Production cannot be over 1000000" }),
@@ -28,8 +29,9 @@ const CalibrationScreen: FC = () => {
 
     return (
         <View className="dark:bg-dark-main flex-1 px-3">
+            <Header title={"Kalibracija"} />
             <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
-                <View className='px-6'>
+                <View className='px-2'>
                     <FormProvider {...methods}>
                         <ControlledInput
                             name="production"

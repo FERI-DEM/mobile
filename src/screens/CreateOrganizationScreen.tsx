@@ -7,6 +7,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import * as z from "zod";
+import {Header} from "../store/header-store";
 
 const CreateOrganizationDataSchema = z.object({
     name: z.string().min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 30 characters long" }),
@@ -33,9 +34,10 @@ const CreateOrganizationScreen: FC = () => {
     }
 
     return (
-        <View>
+        <View className='dark:bg-dark-main flex-1 px-3'>
+            <Header title={"Ustvari organizacijo"} />
             <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
-                <View className='px-6'>
+                <View className='px-2'>
                     <FormProvider {...methods}>
                         <ControlledInput
                             name="name"
