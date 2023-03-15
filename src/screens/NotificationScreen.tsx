@@ -19,7 +19,6 @@ let dummyNotifications = [
 const NotificationScreen: FC = () => {
     return (
         <View className="dark:bg-dark-main flex-1 px-5">
-            <Header title="Obvestila"/>
             <ScrollView>
                 {dummyNotifications.map((notification, index) => {
                     return (

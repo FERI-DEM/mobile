@@ -29,7 +29,6 @@ const CalibrationScreen: FC = () => {
 
     return (
         <View className="dark:bg-dark-main flex-1 px-3">
-            <Header title={"Kalibracija"} />
             <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
                 <View className='px-2'>
                     <FormProvider {...methods}>

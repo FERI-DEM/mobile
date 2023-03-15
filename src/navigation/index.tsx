@@ -33,7 +33,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
     return (
         <SafeAreaView className='flex-1'>
-            <Stack.Navigator initialRouteName={initialRoute} screenOptions={{header: () => <HeaderBar/>}}>
+            <Stack.Navigator initialRouteName={initialRoute} screenOptions={{header: (props) => <HeaderBar title={props.options.title || props.route.name}/>}}>
                 <Stack.Screen name={Routes.LANDING} component={LandingScreen} options={{headerShown: false}}/>
                 <Stack.Screen name={Routes.REGISTER} component={RegisterScreen} options={{ headerShown: false}} />
                 <Stack.Screen name={Routes.REGISTER_DETAILS} component={RegisterDetailsScreen} options={{ headerShown: false}} />

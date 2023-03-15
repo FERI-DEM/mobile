@@ -3,9 +3,8 @@ import Svg, {Path} from "react-native-svg";
 import {useSideMenuStore} from "../store/side-menu-store";
 import {useHeaderStore} from "../store/header-store";
 
-const HeaderBar = () => {
+const HeaderBar = ({title}: {title: string}) => {
     const {toggleOpened} = useSideMenuStore()
-    const {title} = useHeaderStore()
 
     return (
         <View className='flex justify-between items-center flex-row dark:bg-dark-main p-4'>
