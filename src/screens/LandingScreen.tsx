@@ -18,7 +18,6 @@ const LandingScreen = () => {
             <View className='flex flex-row items-center justify-center mt-28 w-full'>
                 <Button text='Prijava' onPress={() => {}} classname='self-center mr-7'/>
                 <Button text='Registracija' classname='bg-dark-element self-center' onPress={() => navigate(Routes.REGISTER)}/>
-                <Button text='TEST' classname='bg-dark-element self-center' onPress={() => navigate(Routes.CALIBRATION)}/>
             </View>
         </View>
     )
