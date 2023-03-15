@@ -5,5 +5,6 @@ export enum Routes {
     DASHBOARD = 'Dashboard',
     SETTINGS = 'Settings',
     CREATE_ORGANIZATION = 'CreateOrganization',
+    NOTIFICATIONS = 'Notifications',
 }
 export const initialRoute = Routes.LANDING;
