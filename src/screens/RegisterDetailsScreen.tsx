@@ -9,6 +9,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
+import Map from "../components/Map";
 
 const RegisterDetailsSchema = z.object({
     name: z.string().min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 30 characters long" }),
@@ -54,6 +55,9 @@ const RegisterDetailsScreen = () => {
                             placeholder="Ljubljana"
                             classNameContainer='mt-5'
                         />
+                        <View className='h-56'>
+                            <Map/>
+                        </View>
                         <Button
                             text="Zaključi"
                             classname='mt-7'
