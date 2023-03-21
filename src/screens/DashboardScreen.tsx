@@ -1,5 +1,4 @@
 import {View} from "react-native";
-import {Header} from "../store/header-store";
 import PowerDisplay from "../components/PowerDisplay";
 
 const DashboardScreen = () => {
