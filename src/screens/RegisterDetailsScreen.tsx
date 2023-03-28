@@ -55,7 +55,7 @@ const RegisterDetailsScreen = () => {
                             placeholder="Ljubljana"
                             classNameContainer='mt-5'
                         />
-                        <View className='h-56'>
+                        <View className='h-56 pt-4'>
                             <Map/>
                         </View>
                         <Button

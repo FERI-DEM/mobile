@@ -1,18 +1,20 @@
-import {FC, useEffect, useMemo, useRef, useState} from "react";
+import React, {FC, useEffect, useMemo, useRef, useState} from "react";
 import * as Location from "expo-location";
 import {CameraRef} from "@rnmapbox/maps/lib/typescript/components/Camera";
-import {View, Text} from "react-native";
-import {RouteProp, useRoute} from "@react-navigation/native";
+import {Image, View} from "react-native";
+import GenericMap from "./GenericMap";
+import PinImage from '../assets/images/pin.png';
 
-interface MapProps {}
+interface MapProps {
+}
 
 const getMapbox = async () => {
     if (!__DEV__) {
         const mapbox = await import('@rnmapbox/maps')
         const MapboxGL = mapbox.default
-        await MapboxGL.setAccessToken('pk.eyJ1IjoibWF0ZXZ6IiwiYSI6ImNsY2dmb3l4czA5YjkzbmxjMTAyank0aHMifQ.CyFCzwJ9_VfYh-CQ1Od79g');
-        const {MapView, PointAnnotation, Camera, UserLocation} = MapboxGL
-        return {MapView, PointAnnotation, Camera, UserLocation}
+        await MapboxGL.setAccessToken('sk.eyJ1IjoibWF0ZXZ6IiwiYSI6ImNsZnF2ZmlhcjAwYnAzeXBoMHdmeHZ0anQifQ.UFNDcFHu8QUnBFs6TQMssw');
+        const {MapView, PointAnnotation, Camera, UserLocation, MarkerView} = MapboxGL
+        return {MapView, PointAnnotation, Camera, UserLocation, MarkerView}
     }
     return null
 }
@@ -20,12 +22,11 @@ const getMapbox = async () => {
 const Map: FC<MapProps> = () => {
     const camera = useRef<CameraRef>(null);
     const [currentUserLocation, setCurrentUserLocation] = useState<{ longitude: number, latitude: number } | null>();
-    const GenericMapComponent = useMemo(() => <View className='w-full h-full flex-row justify-center'
-                                                    style={{alignItems: 'center'}}><Text className='dark:text-white'>Mapa</Text></View>, [])
-    const [NativeMapComponent, setNativeMapComponent] = useState<JSX.Element | null>(null)
+    const GenericMapComponent = useMemo(() => <GenericMap/>, [])
+    const [MapboxGL, setMapboxGL] = useState<any>(null)
 
     const getUserLocation = async () => {
-        try{
+        try {
             const {status} = await Location.requestForegroundPermissionsAsync();
 
             if (status !== 'granted') {
@@ -37,8 +38,7 @@ const Map: FC<MapProps> = () => {
                 longitude: location.coords.longitude,
                 latitude: location.coords.latitude
             })
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e)
         }
 
@@ -46,16 +46,7 @@ const Map: FC<MapProps> = () => {
 
     const setMapComponentAsync = async () => {
         let MapboxGL = await getMapbox();
-
-        setNativeMapComponent(() => MapboxGL ? <MapboxGL.MapView style={{flex: 1}}>
-            <MapboxGL.Camera
-                ref={camera}
-                zoomLevel={12}
-                animationMode='none'
-            />
-            <MapboxGL.UserLocation visible/>
-        </MapboxGL.MapView> : null)
-
+        setMapboxGL(MapboxGL)
     }
 
     useEffect(() => {
@@ -63,16 +54,26 @@ const Map: FC<MapProps> = () => {
         setMapComponentAsync()
     }, [])
 
-    useEffect(() => {
-        if (camera.current && currentUserLocation) {
-            camera.current.fitBounds([currentUserLocation.longitude], [currentUserLocation.latitude], 50, 1000)
-        }
-    }, [currentUserLocation, NativeMapComponent])
+    if (!MapboxGL)
+        return GenericMapComponent
 
-    if(NativeMapComponent)
-        return NativeMapComponent
+    return <MapboxGL.MapView style={{flex: 1}}>
+        <MapboxGL.Camera
+            ref={camera}
+            zoomLevel={12}
+            centerCoordinate={[currentUserLocation?.longitude || 0, currentUserLocation?.latitude || 0]}
+            animationMode='none'
+        />
+        {currentUserLocation && <MapboxGL.MarkerView
+            key="user-location"
+            coordinate={[currentUserLocation.longitude, currentUserLocation.latitude]}
+        >
+            <View>
+                <Image source={PinImage} style={{height: 30, width: 20, resizeMode: 'cover'}}/>
+            </View>
+        </MapboxGL.MarkerView>}
 
-    return GenericMapComponent
+    </MapboxGL.MapView>
 }
 
 export default Map
