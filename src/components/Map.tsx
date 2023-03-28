@@ -4,15 +4,17 @@ import {CameraRef} from "@rnmapbox/maps/lib/typescript/components/Camera";
 import {Image, View} from "react-native";
 import GenericMap from "./GenericMap";
 import PinImage from '../assets/images/pin.png';
+import {MAPBOX_TOKEN} from "@env";
 
-interface MapProps {
-}
+interface MapProps {}
+
+console.log(MAPBOX_TOKEN)
 
 const getMapbox = async () => {
     if (!__DEV__) {
         const mapbox = await import('@rnmapbox/maps')
         const MapboxGL = mapbox.default
-        await MapboxGL.setAccessToken('sk.eyJ1IjoibWF0ZXZ6IiwiYSI6ImNsZnF2ZmlhcjAwYnAzeXBoMHdmeHZ0anQifQ.UFNDcFHu8QUnBFs6TQMssw');
+        await MapboxGL.setAccessToken(MAPBOX_TOKEN);
         const {MapView, PointAnnotation, Camera, UserLocation, MarkerView} = MapboxGL
         return {MapView, PointAnnotation, Camera, UserLocation, MarkerView}
     }
