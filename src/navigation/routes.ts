@@ -7,5 +7,6 @@ export enum Routes {
     CREATE_ORGANIZATION = 'CreateOrganization',
     NOTIFICATIONS = 'Notifications',
     CALIBRATION = 'Calibration',
+    ORGANIZATION = 'Organization',
 }
 export const initialRoute = Routes.REGISTER_DETAILS;
