@@ -1,6 +1,13 @@
 import axios from "axios";
 import {MAPBOX_TOKEN, MAPBOX_URI} from "@env";
 
+export const apiInstance = axios.create({
+    baseURL: 'http://localhost:3000/api/',
+    timeout: 8000,
+    headers: {
+        Accept: 'application/json',
+    }
+});
 export const mapboxInstance = axios.create({
     baseURL: MAPBOX_URI,
     timeout: 8000,
