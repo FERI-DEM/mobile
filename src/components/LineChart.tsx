@@ -1,16 +1,16 @@
 import { LineChart as ReactLineChart } from 'react-native-chart-kit';
 import React from 'react';
-import { Dimensions } from "react-native";
+import {Dimensions, ScrollView} from "react-native";
 const screenWidth = Dimensions.get("window").width;
-const chartWidth = screenWidth - 32;
+//const chartWidth = screenWidth - 32;
 
 const data = {
-    labels: ['11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00'],
+    labels: ['11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30'],
     datasets: [
         {
-            data: [20, 45, 28, 50, 11, 44, 23],
+            data: [20, 45, 28, 50, 11, 44, 23, 43, 22, 31],
             color:  () => '#F18F37',
-            strokeWidth: 2,
+            strokeWidth: 3,
             withDots:false
         }
     ]
@@ -27,12 +27,17 @@ const LineChart = () => {
         return labelValue + " kw";
     };
     return (
+        <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+        >
             <ReactLineChart
                 data={data}
-                width={chartWidth}
+                width={900}
                 height={300}
                 chartConfig={chartConfig}
                 bezier
+                fromZero
                 style={{
                     borderRadius: 16,
                     elevation: 8,
@@ -46,6 +51,7 @@ const LineChart = () => {
                 }}
                 formatYLabel={formatYLabel}
             />
+        </ScrollView>
     );
 };
 
