@@ -16,6 +16,7 @@ import DashboardScreen from "../screens/DashboardScreen";
 import CreateOrganizationScreen from "../screens/CreateOrganizationScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import CalibrationScreen from "../screens/CalibrationScreen";
+import MyOrganizationScreen from "../screens/MyOrganizationScreen";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -41,6 +42,7 @@ function RootNavigator() {
                 <Stack.Screen name={Routes.CREATE_ORGANIZATION} component={CreateOrganizationScreen} options={{ headerShown: true}} />
                 <Stack.Screen name={Routes.NOTIFICATIONS} component={NotificationScreen} options={{ headerShown: true}} />
                 <Stack.Screen name={Routes.CALIBRATION} component={CalibrationScreen} options={{ headerShown: true}} />
+                <Stack.Screen name={Routes.ORGANIZATION} component={MyOrganizationScreen} options={{ headerShown: true}} />
             </Stack.Navigator>
             <SideMenu/>
         </SafeAreaView>

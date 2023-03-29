@@ -7,35 +7,47 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import {auth} from "../config/firebase";
+import {twMerge} from "tailwind-merge";
+import React from "react";
+import {BaseRegisterType} from "../types/user.types";
+import {BaseRegisterSchema} from "../schemas/user.schema";
+import {useUserStore} from "../store/user-store";
 
-const RegisterDataSchema = z.object({
-    email: z.string().min(1, { message: "Email is required" }).email({
-        message: "Must be a valid email",
-    }),
-    password: z.string().min(6, { message: "Password must be atleast 6 characters" }),
-});
 
-type RegisterDataType = z.infer<typeof RegisterDataSchema>
-
-const DefaultRegisterData: RegisterDataType = {
+const DefaultRegisterData: BaseRegisterType = {
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
 }
 
 const RegisterScreen = () => {
-    const methods = useForm({
-        resolver: zodResolver(RegisterDataSchema),
+    const form = useForm({
+        resolver: zodResolver(BaseRegisterSchema),
         defaultValues: DefaultRegisterData
     });
 
-    const onSubmit: SubmitHandler<RegisterDataType> = (data) => {
-        console.log({data});
-        navigate(Routes.REGISTER_DETAILS)
+    const setUserToken = useUserStore(state => state.setToken)
+
+    const createAccount: SubmitHandler<BaseRegisterType> = async (data) => {
+        if (data.password !== data.confirmPassword)
+            return form.setError('root', {type: 'manual', message: 'Gesli se ne ujemata'})
+        try {
+            const userCredentials = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            const token = await userCredentials.user.getIdToken()
+
+            setUserToken(token)
+            navigate(Routes.REGISTER_DETAILS)
+
+        } catch (e) {
+            form.setError('root', {
+                type: 'manual',
+                message: 'Registracija ni uspela. Poskusite ponovno čez nekaj časa.'
+            })
+        }
     };
 
-    const onError: SubmitErrorHandler<RegisterDataType> = (errors, e) => {
-        return console.log({errors})
-    }
 
     return (
         <View className='flex-1 items-center dark:bg-dark-main'>
@@ -49,24 +61,33 @@ const RegisterScreen = () => {
             </View>
             <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
                 <View className='px-6'>
-                    <FormProvider {...methods}>
+                    <FormProvider {...form}>
                         <ControlledInput
                             name="email"
-                            label="Email"
+                            label="Elektronski naslov"
                             placeholder="jon.doe@email.com"
                             keyboardType="email-address"
                         />
                         <ControlledInput
                             name="password"
-                            label="Password"
+                            label="Geslo"
                             secureTextEntry
                             classNameContainer='mt-5'
                             placeholder="**********"
                         />
+                        <ControlledInput
+                            name="confirmPassword"
+                            label="Potrdi geslo"
+                            secureTextEntry
+                            classNameContainer='mt-5'
+                            placeholder="**********"
+                        />
+                        {!!form.formState.errors.root?.message && <Text
+                            className={twMerge('pl-0.5 text-warning pt-1.5')}>{form.formState.errors.root?.message}</Text>}
                         <Button
                             text="Potrdi"
                             classname='mt-7'
-                            onPress={methods.handleSubmit(onSubmit, onError)}
+                            onPress={form.handleSubmit(createAccount)}
                         />
                     </FormProvider>
                 </View>

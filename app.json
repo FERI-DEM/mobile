@@ -1,14 +1,13 @@
 {
   "expo": {
-    "name": "mobile",
+    "name": "SolarCube",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./src/assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,12 +22,27 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./src/assets/images/icon.png",
+        "backgroundColor": "#262626"
+      },
+      "package": "com.solarcast.mobile"
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
-    }
+      "favicon": "./src/assets/images/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5bf74f20-b925-483b-bb31-87f5251b75bb"
+      }
+    },
+    "plugins": [
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "mapbox",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoibWF0ZXZ6IiwiYSI6ImNsZnF2ZmlhcjAwYnAzeXBoMHdmeHZ0anQifQ.UFNDcFHu8QUnBFs6TQMssw"
+        }
+      ]
+    ]
   }
 }

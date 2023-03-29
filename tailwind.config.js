@@ -9,7 +9,7 @@ module.exports = {
         "tint": '#236BFE',
         "light-main": "#f5f5f5",
         "light-element": "#ffffff",
-        warning: "#FEC601",
+        "warning": "#FEC601",
       }
     },
   },
