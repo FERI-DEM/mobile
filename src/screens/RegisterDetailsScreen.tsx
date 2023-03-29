@@ -9,28 +9,32 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
-
-const RegisterDetailsSchema = z.object({
-    name: z.string().min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 30 characters long" }),
-    location: z.string()
-});
-
-type RegisterDetailsType = z.infer<typeof RegisterDetailsSchema>
+import Map from "../components/Map";
+import {BaseRegisterType, RegisterDetailsType} from "../types/user.types";
+import {RegisterDetailsSchema} from "../schemas/user.schema";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import {auth} from "../config/firebase";
+import useGeocoding from "../hooks/useGeocoding";
+import {useUserStore} from "../store/user-store";
 
 const DefaultRegisterData: RegisterDetailsType = {
-    name: '',
+    powerPlantName: 'Moja elektrarna',
     location: ''
 }
 
 const RegisterDetailsScreen = () => {
-    const methods = useForm({
+    const form = useForm({
         resolver: zodResolver(RegisterDetailsSchema),
         defaultValues: DefaultRegisterData
     });
+    const {data} = useGeocoding({address: form.watch('location')})
+    console.log('coord', data?.features[0]?.geometry.coordinates)
+    console.log('address', data?.features[0]?.place_name)
 
     const onSubmit: SubmitHandler<RegisterDetailsType> = (data) => {
         navigate(Routes.DASHBOARD)
     };
+
 
     return (
         <View className='flex-1 items-center dark:bg-dark-main'>
@@ -42,7 +46,7 @@ const RegisterDetailsScreen = () => {
             </View>
             <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
                 <View className='px-6'>
-                    <FormProvider {...methods}>
+                    <FormProvider {...form}>
                         <ControlledInput
                             name="name"
                             label="Ime elektrarne"
@@ -54,10 +58,13 @@ const RegisterDetailsScreen = () => {
                             placeholder="Ljubljana"
                             classNameContainer='mt-5'
                         />
+                        <View className='h-56 pt-4'>
+                            <Map/>
+                        </View>
                         <Button
                             text="Zaključi"
                             classname='mt-7'
-                            onPress={methods.handleSubmit(onSubmit)}
+                            onPress={form.handleSubmit(onSubmit)}
                         />
                     </FormProvider>
                 </View>

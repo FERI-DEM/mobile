@@ -9,4 +9,4 @@ export enum Routes {
     CALIBRATION = 'Calibration',
     ORGANIZATION = 'Organization',
 }
-export const initialRoute = Routes.LANDING;
+export const initialRoute = Routes.REGISTER_DETAILS;
