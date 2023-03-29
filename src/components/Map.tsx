@@ -5,10 +5,9 @@ import {Image, View} from "react-native";
 import GenericMap from "./GenericMap";
 import PinImage from '../assets/images/pin.png';
 import {MAPBOX_TOKEN} from "@env";
-
-interface MapProps {}
-
-console.log(MAPBOX_TOKEN)
+import {Coordinates} from "../types/user.types";
+import {useUserStore} from "../store/user-store";
+import useGeocoding from "../hooks/useGeocoding";
 
 const getMapbox = async () => {
     if (!__DEV__) {
@@ -16,16 +15,21 @@ const getMapbox = async () => {
         const MapboxGL = mapbox.default
         await MapboxGL.setAccessToken(MAPBOX_TOKEN);
         const {MapView, PointAnnotation, Camera, UserLocation, MarkerView} = MapboxGL
-        return {MapView, PointAnnotation, Camera, UserLocation, MarkerView}
+        return {MapView, PointAnnotation, Camera, UserLocation, MarkerView} as typeof mapbox
     }
     return null
 }
 
-const Map: FC<MapProps> = () => {
+const Map = () => {
     const camera = useRef<CameraRef>(null);
-    const [currentUserLocation, setCurrentUserLocation] = useState<{ longitude: number, latitude: number } | null>();
+    const [clickedLocation, setClickedLocation] = useState<Coordinates>()
     const GenericMapComponent = useMemo(() => <GenericMap/>, [])
     const [MapboxGL, setMapboxGL] = useState<any>(null)
+    const {data} = useGeocoding({coordinates: clickedLocation})
+    const userLocation = data?.features[0]?.geometry?.coordinates ? {
+        longitude: data.features[0].geometry.coordinates[0],
+        latitude: data.features[0].geometry.coordinates[1]
+    } : null
 
     const getUserLocation = async () => {
         try {
@@ -36,7 +40,7 @@ const Map: FC<MapProps> = () => {
             }
 
             const location = await Location.getCurrentPositionAsync();
-            setCurrentUserLocation({
+            setClickedLocation({
                 longitude: location.coords.longitude,
                 latitude: location.coords.latitude
             })
@@ -45,10 +49,16 @@ const Map: FC<MapProps> = () => {
         }
 
     }
-
     const setMapComponentAsync = async () => {
         let MapboxGL = await getMapbox();
         setMapboxGL(MapboxGL)
+    }
+
+    const onPressOnMap = (features: any) => {
+        setClickedLocation({
+            latitude: features.geometry.coordinates[0],
+            longitude: features.geometry.coordinates[1]
+        })
     }
 
     useEffect(() => {
@@ -59,16 +69,16 @@ const Map: FC<MapProps> = () => {
     if (!MapboxGL)
         return GenericMapComponent
 
-    return <MapboxGL.MapView style={{flex: 1}}>
+    return <MapboxGL.MapView style={{flex: 1}} onPress={onPressOnMap}>
         <MapboxGL.Camera
             ref={camera}
             zoomLevel={12}
-            centerCoordinate={[currentUserLocation?.longitude || 0, currentUserLocation?.latitude || 0]}
+            centerCoordinate={[userLocation?.longitude || 0, userLocation?.latitude || 0]}
             animationMode='none'
         />
-        {currentUserLocation && <MapboxGL.MarkerView
+        {userLocation && <MapboxGL.MarkerView
             key="user-location"
-            coordinate={[currentUserLocation.longitude, currentUserLocation.latitude]}
+            coordinate={[userLocation.longitude, userLocation.latitude]}
         >
             <View>
                 <Image source={PinImage} style={{height: 30, width: 20, resizeMode: 'cover'}}/>
