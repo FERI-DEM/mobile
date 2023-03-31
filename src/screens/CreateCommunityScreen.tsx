@@ -8,7 +8,7 @@ import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import {CreateCommunityDataType} from "../types/community.types";
 import {CreateCommunityDataSchema} from "../schemas/community.schema";
-
+import useCommunity from "../hooks/useCommunity";
 
 const DefaultCommunityData: CreateCommunityDataType = {
     name: '',
@@ -19,9 +19,15 @@ const CreateCommunityScreen: FC = () => {
         defaultValues: DefaultCommunityData
     });
 
+    const {mutate} = useCommunity();
     const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
-        navigate(Routes.LANDING);
+        try {
+            mutate(data);
+            navigate(Routes.LANDING);
+        } catch (e) {
+            console.log({e})
+        }
     };
 
     const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
