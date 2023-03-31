@@ -6,29 +6,25 @@ import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
-import * as z from "zod";
+import {CreateCommunityDataType} from "../types/community.types";
+import {CreateCommunityDataSchema} from "../schemas/community.schema";
 
-const CreateOrganizationDataSchema = z.object({
-    name: z.string().min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 30 characters long" }),
-});
 
-type CreateOrganizationDataType = z.infer<typeof CreateOrganizationDataSchema>
-
-const DefaultOrganizationData: CreateOrganizationDataType = {
+const DefaultCommunityData: CreateCommunityDataType = {
     name: '',
 }
-const CreateOrganizationScreen: FC = () => {
+const CreateCommunityScreen: FC = () => {
     const methods = useForm({
-        resolver: zodResolver(CreateOrganizationDataSchema),
-        defaultValues: DefaultOrganizationData
+        resolver: zodResolver(CreateCommunityDataSchema),
+        defaultValues: DefaultCommunityData
     });
 
-    const onSubmit: SubmitHandler<CreateOrganizationDataType> = (data) => {
+    const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
         navigate(Routes.LANDING);
     };
 
-    const onError: SubmitErrorHandler<CreateOrganizationDataType> = (errors) => {
+    const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
         return console.log({errors})
     }
 
@@ -54,4 +50,4 @@ const CreateOrganizationScreen: FC = () => {
     );
 };
 
-export default CreateOrganizationScreen;
+export default CreateCommunityScreen;

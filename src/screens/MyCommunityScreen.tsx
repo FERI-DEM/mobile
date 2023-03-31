@@ -20,7 +20,7 @@ const memberList = [
         member: 'Član4',
         power: 100,
     },]
-const MyOrganizationScreen: FC = () => {
+const MyCommunityScreen: FC = () => {
     const [toggleView, setToggleView] = useState<boolean>(false);
     const [active, setActive] = useState<number>(0);
 
@@ -51,4 +51,4 @@ const MyOrganizationScreen: FC = () => {
     );
 };
 
-export default MyOrganizationScreen;
+export default MyCommunityScreen;
