@@ -4,8 +4,6 @@ import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from "react-ho
 import {ControlledInput} from "../components/ControlledInput";
 import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {navigate} from "../navigation/navigate";
-import {Routes} from "../navigation/routes";
 import {CreateCommunityDataType} from "../types/community.types";
 import {CreateCommunityDataSchema} from "../schemas/community.schema";
 import useCommunity from "../hooks/useCommunity";
@@ -14,7 +12,7 @@ const DefaultCommunityData: CreateCommunityDataType = {
     name: '',
 }
 const CreateCommunityScreen: FC = () => {
-    const methods = useForm({
+    const form = useForm({
         resolver: zodResolver(CreateCommunityDataSchema),
         defaultValues: DefaultCommunityData
     });
@@ -24,7 +22,6 @@ const CreateCommunityScreen: FC = () => {
         console.log({data});
         try {
             mutate(data);
-            navigate(Routes.LANDING);
         } catch (e) {
             console.log({e})
         }
@@ -38,7 +35,7 @@ const CreateCommunityScreen: FC = () => {
         <View className='dark:bg-dark-main flex-1 px-3'>
             <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
                 <View className='px-2'>
-                    <FormProvider {...methods}>
+                    <FormProvider {...form}>
                         <ControlledInput
                             name="name"
                             label="Ime organizacije"
@@ -47,7 +44,7 @@ const CreateCommunityScreen: FC = () => {
                         <Button
                             text="Ustvari"
                             classname='mt-7'
-                            onPress={methods.handleSubmit(onSubmit, onError)}
+                            onPress={form.handleSubmit(onSubmit, onError)}
                         />
                     </FormProvider>
                 </View>

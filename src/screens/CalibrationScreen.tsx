@@ -22,7 +22,7 @@ const CalibrationScreen: FC = () => {
     const {mutate} = useCalibration();
     const onSubmit: SubmitHandler<CalibrationDataType> = (data) => {
         console.log("Submitted data: ", data);
-        mutate({id: '641496bb20b52f8b894f9462', power: data.production});
+        mutate({id: '6426e931890371798019f58e', power: data.production});
     }
 
     return (
