@@ -1,21 +1,15 @@
 import {ScrollView, Text, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import Button from "../components/Button";
-import {useEffect, useState} from "react";
-import {useColorScheme} from "nativewind";
-import {useForm, FormProvider, SubmitHandler, SubmitErrorHandler} from 'react-hook-form';
+import {useForm, FormProvider, SubmitHandler} from 'react-hook-form';
 import {ControlledInput} from "../components/ControlledInput";
 import {zodResolver} from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import Map from "../components/Map";
-import {BaseRegisterType, RegisterDetailsType} from "../types/user.types";
+import {RegisterDetailsType} from "../types/user.types";
 import {RegisterDetailsSchema} from "../schemas/user.schema";
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../config/firebase";
 import useGeocoding from "../hooks/useGeocoding";
-import {useUserStore} from "../store/user-store";
 
 const DefaultRegisterData: RegisterDetailsType = {
     powerPlantName: 'Moja elektrarna',
@@ -31,7 +25,7 @@ const RegisterDetailsScreen = () => {
     console.log('coord', data?.features[0]?.geometry.coordinates)
     console.log('address', data?.features[0]?.place_name)
 
-    const onSubmit: SubmitHandler<RegisterDetailsType> = (data) => {
+    const onSubmit: SubmitHandler<RegisterDetailsType> = () => {
         navigate(Routes.DASHBOARD)
     };
 

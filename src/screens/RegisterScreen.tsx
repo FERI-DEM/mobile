@@ -1,10 +1,9 @@
 import {ScrollView, Text, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import Button from "../components/Button";
-import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from 'react-hook-form';
+import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {ControlledInput} from "../components/ControlledInput";
 import {zodResolver} from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import {createUserWithEmailAndPassword} from "firebase/auth";
