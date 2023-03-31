@@ -1,6 +1,6 @@
 import {useMutation} from "@tanstack/react-query";
 import {AxiosError} from "axios";
-import {CalibrationReq, PowerPlantRes} from "../types/power-plants.types";
+import {CalibrationReq, PowerPlantRes} from "../types/powerPlant.types";
 import PowerPlantsService from "../api/power-plants.service";
 import {QueryKey} from "../types/queryKey.types";
 

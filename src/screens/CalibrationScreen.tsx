@@ -3,15 +3,10 @@ import {ScrollView, View} from "react-native";
 import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {ControlledInput} from "../components/ControlledInput";
 import Button from "../components/Button";
-import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import useCalibration from "../hooks/usePowerPlant";
-
-const CalibrationDataSchema = z.object({
-    production: z.coerce.number().min(0, { message: "Production cannot be lower than 0"}).max(1000000, { message: "Production cannot be over 1000000" }),
-});
-
-type CalibrationDataType = z.infer<typeof CalibrationDataSchema>
+import {CalibrationDataType} from "../types/powerPlant.types";
+import {CalibrationDataSchema} from "../schemas/calibration.schema";
 
 const DefaultCalibrationData: CalibrationDataType = {
     production: 0,

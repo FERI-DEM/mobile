@@ -1,5 +1,5 @@
 import {apiInstance} from "./axios";
-import {CalibrationReq, PowerPlantRes} from "../types/power-plants.types";
+import {CalibrationReq, PowerPlantRes} from "../types/powerPlant.types";
 
 const PowerPlantsService = {
     getPowerPlants: async () => {

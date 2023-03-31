@@ -1,3 +1,6 @@
+import {z} from "zod";
+import {CalibrationDataSchema} from "../schemas/calibration.schema";
+
 export interface CalibrationReq {
     id: string;
     power: number;
@@ -23,3 +26,5 @@ interface Calibration {
     date: string;
     radiation: number;
 }
+
+export type CalibrationDataType = z.infer<typeof CalibrationDataSchema>
