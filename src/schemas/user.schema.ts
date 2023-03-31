@@ -12,4 +12,3 @@ export const RegisterDetailsSchema = z.object({
     powerPlantName: z.string().min(3, { message: "Ime elektrarne mora biti dolgo vsaj 3 znake" }).max(20, { message: "Ime elektrarne ne sme biti daljše od 20 znakov" }),
     location: z.string().min(1, { message: "Location must be at least 1 character long" })
 });
-
