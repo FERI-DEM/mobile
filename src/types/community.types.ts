@@ -15,6 +15,12 @@ export interface CommunityReq {
 }
 
 export interface CommunityRes {
-//TODO: add types
+    name: string;
+    membersIds: string[];
+    members: [];
+    adminId: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
     community: Community;
 }
