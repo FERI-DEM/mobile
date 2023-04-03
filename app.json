@@ -18,21 +18,22 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.watt4cast.mobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/icon.png",
         "backgroundColor": "#262626"
       },
-      "package": "com.solarcast.mobile"
+      "package": "com.watt4cast.mobile"
     },
     "web": {
       "favicon": "./src/assets/images/icon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "5bf74f20-b925-483b-bb31-87f5251b75bb"
+        "projectId": "bea412c4-4eee-486a-bed6-226a277de116"
       }
     },
     "plugins": [
@@ -43,6 +44,7 @@
           "RNMapboxMapsDownloadToken": "sk.eyJ1IjoibWF0ZXZ6IiwiYSI6ImNsZnF2ZmlhcjAwYnAzeXBoMHdmeHZ0anQifQ.UFNDcFHu8QUnBFs6TQMssw"
         }
       ]
-    ]
+    ],
+    "owner": "watt4cast_admin"
   }
 }

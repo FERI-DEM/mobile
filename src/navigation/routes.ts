@@ -8,5 +8,6 @@ export enum Routes {
     NOTIFICATIONS = 'Notifications',
     CALIBRATION = 'Calibration',
     ORGANIZATION = 'Organization',
+    LOGIN = 'Login',
 }
 export const initialRoute = Routes.LANDING;

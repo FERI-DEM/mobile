@@ -1,9 +1,11 @@
 import * as z from "zod";
-import {BaseRegisterSchema, RegisterDetailsSchema} from "../schemas/user.schema";
+import {BaseRegisterSchema, LoginSchema, RegisterDetailsSchema} from "../schemas/user.schema";
 
 export type BaseRegisterType = z.infer<typeof BaseRegisterSchema>
 
 export type RegisterDetailsType = z.infer<typeof RegisterDetailsSchema>
+
+export type LoginType = z.infer<typeof LoginSchema>
 
 export interface Coordinates {
     latitude: number;

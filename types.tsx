@@ -22,6 +22,7 @@ export type RootStackParamList = {
   Notifications: undefined;
   Calibration: undefined;
   Organization: undefined;
+  Login: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

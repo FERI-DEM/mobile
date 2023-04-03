@@ -12,4 +12,6 @@ declare module '@env' {
     export const FIREBASE_MESSAGING_SENDER_ID: string;
     export const MAPBOX_TOKEN: string;
     export const MAPBOX_URI: string;
+    export const GOOGLE_CLIENT_ID: string;
+    export const ANDROID_CLIENT_ID: string;
 }

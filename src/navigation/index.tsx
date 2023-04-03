@@ -17,6 +17,7 @@ import CreateCommunityScreen from "../screens/CreateCommunityScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import CalibrationScreen from "../screens/CalibrationScreen";
 import MyCommunityScreen from "../screens/MyCommunityScreen";
+import LoginScreen from "../screens/LoginScreen";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -43,6 +44,7 @@ function RootNavigator() {
                 <Stack.Screen name={Routes.NOTIFICATIONS} component={NotificationScreen} options={{ headerShown: true}} />
                 <Stack.Screen name={Routes.CALIBRATION} component={CalibrationScreen} options={{ headerShown: true}} />
                 <Stack.Screen name={Routes.ORGANIZATION} component={MyCommunityScreen} options={{ headerShown: true}} />
+                <Stack.Screen name={Routes.LOGIN} component={LoginScreen} options={{ headerShown: false}} />
             </Stack.Navigator>
             <SideMenu/>
         </SafeAreaView>

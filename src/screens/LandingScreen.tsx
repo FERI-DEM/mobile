@@ -16,7 +16,7 @@ const LandingScreen = () => {
                 <Text className='text-4xl text-white font-bold text-center absolute'>Solar / Cast</Text>
             </View>
             <View className='flex flex-row items-center justify-center mt-28 w-full'>
-                <Button text='Prijava' onPress={() => {}} classname='self-center mr-7'/>
+                <Button text='Prijava' onPress={() => navigate(Routes.LOGIN)} classname='self-center mr-7'/>
                 <Button text='Registracija' classname='bg-dark-element self-center' onPress={() => navigate(Routes.REGISTER)}/>
             </View>
         </View>
