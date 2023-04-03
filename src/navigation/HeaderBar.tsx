@@ -1,7 +1,6 @@
 import {Text, TouchableOpacity, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import {useSideMenuStore} from "../store/side-menu-store";
-import {useHeaderStore} from "../store/header-store";
 
 const HeaderBar = ({title}: {title: string}) => {
     const {toggleOpened} = useSideMenuStore()

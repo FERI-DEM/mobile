@@ -4,32 +4,30 @@ import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from "react-ho
 import {ControlledInput} from "../components/ControlledInput";
 import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {navigate} from "../navigation/navigate";
-import {Routes} from "../navigation/routes";
-import * as z from "zod";
-import {Header} from "../store/header-store";
+import {CreateCommunityDataType} from "../types/community.types";
+import {CreateCommunityDataSchema} from "../schemas/community.schema";
+import useCommunity from "../hooks/useCommunity";
 
-const CreateOrganizationDataSchema = z.object({
-    name: z.string().min(3, { message: "Name must be at least 3 characters long" }).max(20, { message: "Name must be at most 30 characters long" }),
-});
-
-type CreateOrganizationDataType = z.infer<typeof CreateOrganizationDataSchema>
-
-const DefaultOrganizationData: CreateOrganizationDataType = {
+const DefaultCommunityData: CreateCommunityDataType = {
     name: '',
 }
-const CreateOrganizationScreen: FC = () => {
-    const methods = useForm({
-        resolver: zodResolver(CreateOrganizationDataSchema),
-        defaultValues: DefaultOrganizationData
+const CreateCommunityScreen: FC = () => {
+    const form = useForm({
+        resolver: zodResolver(CreateCommunityDataSchema),
+        defaultValues: DefaultCommunityData
     });
 
-    const onSubmit: SubmitHandler<CreateOrganizationDataType> = (data) => {
+    const {mutate} = useCommunity();
+    const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
-        navigate(Routes.LANDING);
+        try {
+            mutate(data);
+        } catch (e) {
+            console.log({e})
+        }
     };
 
-    const onError: SubmitErrorHandler<CreateOrganizationDataType> = (errors, e) => {
+    const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
         return console.log({errors})
     }
 
@@ -37,7 +35,7 @@ const CreateOrganizationScreen: FC = () => {
         <View className='dark:bg-dark-main flex-1 px-3'>
             <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
                 <View className='px-2'>
-                    <FormProvider {...methods}>
+                    <FormProvider {...form}>
                         <ControlledInput
                             name="name"
                             label="Ime organizacije"
@@ -46,7 +44,7 @@ const CreateOrganizationScreen: FC = () => {
                         <Button
                             text="Ustvari"
                             classname='mt-7'
-                            onPress={methods.handleSubmit(onSubmit, onError)}
+                            onPress={form.handleSubmit(onSubmit, onError)}
                         />
                     </FormProvider>
                 </View>
@@ -55,4 +53,4 @@ const CreateOrganizationScreen: FC = () => {
     );
 };
 
-export default CreateOrganizationScreen;
+export default CreateCommunityScreen;

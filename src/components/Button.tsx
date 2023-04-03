@@ -1,5 +1,5 @@
 import React, {FC, ReactNode} from 'react';
-import {Pressable, View, Text, TouchableOpacity} from "react-native";
+import {View, Text, TouchableOpacity} from "react-native";
 import {twMerge} from "tailwind-merge";
 
 interface ButtonProps {
