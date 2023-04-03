@@ -16,5 +16,3 @@ web-build/
 # IDE config
 .idea/
 .vscode/
-
-.env*
