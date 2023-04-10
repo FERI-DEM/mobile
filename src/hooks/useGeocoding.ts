@@ -5,8 +5,10 @@ import {UserLocation} from "../types/user.types";
 import {MapboxResponse} from "../types/mapbox.types";
 import {AxiosError} from "axios";
 
-const useGeocoding = (location: UserLocation) => useQuery<MapboxResponse, AxiosError>(
-    [QueryKey.FORWARD_GEOCODING, location], () => MapboxService.geocode(location),
+const useGeocoding = (location: UserLocation, onSuccess?: (data: MapboxResponse) => void) => useQuery<MapboxResponse, AxiosError>(
+    [QueryKey.FORWARD_GEOCODING, location], () => MapboxService.geocode(location),{
+        onSuccess
+    }
 )
 
 export default useGeocoding

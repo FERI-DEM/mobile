@@ -7,6 +7,7 @@ export type RegisterDetailsType = z.infer<typeof RegisterDetailsSchema>
 
 export type LoginType = z.infer<typeof LoginSchema>
 
+// Maribor: long: 15.646, lat: 46.554
 export interface Coordinates {
     latitude: number;
     longitude: number;

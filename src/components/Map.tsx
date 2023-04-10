@@ -6,8 +6,6 @@ import GenericMap from "./GenericMap";
 import PinImage from '../assets/images/pin.png';
 import {MAPBOX_TOKEN} from "@env";
 import {Coordinates} from "../types/user.types";
-import {useUserStore} from "../store/user-store";
-import useGeocoding from "../hooks/useGeocoding";
 
 const getMapbox = async () => {
     if (!__DEV__) {
@@ -20,16 +18,15 @@ const getMapbox = async () => {
     return null
 }
 
-const Map = () => {
+interface MapProps {
+    coordinates?: Coordinates
+    setCoordinates: (coordinates: Coordinates) => void
+}
+
+const Map:FC<MapProps> = ({coordinates, setCoordinates}) => {
     const camera = useRef<CameraRef>(null);
-    const [clickedLocation, setClickedLocation] = useState<Coordinates>()
     const GenericMapComponent = useMemo(() => <GenericMap/>, [])
     const [MapboxGL, setMapboxGL] = useState<any>(null)
-    const {data} = useGeocoding({coordinates: clickedLocation})
-    const userLocation = data?.features[0]?.geometry?.coordinates ? {
-        longitude: data.features[0].geometry.coordinates[0],
-        latitude: data.features[0].geometry.coordinates[1]
-    } : null
 
     const getUserLocation = async () => {
         try {
@@ -40,7 +37,7 @@ const Map = () => {
             }
 
             const location = await Location.getCurrentPositionAsync();
-            setClickedLocation({
+            setCoordinates({
                 longitude: location.coords.longitude,
                 latitude: location.coords.latitude
             })
@@ -55,9 +52,9 @@ const Map = () => {
     }
 
     const onPressOnMap = (features: any) => {
-        setClickedLocation({
-            latitude: features.geometry.coordinates[0],
-            longitude: features.geometry.coordinates[1]
+        setCoordinates({
+            longitude: features.geometry.coordinates[0],
+            latitude: features.geometry.coordinates[1]
         })
     }
 
@@ -73,12 +70,12 @@ const Map = () => {
         <MapboxGL.Camera
             ref={camera}
             zoomLevel={12}
-            centerCoordinate={[userLocation?.longitude || 0, userLocation?.latitude || 0]}
+            centerCoordinate={[coordinates?.longitude || 0, coordinates?.latitude || 0]}
             animationMode='none'
         />
-        {userLocation && <MapboxGL.MarkerView
+        {coordinates && <MapboxGL.MarkerView
             key="user-location"
-            coordinate={[userLocation.longitude, userLocation.latitude]}
+            coordinate={[coordinates.longitude, coordinates.latitude]}
         >
             <View>
                 <Image source={PinImage} style={{height: 30, width: 20, resizeMode: 'cover'}}/>
