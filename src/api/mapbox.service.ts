@@ -1,13 +1,14 @@
 import {mapboxInstance} from "./axios";
-import {UserLocation} from "../types/user.types";
 import {MapboxResponse} from "../types/mapbox.types";
+import {Coordinates, UserLocation} from "../types/user.types";
 
 const MapboxService = {
-    geocode: async (location: UserLocation) => {
-        let query = location.address || ''
-        if(!location.address && location.coordinates)
-            query = `${location.coordinates.longitude},${location.coordinates.latitude}`
-        const response = await mapboxInstance.get<MapboxResponse>(`${query}`)
+    geocodeByAddress: async (address: string) => {
+        const response = await mapboxInstance.get<MapboxResponse>(address)
+        return response.data
+    },
+    geocodeByCoordinates: async (coordinates?: Coordinates) => {
+        const response = await mapboxInstance.get<MapboxResponse>(`${coordinates?.longitude},${coordinates?.latitude}`)
         return response.data
     },
 }

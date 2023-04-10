@@ -3,7 +3,7 @@ import { View, TextInput as RNTextInput, TextInputProps as RNTextInputProps, Tex
 import { useController, useFormContext, UseControllerProps } from 'react-hook-form';
 import {twMerge} from "tailwind-merge";
 
-interface TextInputProps extends RNTextInputProps, UseControllerProps {
+export interface TextInputProps extends RNTextInputProps, UseControllerProps {
     label: string
     name: string
     defaultValue?: string

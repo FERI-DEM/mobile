@@ -9,8 +9,12 @@ import {Routes} from "../navigation/routes";
 import Map from "../components/Map";
 import {Coordinates, RegisterDetailsType} from "../types/user.types";
 import {RegisterDetailsSchema} from "../schemas/user.schema";
-import useGeocoding from "../hooks/useGeocoding";
-import {useMemo, useState} from "react";
+import useGeocodingByAddress from "../hooks/useGeocodingByAddress";
+import {useEffect, useMemo, useState} from "react";
+import useUserCoordinates from "../hooks/useUserCoordinates";
+import useGeocodingByCoordinates from "../hooks/useGeocodingByCoordinates";
+import LocationAutoCompleteInput from "../components/LocationAutoCompleteInput";
+import {MapboxResponse} from "../types/mapbox.types";
 
 const DefaultRegisterData: RegisterDetailsType = {
     powerPlantName: 'Moja elektrarna',
@@ -22,24 +26,40 @@ const RegisterDetailsScreen = () => {
         resolver: zodResolver(RegisterDetailsSchema),
         defaultValues: DefaultRegisterData
     });
-    const [clickedCoordinates, setClickedCoordinates] = useState<Coordinates>()
-    const {data: dataByAddress} = useGeocoding({address: form.watch('location')})
-    useGeocoding({coordinates: clickedCoordinates}, (data) => {
-        form.setValue('location', data?.features[0]?.place_name || '')
+    const {coordinates} = useUserCoordinates()
+    const [userLocation, setUserLocation] = useState<{address: string, coordinates: Coordinates}>()
+    useGeocodingByCoordinates(coordinates, {
+        enabled: !!coordinates,
+        onSuccess: (data) => {
+            setUserLocation({
+                address: data.features[0].place_name || '',
+                coordinates: {
+                    latitude: data.features[0].geometry.coordinates[1],
+                    longitude: data.features[0].geometry.coordinates[0]
+                }
+            })
+        }
     })
-    const coordinates = useMemo(() => (
-        {longitude: dataByAddress?.features[0]?.geometry.coordinates[0] || 0,
-            latitude: dataByAddress?.features[0]?.geometry.coordinates[1] || 0}
-    ), [form.watch('location')])
+
+    useEffect(() => {
+        form.setValue('location', userLocation?.address || '')
+    }, [userLocation])
 
     const onSubmit: SubmitHandler<RegisterDetailsType> = () => {
         navigate(Routes.DASHBOARD)
     };
 
-    const selectCurrentPlaceName = () => {
-        form.setValue('location', dataByAddress?.features[0]?.place_name || '')
+    const onClickOnAutoCompleteArea = (data: MapboxResponse | undefined) => {
+        setUserLocation({
+            address: data?.features[0].place_name || '',
+            coordinates: {
+                latitude: data?.features[0].geometry.coordinates[1] || 0,
+                longitude: data?.features[0].geometry.coordinates[0] || 0
+            }
+        })
     }
 
+    console.log(userLocation)
 
     return (
         <View className='flex-1 items-center dark:bg-dark-main'>
@@ -60,23 +80,9 @@ const RegisterDetailsScreen = () => {
                             label="Ime elektrarne"
                             placeholder="Moja elektrarna"
                         />
-                        <View className='relative'>
-                            <ControlledInput
-                                name="location"
-                                label="Lokacija"
-                                placeholder="Ljubljana"
-                                classNameContainer='mt-5'
-                            />
-                            {(form.getValues('location') !== '' && form.getValues('location') !== dataByAddress?.features[0]?.place_name) && (
-                                <TouchableOpacity onPress={selectCurrentPlaceName} className='absolute rounded-md -bottom-16 w-full max-h-14 bg-dark-element z-20 p-4'>
-                                    <View className='bg-dark-element rounded-md'>
-                                        <Text className='text-sm dark:text-white' numberOfLines={1}>{dataByAddress?.features[0]?.place_name}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )}
-                        </View>
+                        <LocationAutoCompleteInput form={form} onClickOnAutoCompleteArea={onClickOnAutoCompleteArea}/>
                         <View className='h-56 pt-4'>
-                            <Map coordinates={coordinates} setCoordinates={setClickedCoordinates}/>
+                            <Map coordinates={userLocation?.coordinates}/>
                         </View>
                         <Button
                             text="Zaključi"

@@ -10,4 +10,4 @@ export enum Routes {
     ORGANIZATION = 'Organization',
     LOGIN = 'Login',
 }
-export const initialRoute = Routes.LANDING;
+export const initialRoute = Routes.REGISTER_DETAILS;

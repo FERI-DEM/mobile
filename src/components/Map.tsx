@@ -20,53 +20,27 @@ const getMapbox = async () => {
 
 interface MapProps {
     coordinates?: Coordinates
-    setCoordinates: (coordinates: Coordinates) => void
 }
 
-const Map:FC<MapProps> = ({coordinates, setCoordinates}) => {
+const Map:FC<MapProps> = ({coordinates}) => {
     const camera = useRef<CameraRef>(null);
     const GenericMapComponent = useMemo(() => <GenericMap/>, [])
     const [MapboxGL, setMapboxGL] = useState<any>(null)
 
-    const getUserLocation = async () => {
-        try {
-            const {status} = await Location.requestForegroundPermissionsAsync();
 
-            if (status !== 'granted') {
-                return;
-            }
-
-            const location = await Location.getCurrentPositionAsync();
-            setCoordinates({
-                longitude: location.coords.longitude,
-                latitude: location.coords.latitude
-            })
-        } catch (e) {
-            console.log(e)
-        }
-
-    }
     const setMapComponentAsync = async () => {
         let MapboxGL = await getMapbox();
         setMapboxGL(MapboxGL)
     }
 
-    const onPressOnMap = (features: any) => {
-        setCoordinates({
-            longitude: features.geometry.coordinates[0],
-            latitude: features.geometry.coordinates[1]
-        })
-    }
-
     useEffect(() => {
-        getUserLocation()
         setMapComponentAsync()
     }, [])
 
     if (!MapboxGL)
         return GenericMapComponent
 
-    return <MapboxGL.MapView style={{flex: 1}} onPress={onPressOnMap}>
+    return <MapboxGL.MapView style={{flex: 1}}>
         <MapboxGL.Camera
             ref={camera}
             zoomLevel={12}
