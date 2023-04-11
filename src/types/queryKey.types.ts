@@ -4,5 +4,6 @@ export enum QueryKey {
     'REVERSE_GEOCODING' = 'reverseGeocoding',
     'CALIBRATION' = 'calibration',
     'COMMUNITY' = 'community',
+    'REGISTER_DETAILS' = 'registerDetails',
     'GOOGLE_LOGIN' = 'googleLogin',
 }

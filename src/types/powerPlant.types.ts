@@ -27,4 +27,10 @@ interface Calibration {
     radiation: number;
 }
 
+export interface PowerPlantCreateReq {
+    displayName: string;
+    latitude: number;
+    longitude: number;
+}
+
 export type CalibrationDataType = z.infer<typeof CalibrationDataSchema>

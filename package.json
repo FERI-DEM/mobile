@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start -c",
+    "dev-windows": "start-script-windows.bat && expo start -c",
+    "dev-unix": "bash start-script-unix.sh && expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",

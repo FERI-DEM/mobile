@@ -4,6 +4,7 @@ import MapboxService from "../api/mapbox.service";
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {AxiosError} from "axios";
 import {QueryKey} from "../types/queryKey.types";
+import {mapboxToUserLocation} from "../utils/mapbox-to-user-location";
 
 interface UserLocation{
     coordinates?: Coordinates
@@ -21,13 +22,7 @@ const useUserGeocodedLocation = (options?: Omit<UseQueryOptions<UserLocation | u
 
         const location = await Location.getCurrentPositionAsync();
         const data = await MapboxService.geocodeByCoordinates(location.coords)
-        return {
-            address: data?.features[0]?.place_name || '',
-            coordinates: {
-                latitude: data?.features[0]?.geometry.coordinates[1] || 0,
-                longitude: data?.features[0]?.geometry.coordinates[0] || 0
-            }
-        }
+        return mapboxToUserLocation(data)
 
     },
     {retry: false

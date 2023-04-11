@@ -16,6 +16,7 @@ import {useCallback} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import {QueryKey} from "../types/queryKey.types";
 import {mapboxToUserLocation} from "../utils/mapbox-to-user-location";
+import useRegisterDetailsMutation from "../hooks/useRegisterDetailsMutation";
 
 const DefaultRegisterData: RegisterDetailsType = {
     powerPlantName: 'Moja elektrarna',
@@ -29,7 +30,9 @@ const RegisterDetailsScreen = () => {
     });
 
     const queryClient = useQueryClient()
-
+    const {mutate: createPowerPlant} = useRegisterDetailsMutation({
+        onSuccess: () => navigate(Routes.DASHBOARD)
+    })
     const {data: userLocation} = useUserGeocodedLocation({
         onSuccess: (data) => {
             form.setValue('location', data?.address || '')
@@ -38,7 +41,11 @@ const RegisterDetailsScreen = () => {
 
 
     const onSubmit: SubmitHandler<RegisterDetailsType> = () => {
-        navigate(Routes.DASHBOARD)
+        createPowerPlant({
+            displayName: form.getValues().powerPlantName,
+            latitude: userLocation?.coordinates?.latitude || 0,
+            longitude: userLocation?.coordinates?.longitude || 0
+        })
     };
 
     const onClickOnAutoCompleteArea = useCallback((data: MapboxResponse | undefined) => {
