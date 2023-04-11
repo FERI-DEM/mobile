@@ -6,7 +6,7 @@ import {AxiosError} from "axios";
 import {Coordinates} from "../types/user.types";
 
 const useGeocodingByCoordinates = (coordinates?: Coordinates, options?: UseQueryOptions<MapboxResponse, AxiosError, MapboxResponse>) => useQuery<MapboxResponse, AxiosError>(
-    [QueryKey.FORWARD_GEOCODING, coordinates], () => MapboxService.geocodeByCoordinates(coordinates), options
+    [QueryKey.FORWARD_GEOCODING_BY_ADDRESS, coordinates], () => MapboxService.geocodeByCoordinates(coordinates), options
 )
 
 export default useGeocodingByCoordinates

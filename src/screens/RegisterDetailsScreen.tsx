@@ -1,4 +1,4 @@
-import {ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {ScrollView, Text, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import Button from "../components/Button";
 import {useForm, FormProvider, SubmitHandler} from 'react-hook-form';
@@ -7,14 +7,15 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import Map from "../components/Map";
-import {Coordinates, RegisterDetailsType} from "../types/user.types";
+import {RegisterDetailsType} from "../types/user.types";
 import {RegisterDetailsSchema} from "../schemas/user.schema";
-import useGeocodingByAddress from "../hooks/useGeocodingByAddress";
-import {useEffect, useMemo, useState} from "react";
-import useUserCoordinates from "../hooks/useUserCoordinates";
-import useGeocodingByCoordinates from "../hooks/useGeocodingByCoordinates";
 import LocationAutoCompleteInput from "../components/LocationAutoCompleteInput";
 import {MapboxResponse} from "../types/mapbox.types";
+import useUserGeocodedLocation from "../hooks/useUserGeocodedLocation";
+import {useCallback} from "react";
+import {useQueryClient} from "@tanstack/react-query";
+import {QueryKey} from "../types/queryKey.types";
+import {mapboxToUserLocation} from "../utils/mapbox-to-user-location";
 
 const DefaultRegisterData: RegisterDetailsType = {
     powerPlantName: 'Moja elektrarna',
@@ -26,40 +27,25 @@ const RegisterDetailsScreen = () => {
         resolver: zodResolver(RegisterDetailsSchema),
         defaultValues: DefaultRegisterData
     });
-    const {coordinates} = useUserCoordinates()
-    const [userLocation, setUserLocation] = useState<{address: string, coordinates: Coordinates}>()
-    useGeocodingByCoordinates(coordinates, {
-        enabled: !!coordinates,
+
+    const queryClient = useQueryClient()
+
+    const {data: userLocation} = useUserGeocodedLocation({
         onSuccess: (data) => {
-            setUserLocation({
-                address: data.features[0].place_name || '',
-                coordinates: {
-                    latitude: data.features[0].geometry.coordinates[1],
-                    longitude: data.features[0].geometry.coordinates[0]
-                }
-            })
+            form.setValue('location', data?.address || '')
         }
     })
 
-    useEffect(() => {
-        form.setValue('location', userLocation?.address || '')
-    }, [userLocation])
 
     const onSubmit: SubmitHandler<RegisterDetailsType> = () => {
         navigate(Routes.DASHBOARD)
     };
 
-    const onClickOnAutoCompleteArea = (data: MapboxResponse | undefined) => {
-        setUserLocation({
-            address: data?.features[0].place_name || '',
-            coordinates: {
-                latitude: data?.features[0].geometry.coordinates[1] || 0,
-                longitude: data?.features[0].geometry.coordinates[0] || 0
-            }
-        })
-    }
-
-    console.log(userLocation)
+    const onClickOnAutoCompleteArea = useCallback((data: MapboxResponse | undefined) => {
+        const userLocation = mapboxToUserLocation(data)
+        form.setValue('location', userLocation.address)
+        queryClient.setQueryData([QueryKey.USER_GEOCODED_LOCATION], userLocation)
+    }, [form, queryClient])
 
     return (
         <View className='flex-1 items-center dark:bg-dark-main'>
@@ -80,7 +66,7 @@ const RegisterDetailsScreen = () => {
                             label="Ime elektrarne"
                             placeholder="Moja elektrarna"
                         />
-                        <LocationAutoCompleteInput form={form} onClickOnAutoCompleteArea={onClickOnAutoCompleteArea}/>
+                        <LocationAutoCompleteInput onClickOnAutoCompleteArea={onClickOnAutoCompleteArea}/>
                         <View className='h-56 pt-4'>
                             <Map coordinates={userLocation?.coordinates}/>
                         </View>
