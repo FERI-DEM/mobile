@@ -7,6 +7,8 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {CreateCommunityDataType} from "../types/community.types";
 import {CreateCommunityDataSchema} from "../schemas/community.schema";
 import useCommunity from "../hooks/useCommunity";
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
 
 const DefaultCommunityData: CreateCommunityDataType = {
     name: '',
@@ -17,14 +19,12 @@ const CreateCommunityScreen: FC = () => {
         defaultValues: DefaultCommunityData
     });
 
-    const {mutate} = useCommunity();
+    const {mutate} = useCommunity({
+        onSuccess: () => navigate(Routes.ORGANIZATION)
+    });
     const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
-        try {
-            mutate(data);
-        } catch (e) {
-            console.log({e})
-        }
+        mutate(data);
     };
 
     const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
