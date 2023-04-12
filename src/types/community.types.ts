@@ -14,10 +14,15 @@ export interface CommunityReq {
     name: string;
 }
 
+interface CommunityMember {
+    id: string;
+    name: string;
+    powerPlantName: string;
+}
 export interface CommunityRes {
     name: string;
     membersIds: string[];
-    members: [];
+    members: CommunityMember[];
     adminId: string;
     _id: string;
     createdAt: string;

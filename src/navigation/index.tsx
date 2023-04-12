@@ -18,6 +18,8 @@ import NotificationScreen from "../screens/NotificationScreen";
 import CalibrationScreen from "../screens/CalibrationScreen";
 import MyCommunityScreen from "../screens/MyCommunityScreen";
 import LoginScreen from "../screens/LoginScreen";
+import CommunityHeaderDropdown from "../components/CommunityHeaderDropdown";
+import {useCommunityStore} from "../store/community-store";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -33,6 +35,8 @@ export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+    const selectedCommunity = useCommunityStore(state => state.selectedCommunity);
+
     return (
         <SafeAreaView className='flex-1'>
             <Stack.Navigator initialRouteName={initialRoute} screenOptions={{animation: 'none', header: (props) => <HeaderBar title={props.options.title || props.route.name}/>}}>
@@ -43,7 +47,7 @@ function RootNavigator() {
                 <Stack.Screen name={Routes.CREATE_ORGANIZATION} component={CreateCommunityScreen} options={{ headerShown: true}} />
                 <Stack.Screen name={Routes.NOTIFICATIONS} component={NotificationScreen} options={{ headerShown: true}} />
                 <Stack.Screen name={Routes.CALIBRATION} component={CalibrationScreen} options={{ headerShown: true}} />
-                <Stack.Screen name={Routes.ORGANIZATION} component={MyCommunityScreen} options={{ headerShown: true}} />
+                <Stack.Screen name={Routes.ORGANIZATION} component={MyCommunityScreen} options={{ headerShown: true, header: () => <HeaderBar title={selectedCommunity.name} helper={<CommunityHeaderDropdown/>}/>}} />
                 <Stack.Screen name={Routes.LOGIN} component={LoginScreen} options={{ headerShown: false}} />
             </Stack.Navigator>
             <SideMenu/>

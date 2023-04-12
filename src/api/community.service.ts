@@ -9,6 +9,10 @@ const CommunityService = {
     getCommunities: async () => {
         const response = await apiInstance.get<CommunityRes[]>('communities')
         return response.data
+    },
+    getCommunity: async (id: string) => {
+        const response = await apiInstance.get<CommunityRes>(`communities/${id}`)
+        return response.data
     }
 }
 

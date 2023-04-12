@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CreateCommunityDataType} from "../types/community.types";
 import {CreateCommunityDataSchema} from "../schemas/community.schema";
-import useCommunity from "../hooks/useCommunity";
+import useCommunityMutation from "../hooks/useCommunityMutation";
 
 const DefaultCommunityData: CreateCommunityDataType = {
     name: '',
@@ -17,7 +17,7 @@ const CreateCommunityScreen: FC = () => {
         defaultValues: DefaultCommunityData
     });
 
-    const {mutate} = useCommunity();
+    const {mutate} = useCommunityMutation();
     const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
         try {

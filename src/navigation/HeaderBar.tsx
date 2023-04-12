@@ -1,14 +1,20 @@
 import {Text, TouchableOpacity, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import {useSideMenuStore} from "../store/side-menu-store";
+import {ReactElement} from "react";
 
-const HeaderBar = ({title}: {title: string}) => {
+interface HeaderBarProps {
+    title: string
+    helper?: ReactElement
+}
+const HeaderBar = ({title, helper}: HeaderBarProps) => {
     const {toggleOpened} = useSideMenuStore()
 
     return (
         <View className='flex justify-between items-center flex-row dark:bg-dark-main p-4'>
             <View className='flex flex-row items-center'>
                 <Text className='text-2xl text-white font-bold'>{title}</Text>
+                {helper && helper}
             </View>
             <TouchableOpacity activeOpacity={0.6} onPress={toggleOpened}>
                 <View className='w-7 h-7'>
