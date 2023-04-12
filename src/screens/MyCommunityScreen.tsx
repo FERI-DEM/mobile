@@ -2,6 +2,12 @@ import React, {FC, useState} from 'react';
 import {ScrollView, Text, View} from "react-native";
 import PowerDisplay from "../components/PowerDisplay";
 import MemberListItem from "../components/MemberListItem";
+import InputWithIcon from "../components/InputWithIcon";
+import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {CreateCommunityDataSchema} from "../schemas/community.schema";
+import {InviteMemberDataSchema} from "../schemas/organizationUser.schema";
+import {CreateCommunityDataType, InviteMemberDataType} from "../types/community.types";
 
 const memberList = [
     {
@@ -20,9 +26,24 @@ const memberList = [
         member: 'Član4',
         power: 100,
     },]
+
+const DefaultMemberData: InviteMemberDataType = {
+    name: '',
+}
+
 const MyCommunityScreen: FC = () => {
     const [toggleView, setToggleView] = useState<boolean>(false);
     const [active, setActive] = useState<number>(0);
+
+    const form = useForm({
+        resolver: zodResolver(InviteMemberDataSchema),
+        defaultValues: DefaultMemberData
+    });
+
+    const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
+        console.log({data});
+        //mutate(data);
+    };
 
     return (
         <View className='dark:bg-dark-main flex-1 pt-5'>
@@ -43,6 +64,9 @@ const MyCommunityScreen: FC = () => {
                             {memberList.map((member, index) => {
                                 return <MemberListItem member={member.member} power={member.power} onPress={() => setActive(index)} active={active === index} key={index}/>
                             })}
+                            <FormProvider {...form}>
+                                <InputWithIcon iconText="Poišči" label="Povabi člana" name="name" />
+                            </FormProvider>
                         </ScrollView>
                     </View>
                 )
