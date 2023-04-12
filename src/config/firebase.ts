@@ -32,6 +32,7 @@ export const auth = getAuthenticationModule()
 auth.onAuthStateChanged(async (user) => {
     if(user != null) {
         const token = await user.getIdToken(true)
+        console.log(token)
         apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
 })
