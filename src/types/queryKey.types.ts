@@ -6,4 +6,5 @@ export enum QueryKey {
     'COMMUNITY' = 'community',
     'REGISTER_DETAILS' = 'registerDetails',
     'GOOGLE_LOGIN' = 'googleLogin',
+    'COMMUNITIES' = 'communities',
 }

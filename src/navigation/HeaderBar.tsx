@@ -7,7 +7,9 @@ const HeaderBar = ({title}: {title: string}) => {
 
     return (
         <View className='flex justify-between items-center flex-row dark:bg-dark-main p-4'>
-            <Text className='text-2xl text-white font-bold'>{title}</Text>
+            <View className='flex flex-row items-center'>
+                <Text className='text-2xl text-white font-bold'>{title}</Text>
+            </View>
             <TouchableOpacity activeOpacity={0.6} onPress={toggleOpened}>
                 <View className='w-7 h-7'>
                     <Svg width="100%" height='100%' viewBox="0 0 24 24" fill="none">
