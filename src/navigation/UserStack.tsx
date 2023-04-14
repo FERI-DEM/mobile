@@ -10,6 +10,7 @@ import CalibrationScreen from "../screens/CalibrationScreen";
 import MyCommunityScreen from "../screens/MyCommunityScreen";
 import SideMenu from "./SideMenu";
 import * as React from "react";
+import SettingsScreen from "../screens/SettingsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -22,6 +23,7 @@ const UserStack = () => {
                 <Stack.Screen name={Routes.NOTIFICATIONS} component={NotificationScreen}  />
                 <Stack.Screen name={Routes.CALIBRATION} component={CalibrationScreen} />
                 <Stack.Screen name={Routes.ORGANIZATION} component={MyCommunityScreen} />
+                <Stack.Screen name={Routes.SETTINGS} component={SettingsScreen} />
             </Stack.Navigator>
             <SideMenu/>
         </SafeAreaView>
