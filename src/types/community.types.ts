@@ -1,7 +1,9 @@
 import * as z from "zod";
 import {CreateCommunityDataSchema} from "../schemas/community.schema";
+import {InviteMemberDataSchema} from "../schemas/organizationUser.schema";
 
 export type CreateCommunityDataType = z.infer<typeof CreateCommunityDataSchema>
+export type InviteMemberDataType = z.infer<typeof InviteMemberDataSchema>
 
 interface Community {
     name: string;

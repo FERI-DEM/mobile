@@ -2,6 +2,12 @@ import React, {FC, useState} from 'react';
 import {ScrollView, Text, View} from "react-native";
 import PowerDisplay from "../components/PowerDisplay";
 import MemberListItem from "../components/MemberListItem";
+import InputWithIcon from "../components/InputWithIcon";
+import {FormProvider, SubmitErrorHandler, SubmitHandler, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {CreateCommunityDataSchema} from "../schemas/community.schema";
+import {InviteMemberDataSchema} from "../schemas/organizationUser.schema";
+import {CreateCommunityDataType, InviteMemberDataType} from "../types/community.types";
 import {useCommunityStore} from "../store/community-store";
 import useCommunity from "../hooks/useCommunity";
 
@@ -29,12 +35,27 @@ export enum CommunityTabs {
     CREATE_COMMUNITY = 'create',
 }
 
+
+const DefaultMemberData: InviteMemberDataType = {
+    name: '',
+}
+
 const MyCommunityScreen: FC = () => {
     const [activeTab, setActiveTab] = useState<CommunityTabs>(CommunityTabs.DASHBOARD);
     const {id: selectedCommunityID} = useCommunityStore(state => state.selectedCommunity);
     const {data: communityData} = useCommunity(selectedCommunityID)
 
     console.log(communityData)
+
+    const form = useForm({
+        resolver: zodResolver(InviteMemberDataSchema),
+        defaultValues: DefaultMemberData
+    });
+
+    const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
+        console.log({data});
+        //mutate(data);
+    };
 
     return (
         <View className='dark:bg-dark-main flex-1 pt-2'>
@@ -50,8 +71,13 @@ const MyCommunityScreen: FC = () => {
                     </View>
                 ) : (
                     <View>
-                        <ScrollView className='px-5'>
-                            {communityData?.members.map((member, index) => <MemberListItem text={`${member.name}/${member.powerPlantName}`} key={index}/>)}
+                        <ScrollView className='px-7'>
+                            {memberList.map((member, index) => {
+                                return <MemberListItem member={member.member} power={member.power} onPress={() => setActive(index)} active={active === index} key={index}/>
+                            })}
+                            <FormProvider {...form}>
+                                <InputWithIcon iconText="Poišči" label="Povabi člana" name="name" />
+                            </FormProvider>
                         </ScrollView>
                     </View>
                 )
