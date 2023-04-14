@@ -9,6 +9,7 @@ const CommunityHeaderDropdown = () => {
     const {data: communities} = useCommunities();
     const setSelectedCommunity = useCommunityStore(state => state.setSelectedCommunity);
 
+    console.log(communities)
     const toggleOpen = () => {
         setOpened(prevState => !prevState);
     }

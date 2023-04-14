@@ -18,7 +18,6 @@ export type RootStackParamList = {
   Register: undefined;
   RegisterDetails: undefined;
   Dashboard: undefined;
-  CreateOrganization: undefined;
   Notifications: undefined;
   Calibration: undefined;
   Organization: undefined;

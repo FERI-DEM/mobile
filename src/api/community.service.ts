@@ -13,6 +13,10 @@ const CommunityService = {
     getCommunity: async (id: string) => {
         const response = await apiInstance.get<CommunityRes>(`communities/${id}`)
         return response.data
+    },
+    deleteCommunity: async (id: string) => {
+        const response = await apiInstance.delete<unknown>(`communities/${id}`)
+        return response.data
     }
 }
 

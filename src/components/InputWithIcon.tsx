@@ -3,13 +3,13 @@ import {FC} from "react";
 import {ControlledInput, TextInputProps} from "./ControlledInput";
 
 interface InputProps extends TextInputProps{
-    iconText: string;
+    helperText: string;
 }
-const InputWithIcon:FC<InputProps> = ({ iconText, ...props}) => {
+const InputWithIcon:FC<InputProps> = ({ helperText, ...props}) => {
     return (
         <View className={'w-full flex flex-row items-end'}>
             <ControlledInput classNameContainer={'w-auto grow'} classNameInput={'rounded-r-none'}  {...props}></ControlledInput>
-            <View className='bg-tint w-24 py-3.5 rounded-r-md'><Text className='text-white text-center'>{iconText}</Text></View>
+            <View className='bg-tint px-5 py-3.5 rounded-r-md'><Text className='text-white text-center'>{helperText}</Text></View>
         </View>
     );
 }

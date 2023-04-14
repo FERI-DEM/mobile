@@ -4,7 +4,6 @@ export enum Routes {
     REGISTER_DETAILS = 'RegisterDetails',
     DASHBOARD = 'Dashboard',
     SETTINGS = 'Settings',
-    CREATE_ORGANIZATION = 'CreateOrganization',
     NOTIFICATIONS = 'Notifications',
     CALIBRATION = 'Calibration',
     ORGANIZATION = 'Organization',

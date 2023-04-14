@@ -1,11 +1,10 @@
-import {useMutation, UseMutationOptions} from "@tanstack/react-query";
+import {CommunityRes} from "../types/community.types";
 import {AxiosError} from "axios";
 import {QueryKey} from "../types/queryKey.types";
-import {CommunityReq, CommunityRes} from "../types/community.types";
 import CommunityService from "../api/community.service";
+import {useQuery} from "@tanstack/react-query";
 
-const useCommunity = (options?: UseMutationOptions<CommunityRes, AxiosError, CommunityReq>) => useMutation<CommunityRes, AxiosError, CommunityReq>(
-    [QueryKey.COMMUNITY], (community) => CommunityService.createCommunity(community), options
+const useCommunity = (id: string) => useQuery<CommunityRes, AxiosError>(
+    [QueryKey.COMMUNITY], () => CommunityService.getCommunity(id),
 );
-
 export default useCommunity;
