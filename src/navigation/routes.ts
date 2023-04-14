@@ -10,4 +10,5 @@ export enum Routes {
     ORGANIZATION = 'Organization',
     LOGIN = 'Login',
 }
-export const initialRoute = Routes.LANDING;
+export const noUserStackInitialRoute = Routes.LANDING;
+export const userStackInitialRoute = Routes.DASHBOARD;
