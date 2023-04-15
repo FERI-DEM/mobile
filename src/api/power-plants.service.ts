@@ -4,7 +4,7 @@ import {CalibrationReq, PowerPlantCreateReq, PowerPlantRes} from "../types/power
 const PowerPlantsService = {
     getPowerPlants: async () => {
         const response = await apiInstance.get<PowerPlantRes>('power-plants')
-        return response.data
+        return response.data.powerPlants
     },
     getPowerPlant: async (id: string) => {
         const response = await apiInstance.get<PowerPlantRes>(`power-plants/${id}`)

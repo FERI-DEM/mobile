@@ -13,7 +13,8 @@ interface Community {
 }
 
 export interface CommunityReq {
-    name: string;
+    communityName: string;
+    powerPlants: {powerPlantId: string}[];
 }
 
 interface CommunityMember {

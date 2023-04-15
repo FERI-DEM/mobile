@@ -11,7 +11,7 @@ export interface PowerPlantRes {
     powerPlants: PowerPlant[];
 }
 
-interface PowerPlant {
+export interface PowerPlant {
     displayName: string;
     latitude: number;
     longitude: number;
