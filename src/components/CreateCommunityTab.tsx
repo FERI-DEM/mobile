@@ -33,7 +33,7 @@ const CreateCommunityTab: FC = () => {
     });
     const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
-        mutate(data);
+        mutate({name: data.communityName, powerPlants: data.powerPlants})
     };
 
     const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
@@ -58,7 +58,7 @@ const CreateCommunityTab: FC = () => {
                                 <Checkbox
                                     color='#236BFE'
                                     value={fields.some((field) => field.powerPlantId === item._id)}
-                                    onValueChange={(value) => value ? append({ powerPlantId: item._id}) : remove(fields.findIndex((field) => field.powerPlantId === item._id))}
+                                    onValueChange={(value) => value ? append({ powerPlantId: item._id, powerPlantName: item.displayName}) : remove(fields.findIndex((field) => field.powerPlantId === item._id))}
                                 />
                             </View>
                         )}/>
