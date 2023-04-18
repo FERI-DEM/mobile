@@ -1,5 +1,4 @@
 import {Text, TouchableOpacity, View} from "react-native";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {Routes} from "./routes";
 import {navigate} from "./navigate";
 import {ReactNode} from "react";
@@ -58,7 +57,6 @@ export const sideMenuItems: SideMenuItemType[] = [
 
 const SideMenu = () => {
     const {opened, toggleOpened} = useSideMenuStore()
-    const insets = useSafeAreaInsets()
 
     const onPressOnItem = (item: SideMenuItemType) => {
         toggleOpened()
@@ -68,10 +66,10 @@ const SideMenu = () => {
     if (!opened) return null;
 
     return (
-        <View className='absolute w-full h-full' style={{marginTop: insets.top}}>
+        <View className='absolute w-full h-full'>
             <View className='relative w-full h-full flex items-end'>
                 <TouchableOpacity className='w-full h-full absolute opacity-50 bg-black' onPress={toggleOpened}/>
-                <View className='w-48 dark:bg-dark-main h-full items-center'>
+                <View className='w-48 dark:bg-dark-main h-full items-center pt-9'>
                     <Text className='text-white text-lg font-bold my-10'>Solar Cast</Text>
                     <View className='w-full px-8'>
                         {sideMenuItems.map((sideMenuItem, index) => <View key={index}>

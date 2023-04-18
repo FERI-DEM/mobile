@@ -6,6 +6,7 @@ import {navigationRef} from "./navigate";
 import {useAuthentication} from "../hooks/useAuthentication";
 import UserStack from "./UserStack";
 import NoUserStack from "./NoUserStack";
+import SideMenu from "./SideMenu";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -16,6 +17,7 @@ export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName
                 theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                 <RootNavigator/>
             </NavigationContainer>
+            <SideMenu/>
         </View>
     );
 }

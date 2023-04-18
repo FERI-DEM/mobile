@@ -7,7 +7,6 @@ import DashboardScreen from "../screens/DashboardScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import CalibrationScreen from "../screens/CalibrationScreen";
 import MyCommunityScreen from "../screens/MyCommunityScreen";
-import SideMenu from "./SideMenu";
 import * as React from "react";
 import SettingsScreen from "../screens/SettingsScreen";
 import HeaderBarCommunities from "./HeaderBarCommunities";
@@ -24,7 +23,6 @@ const UserStack = () => {
                 <Stack.Screen name={Routes.ORGANIZATION} component={MyCommunityScreen} options={{header: () => <HeaderBarCommunities/>}} />
                 <Stack.Screen name={Routes.SETTINGS} component={SettingsScreen} />
             </Stack.Navigator>
-            <SideMenu/>
         </SafeAreaView>
 
     );
