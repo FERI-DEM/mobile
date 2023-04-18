@@ -1,33 +1,28 @@
-import {ScrollView, View} from "react-native";
-import PowerDisplay from "../components/PowerDisplay";
-import LineChart from "../components/LineChart";
-import AlertCard from "../components/AlertCard";
-import usePrediction from "../hooks/usePrediction";
-import usePowerPlants from "../hooks/usePowerPlants";
-import LineChart2 from "../components/LineChart2";
+import { Text, View} from "react-native";
+import React, {useState} from "react";
+import PowerPlantDashboardTab from "../components/PowerPlantDashboardTab";
+import PowerPlantSettingsTab from "../components/PowerPlantSettingsTab";
+
+export enum PowerPlantsTabs {
+    DASHBOARD = 'Nadzorna plošča',
+    SETTINGS = 'Nastavitve',
+}
 
 const DashboardScreen = () => {
-
-    const {data: prediction, error} = usePrediction("64358df692af515dca30cb9b")
-    const {data: powerPlants} = usePowerPlants()
+    const [activeTab, setActiveTab] = useState<PowerPlantsTabs>(PowerPlantsTabs.DASHBOARD);
 
     return (
-        <ScrollView>
-        <View className='dark:bg-dark-main flex-1 pt-5'>
-            <View className='flex flex-row justify-around'>
-                <PowerDisplay power={15} text='Danes' classNameContainer='w-3/12'/>
-                <PowerDisplay power={22} text='Jutri' classNameContainer='w-3/12'/>
-                <PowerDisplay power={10} text='Pojutrišnjem' classNameContainer='w-3/12'/>
+        <View className='dark:bg-dark-main flex-1 pt-2'>
+            <View className='flex flex-row px-5 gap-5 mb-4'>
+                {Object.values(PowerPlantsTabs).map((tab, index) => <Text key={index}
+                                                                        className={`text-white opacity-40 ${tab === activeTab && 'text-tint opacity-100'}`}
+                                                                        onPress={() => setActiveTab(tab)}>{tab}</Text>)}
             </View>
-            <View className='my-6 m-4 shadow-lg shadow-black rounded-xl dark:bg-dark-element'>
-                <LineChart2 />
-            </View>
-            <View className='px-4 py-6'>
-                <LineChart />
-            </View>
-            <AlertCard title={'Obvestilo'} message={'Padec energije čez 1h.'} />
+            {
+                activeTab === PowerPlantsTabs.DASHBOARD ? <PowerPlantDashboardTab/> : activeTab === PowerPlantsTabs.SETTINGS && <PowerPlantSettingsTab/>
+
+            }
         </View>
-        </ScrollView>
     )
 }
 export default DashboardScreen;

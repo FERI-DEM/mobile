@@ -1,7 +1,18 @@
 import {VictoryChart, VictoryLine, VictoryZoomContainer} from "victory-native";
+import {FC} from "react";
 
-const LineChart2 = () => {
+interface PredictedValue {
+    date: string;
+    power: number;
+}
 
+interface LineChartProps {
+    prediction:PredictedValue[]
+}
+
+const LineChart2:FC<LineChartProps> = ({ prediction }) => {
+
+    //const data = prediction.map(({ date, power }) => ({ x: date, y: power }));
     const data = [
         { x: 1, y: 20 },
         { x: 2, y: 45 },
