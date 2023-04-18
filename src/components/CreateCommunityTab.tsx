@@ -52,7 +52,7 @@ const CreateCommunityTab: FC = () => {
                             placeholder="Ime"
                         />
                         <Text className='dark:text-white mb-3 ml-0.5 mt-6'>Izberite elektrarno</Text>
-                        <FlatList className='max-h-52' nestedScrollEnabled keyExtractor={(item, index) => index} data={powerPlants} renderItem={({item}) => (
+                        <FlatList className='max-h-52' nestedScrollEnabled keyExtractor={item => item._id} data={powerPlants} renderItem={({item}) => (
                             <View className='flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-dark-element rounded-md justify-between'>
                                 <Text className='text-white'>{item.displayName}</Text>
                                 <Checkbox
