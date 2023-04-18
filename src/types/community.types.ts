@@ -14,13 +14,14 @@ interface Community {
 
 export interface CommunityReq {
    name: string;
-    powerPlants: {powerPlantId: string, powerPlantName: string}[]
+    powerPlants: {powerPlantId: string}[]
 }
 
 interface CommunityMember {
-    id: string;
-    name: string;
+    userId: string;
     powerPlantName: string;
+    powerPlantId: string;
+    userName: string;
 }
 export interface CommunityRes {
     name: string;

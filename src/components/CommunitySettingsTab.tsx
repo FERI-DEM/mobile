@@ -1,4 +1,4 @@
-import {ScrollView} from "react-native";
+import {ScrollView, Text} from "react-native";
 import Button from "./Button";
 import useCommunityDeleteMutation from "../hooks/useCommunityDeleteMutation";
 import {Routes} from "../navigation/routes";
@@ -7,6 +7,7 @@ import React from "react";
 import {useCommunityStore} from "../store/community-store";
 import useCommunity from "../hooks/useCommunity";
 import MemberListItem from "./MemberListItem";
+import {twMerge} from "tailwind-merge";
 
 
 const CommunitySettingsTab = () => {
@@ -15,10 +16,13 @@ const CommunitySettingsTab = () => {
     const {mutate: deleteCommunity} = useCommunityDeleteMutation(selectedCommunityID, {
         onSuccess: () => navigate(Routes.DASHBOARD)
     })
+    console.log(communityData?.members)
     return (
         <ScrollView className='dark:bg-dark-main flex-1 px-3'>
+            <Text className='dark:text-white mb-3 mt-4 ml-0.5'>Člani</Text>
             {communityData?.members.map((member, index) => <MemberListItem
-                text={`${member.name}/${member.powerPlantName}`} key={index}/>)}
+                text={`${member.userName} / ${member.powerPlantName}`} key={index}/>)}
+            <Text className='dark:text-white mb-3 mt-8 ml-0.5'>Dodatno</Text>
             <Button text='Izbriši' onPress={deleteCommunity} classname='bg-danger'/>
         </ScrollView>
     )

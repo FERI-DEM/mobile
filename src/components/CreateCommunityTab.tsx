@@ -22,7 +22,7 @@ const CreateCommunityTab: FC = () => {
         resolver: zodResolver(CreateCommunityDataSchema),
         defaultValues: DefaultCommunityData
     });
-    const { fields, append, remove,update } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: 'powerPlants',
     });
@@ -58,7 +58,7 @@ const CreateCommunityTab: FC = () => {
                                 <Checkbox
                                     color='#236BFE'
                                     value={fields.some((field) => field.powerPlantId === item._id)}
-                                    onValueChange={(value) => value ? append({ powerPlantId: item._id, powerPlantName: item.displayName}) : remove(fields.findIndex((field) => field.powerPlantId === item._id))}
+                                    onValueChange={(value) => value ? append({ powerPlantId: item._id}) : remove(fields.findIndex((field) => field.powerPlantId === item._id))}
                                 />
                             </View>
                         )}/>
