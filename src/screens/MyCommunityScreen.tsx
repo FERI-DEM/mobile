@@ -1,7 +1,12 @@
 import React, {FC, useState} from 'react';
-import {ScrollView, Text, View} from "react-native";
-import PowerDisplay from "../components/PowerDisplay";
-import MemberListItem from "../components/MemberListItem";
+import {Text, View} from "react-native";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {InviteMemberDataSchema} from "../schemas/organizationUser.schema";
+import {CreateCommunityDataType, InviteMemberDataType} from "../types/community.types";
+import CreateCommunityTab from "../components/CreateCommunityTab";
+import CommunitySettingsTab from "../components/CommunitySettingsTab";
+import CommunityDashboardTab from "../components/CommunityDashboardTab";
 
 const memberList = [
     {
@@ -20,32 +25,41 @@ const memberList = [
         member: 'Član4',
         power: 100,
     },]
+
+export enum CommunityTabs {
+    DASHBOARD = 'dashboard',
+    SETTINGS = 'settings',
+    CREATE_COMMUNITY = 'create',
+}
+
+
+const DefaultMemberData: InviteMemberDataType = {
+    name: '',
+}
+
 const MyCommunityScreen: FC = () => {
-    const [toggleView, setToggleView] = useState<boolean>(false);
-    const [active, setActive] = useState<number>(0);
+    const [activeTab, setActiveTab] = useState<CommunityTabs>(CommunityTabs.DASHBOARD);
+
+    const form = useForm({
+        resolver: zodResolver(InviteMemberDataSchema),
+        defaultValues: DefaultMemberData
+    });
+
+    const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
+        console.log({data});
+        //mutate(data);
+    };
 
     return (
-        <View className='dark:bg-dark-main flex-1 pt-5'>
-            <View className='flex flex-row px-7 gap-5 mb-4'>
-                <Text className={`text-white opacity-40 ${!toggleView && 'text-tint opacity-100'}`} onPress={() => {setToggleView(false); console.log('sem na podatkih')}}>Podatki</Text>
-                <Text className={`text-white opacity-40 ${toggleView && 'text-tint opacity-100'}`} onPress={() => setToggleView(true)}>Člani</Text>
+        <View className='dark:bg-dark-main flex-1 pt-2'>
+            <View className='flex flex-row px-5 gap-5 mb-4'>
+                {Object.values(CommunityTabs).map((tab, index) => <Text key={index}
+                                                                        className={`text-white opacity-40 ${tab === activeTab && 'text-tint opacity-100'}`}
+                                                                        onPress={() => setActiveTab(tab)}>{tab}</Text>)}
             </View>
             {
-                !toggleView ? (
-                    <View className='flex flex-row justify-around px-2'>
-                        <PowerDisplay power={0} text='Včeraj' classNameContainer='w-3/12'/>
-                        <PowerDisplay power={0} text='Danes' classNameContainer='w-3/12'/>
-                        <PowerDisplay power={0} text='Jutri' classNameContainer='w-3/12'/>
-                    </View>
-                ) : (
-                    <View>
-                        <ScrollView className='px-7'>
-                            {memberList.map((member, index) => {
-                                return <MemberListItem member={member.member} power={member.power} onPress={() => setActive(index)} active={active === index} key={index}/>
-                            })}
-                        </ScrollView>
-                    </View>
-                )
+                activeTab === CommunityTabs.DASHBOARD ? <CommunityDashboardTab/> : activeTab === CommunityTabs.SETTINGS ? <CommunitySettingsTab/> : <CreateCommunityTab/>
+
             }
         </View>
     );

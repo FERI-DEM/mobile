@@ -1,11 +1,10 @@
 import {useQuery} from "@tanstack/react-query";
 import {AxiosError} from "axios";
 import {QueryKey} from "../types/queryKey.types";
-import {PowerPlantRes} from "../types/powerPlant.types";
-import powerPlantsService from "../api/power-plants.service";
+import PowerPlantsService from "../api/power-plants.service";
+import {PowerPlant} from "../types/powerPlant.types";
 
-const usePowerPlants = () => useQuery<PowerPlantRes, AxiosError>(
-    [QueryKey.POWER_PLANTS], () => powerPlantsService.getPowerPlants(),
-)
-
-export default usePowerPlants
+const usePowerPlants = () => useQuery<PowerPlant[], AxiosError>(
+    [QueryKey.POWER_PLANTS], () => PowerPlantsService.getPowerPlants(),
+);
+export default usePowerPlants;
