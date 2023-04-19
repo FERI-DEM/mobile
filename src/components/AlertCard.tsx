@@ -13,7 +13,7 @@ const AlertCard: FC<AlertCardProps> = ({title, message}) => {
                 <Text className='text-white text-xl font-bold w-44 grow pb-2'>{title}</Text>
                 <Text className='text-white opacity-40'>{message}</Text>
             </View>
-            <ExclamationTriangleIcon color='red' size={50}/>
+            <ExclamationTriangleIcon color='orange' size={50}/>
         </View>
     );
 };

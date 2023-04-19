@@ -33,4 +33,9 @@ export interface PowerPlantCreateReq {
     longitude: number;
 }
 
+export interface PredictedValue {
+    date: string;
+    power: number;
+}
+
 export type CalibrationDataType = z.infer<typeof CalibrationDataSchema>

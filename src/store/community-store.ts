@@ -12,7 +12,7 @@ interface CommunityState {
 
 export const useCommunityStore = create<CommunityState>((set) => ({
     selectedCommunity: {
-        id: '64367402513d8b1ce1514e58',
+        id: '643db686f4307cba642c8b30',
         name: 'Moja organizacija'
     },
     setSelectedCommunity: (selectedCommunity: Community) => set({selectedCommunity: selectedCommunity}),
