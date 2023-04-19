@@ -10,7 +10,6 @@ const PowerPlantDashboardTab = () => {
 
     const {id: selectedPowerPlantID} = usePowerPlantStore(state => state.selectedPowerPlant)
     const {data: prediction, error} = usePrediction(selectedPowerPlantID)
-
     return (
         <ScrollView className='dark:bg-dark-main'>
             <View className='flex-1 pt-5'>
@@ -24,7 +23,9 @@ const PowerPlantDashboardTab = () => {
                     <Text className='mt-5 text-white opacity-40 text-center text-xs'>Graf napovedi proizvodnje</Text>
                     {prediction &&  <LineChart2 prediction={prediction}/>}
                 </View>
-
+                <View className='mx-4 mb-4'>
+                    {prediction && <PowerDisplay power={prediction[0].power} text='Čez 15min' classNameContainer='w-3/12'/> }
+                </View>
             </View>
         </ScrollView>
     )

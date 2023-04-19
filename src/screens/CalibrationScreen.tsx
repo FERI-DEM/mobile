@@ -4,7 +4,7 @@ import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {ControlledInput} from "../components/ControlledInput";
 import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
-import useCalibration from "../hooks/usePowerPlant";
+import useCalibration from "../hooks/useCalibration";
 import {CalibrationDataType} from "../types/powerPlant.types";
 import {CalibrationDataSchema} from "../schemas/calibration.schema";
 

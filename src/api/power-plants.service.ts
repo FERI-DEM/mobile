@@ -21,7 +21,11 @@ const PowerPlantsService = {
     create: async (powerPlant: PowerPlantCreateReq) => {
         const response = await apiInstance.post(`power-plants`, powerPlant)
         return response.data
-    }
+    },
+    update: async (powerPlant: PowerPlantCreateReq, id:string) => {
+        const response = await apiInstance.patch(`power-plants/${id}`, powerPlant)
+        return response.data
+    },
 }
 
 export default PowerPlantsService;

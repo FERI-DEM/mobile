@@ -12,7 +12,8 @@ interface LineChartProps {
 
 const LineChart2:FC<LineChartProps> = ({ prediction }) => {
 
-    //const data = prediction.map(({ date, power }) => ({ x: date, y: power }));
+    const data = prediction.map(({ date, power }) => ({ x: date, y: power }));
+    /*
     const data = [
         { x: 1, y: 20 },
         { x: 2, y: 45 },
@@ -25,6 +26,7 @@ const LineChart2:FC<LineChartProps> = ({ prediction }) => {
         { x: 9, y: 22 },
         { x: 10, y: 31 },
     ];
+     */
 
     const customTheme = {
         axis: {
@@ -48,7 +50,7 @@ const LineChart2:FC<LineChartProps> = ({ prediction }) => {
     };
 
     return (
-        <VictoryChart theme={customTheme}  domainPadding={{ x: 0, y: 20 }} containerComponent={<VictoryZoomContainer zoomDimension="x"  zoomDomain={{x: [1, 5]}}/>}>
+        <VictoryChart theme={customTheme}   containerComponent={<VictoryZoomContainer zoomDimension="x" />}>
             <VictoryLine
                 style={{
                     data: { stroke: "#F5852B", strokeWidth: 3 },

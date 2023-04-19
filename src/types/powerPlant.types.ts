@@ -1,5 +1,6 @@
 import {z} from "zod";
 import {CalibrationDataSchema} from "../schemas/calibration.schema";
+import {UpdatePowerPlantDataSchema} from "../schemas/powerPlant.schema";
 
 export interface CalibrationReq {
     id: string;
@@ -39,3 +40,4 @@ export interface PredictedValue {
 }
 
 export type CalibrationDataType = z.infer<typeof CalibrationDataSchema>
+export type UpdatePowerPlantDataType = z.infer<typeof UpdatePowerPlantDataSchema>
