@@ -19,3 +19,8 @@ export const LoginSchema = z.object({
     }),
     password: z.string().min(6, { message: "Geslo mora vsebovati vsaj 6 znakov" }),
 })
+
+export const ChangePasswordSchema = z.object({
+    password: z.string().min(6, { message: "Geslo mora vsebovati vsaj 6 znakov" }),
+    confirmPassword: z.string().min(6, { message: "Geslo mora vsebovati vsaj 6 znakov" }),
+});
