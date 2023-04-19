@@ -1,14 +1,15 @@
 import {ScrollView, Text, View} from "react-native";
 import Button from "../components/Button";
-import {auth} from "../config/firebase";
+import {auth, updatePasswordFoo} from "../config/firebase";
 import {signOut} from 'firebase/auth'
 import {useAuthentication} from "../hooks/useAuthentication";
 import React, {useEffect, useState} from "react";
-import {FormProvider, useForm} from "react-hook-form";
+import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {ControlledInput} from "../components/ControlledInput";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ChangePasswordSchema} from "../schemas/user.schema";
 import {ChangePasswordType} from "../types/user.types";
+import {twMerge} from "tailwind-merge";
 
 const DefaultChangePasswordData: ChangePasswordType = {
     password: '',
@@ -18,7 +19,8 @@ const DefaultChangePasswordData: ChangePasswordType = {
 const SettingsScreen = () => {
     const {user} = useAuthentication();
     const [provider, setProvider] = useState<string>('')
-    const [formOpened, setFormOpened] = useState<boolean>(false);
+    const [formOpened, setFormOpened] = useState<boolean>(false)
+    const [success, setSuccess] = useState<string>('')
 
     const form = useForm({
         resolver: zodResolver(ChangePasswordSchema),
@@ -36,6 +38,16 @@ const SettingsScreen = () => {
         })
     }, [user])
 
+    const onSubmit: SubmitHandler<ChangePasswordType> = async (data) => {
+        if (data.password !== data.confirmPassword)
+            return form.setError('root', {type: 'manual', message: 'Gesli se ne ujemata'});
+        await updatePasswordFoo(data.password).then(() => {
+            setSuccess('Geslo uspešno spremenjeno');
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
     return (
         <View className='flex-1 bg-dark-main px-3 pt-5'>
             <ScrollView className='w-full flex' keyboardShouldPersistTaps='always'>
@@ -47,21 +59,24 @@ const SettingsScreen = () => {
                             <ControlledInput
                                 name="password"
                                 label="Novo geslo"
-                                placeholder="Geslo"
+                                placeholder="********"
                                 secureTextEntry
                                 classNameContainer='mt-5'
                             />
                             <ControlledInput
                                 name="confirmPassword"
                                 label="Potrdi novo geslo"
-                                placeholder="Geslo"
+                                placeholder="********"
                                 secureTextEntry
                                 classNameContainer='mt-5'
                             />
+                            {!!form.formState.errors.root?.message && <Text
+                                className={twMerge('pl-0.5 text-warning pt-1.5')}>{form.formState.errors.root?.message}</Text>}
+                            <Text className='pl-0.5 text-tint pt-1.5'>{success}</Text>
                             <Button
                                 text="Posodobi"
                                 classname='mt-7'
-                                onPress={form.handleSubmit(() => console.log('onsubit'))}
+                                onPress={form.handleSubmit(onSubmit)}
                             />
                         </FormProvider>
                         )}

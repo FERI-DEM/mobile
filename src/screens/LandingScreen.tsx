@@ -19,6 +19,9 @@ const LandingScreen = () => {
                 <Button text='Prijava' onPress={() => navigate(Routes.LOGIN)} classname='self-center mr-7'/>
                 <Button text='Registracija' classname='bg-dark-element self-center' onPress={() => navigate(Routes.REGISTER)}/>
             </View>
+            <View>
+                <Text className='text-white opacity-50 text-center mt-10' onPress={() => navigate(Routes.FORGOT_PASSWORD)}>Forgot password?</Text>
+            </View>
         </View>
     )
 }

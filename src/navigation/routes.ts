@@ -8,6 +8,7 @@ export enum Routes {
     CALIBRATION = 'Calibration',
     ORGANIZATION = 'Organization',
     LOGIN = 'Login',
+    FORGOT_PASSWORD = 'ForgotPassword',
 }
 export const noUserStackInitialRoute = Routes.LANDING;
 export const userStackInitialRoute = Routes.DASHBOARD;

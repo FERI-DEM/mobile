@@ -9,6 +9,7 @@ import RegisterDetailsScreen from "../screens/RegisterDetailsScreen";
 import LoginScreen from "../screens/LoginScreen";
 import SideMenu from "./SideMenu";
 import * as React from "react";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -20,6 +21,7 @@ const NoUserStack = () => {
                 <Stack.Screen name={Routes.REGISTER} component={RegisterScreen}/>
                 <Stack.Screen name={Routes.REGISTER_DETAILS} component={RegisterDetailsScreen} />
                 <Stack.Screen name={Routes.LOGIN} component={LoginScreen}/>
+                <Stack.Screen name={Routes.FORGOT_PASSWORD} component={ForgotPasswordScreen}/>
             </Stack.Navigator>
             <SideMenu/>
         </SafeAreaView>
