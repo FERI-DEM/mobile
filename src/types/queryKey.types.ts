@@ -11,4 +11,7 @@ export enum QueryKey {
     'COMMUNITIES' = 'communities',
     'COMMUNITY' = 'community',
     'POWER_PLANTS' = 'powerPlants',
+    'POWER_PLANT' = 'powerPlant',
+    'POWER_PLANT_UPDATE_MUTATION' = 'powerPlantUpdate',
+
 }
