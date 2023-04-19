@@ -39,7 +39,7 @@ const SettingsScreen = () => {
     return (
         <View className='flex-1 bg-dark-main px-3 pt-5'>
             <ScrollView className='w-full flex' keyboardShouldPersistTaps='always'>
-            {provider === 'google.com' && (
+            {provider === 'password' && (
                 <View className='px-2 my-5'>
                     <Text className='text-white text-base font-bold' onPress={() => setFormOpened(!formOpened)}>Spremeni geslo</Text>
                     {formOpened && (
@@ -68,7 +68,7 @@ const SettingsScreen = () => {
                 </View>
             )}
             </ScrollView>
-            <Button text='Logout' onPress={logout} classname='bg-danger m-auto'/>
+            <Button text='Odjava' onPress={logout} classname='bg-danger m-auto'/>
         </View>
     );
 }
