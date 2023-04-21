@@ -13,8 +13,22 @@
         "buildType": "apk"
       }
     },
-    "preview": {
-      "distribution": "internal"
+    "staging": {
+      "releaseChannel": "production",
+      "distribution": "store",
+      "ios": {
+        "resourceClass": "m-medium",
+        "cocoapods": "1.11.2"
+      },
+      "android": {
+        "image": "latest",
+        "buildType": "apk"
+      },
+      "env": {
+        "NODE_ENV": "prod",
+        "VERSION": "1.0.0",
+        "BUILD_NUMBER": "1"
+      }
     }
   },
   "submit": {

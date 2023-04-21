@@ -1,7 +1,7 @@
 on:
-  push:
+  pull_request:
     branches:
-      - development
+      - main
 
 jobs:
   build:
@@ -20,5 +20,5 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: Install Dependencies
         run: yarn
-      - name: EAS Build
-        run: npx eas-cli build --platform android --profile android_preview
+      - name: EAS Build Android
+        run: npx eas-cli build --platform android --profile staging
