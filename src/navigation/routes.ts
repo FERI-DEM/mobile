@@ -4,10 +4,11 @@ export enum Routes {
     REGISTER_DETAILS = 'RegisterDetails',
     DASHBOARD = 'Dashboard',
     SETTINGS = 'Settings',
-    CREATE_ORGANIZATION = 'CreateOrganization',
     NOTIFICATIONS = 'Notifications',
     CALIBRATION = 'Calibration',
     ORGANIZATION = 'Organization',
     LOGIN = 'Login',
+    FORGOT_PASSWORD = 'ForgotPassword',
 }
-export const initialRoute = Routes.DASHBOARD;
+export const noUserStackInitialRoute = Routes.LANDING;
+export const userStackInitialRoute = Routes.DASHBOARD;

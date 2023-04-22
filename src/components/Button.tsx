@@ -13,7 +13,7 @@ interface ButtonProps {
 
 const Button: FC<ButtonProps> = ({children, text, onPress, classname, classNameText}) => {
     return (
-        <View className={twMerge('bg-tint rounded-md w-fit self-start', classname)}>
+        <View className={twMerge('bg-tint rounded-md self-start', classname)}>
             <TouchableOpacity activeOpacity={0.7} onPress={onPress} className='py-2.5 px-6'>
                 <Text className={twMerge('text-white font-bold', classNameText)}>{text}</Text>
                 {children}

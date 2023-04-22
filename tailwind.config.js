@@ -10,6 +10,7 @@ module.exports = {
         "light-main": "#f5f5f5",
         "light-element": "#ffffff",
         "warning": "#FEC601",
+        "danger": "#FF3B30",
       }
     },
   },
