@@ -19,7 +19,6 @@ export type RootStackParamList = {
   RegisterDetails: undefined;
   Dashboard: undefined;
   Notifications: undefined;
-  Calibration: undefined;
   Organization: undefined;
   Login: undefined;
   Settings: undefined;
