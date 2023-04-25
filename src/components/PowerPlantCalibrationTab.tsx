@@ -45,7 +45,7 @@ const PowerPlantCalibrationTab: FC = () => {
                             label="Trenutna proizvodnja elektrarne"
                             placeholder="Proizvodnja"
                         />
-                        <Text className={`pl-0.5 mt-2 ${message.type === 'success' ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
+                        <Text className={`pl-0.5 mt-2 ${message.type === FormMessageType.SUCCESS ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
                         <Button
                             text="Potrdi"
                             classname='mt-2'
