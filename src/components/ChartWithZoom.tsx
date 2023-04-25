@@ -13,16 +13,20 @@ import Animated, {
 } from "react-native-reanimated";
 import {Gesture, GestureDetector, PanGestureHandler} from "react-native-gesture-handler";
 import Button from "./Button";
+import LineChartText from "./LineChartText";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
+const AnimatedGroup = Animated.createAnimatedComponent(G);
 
 interface Point {
     x: number;
     y: number;
 }
-
-const points = [30, 50 ,10]
-
+const padding = 5
+const innerOffset = {
+    x: 8,
+    y: 12
+}
 const ChartWithZoom = () => {
     const window = useWindowDimensions()
     const graphWidth = window.width
@@ -44,6 +48,9 @@ const ChartWithZoom = () => {
     const activeScale = useSharedValue(1);
     const savedScale = useSharedValue(1);
     const zoomPoint = useSharedValue(30);
+
+    const activeTranslate = useSharedValue(0)
+
     const sharedData = useSharedValue(data);
 
     const line = useDerivedValue(() => {
@@ -70,9 +77,8 @@ const ChartWithZoom = () => {
                 path += `C ${zoomPoint.value + (sharedData.value[index - 1].x - zoomPoint.value) * activeScale.value + 0.5 * unitLength * activeScale.value},${sharedData.value[index - 1].y} ${x - 0.5 * unitLength * activeScale.value},${y} ${x},${y} `
         })
         path += `L ${zoomPoint.value + (sharedData.value[sharedData.value.length - 1].x - zoomPoint.value) * activeScale.value},0`
-        console.log(path)
         return path
-    })
+    }, [])
 
 
     const pinchGesture = Gesture.Pinch()
@@ -84,30 +90,43 @@ const ChartWithZoom = () => {
         })
         .onEnd(() => {
             savedScale.value *= activeScale.value;
-            sharedData.value = sharedData.value.map(({x, y, xLabel}) => ({x: zoomPoint.value + (x - zoomPoint.value) * activeScale.value, y, xLabel}))
+            sharedData.value = sharedData.value.map(({x, y, xLabel}) => ({x: zoomPoint.value + (x + activeTranslate.value - zoomPoint.value) * activeScale.value, y, xLabel}))
             activeScale.value = 1
         });
 
+    const panGesture = Gesture.Pan()
+        .maxPointers(1)
+        .onUpdate((e) => {
+            activeTranslate.value = e.translationX * 0.2
+        })
+        .onEnd((e) => {
+            sharedData.value = sharedData.value.map(({x, y, xLabel}) => ({x: zoomPoint.value + (x + activeTranslate.value - zoomPoint.value) * activeScale.value, y, xLabel}))
+            activeTranslate.value = 0
+        })
+
     const animatedProps = useAnimatedProps(() => ({d: line.value}))
     const areaAnimatedProps = useAnimatedProps(() => ({d: area.value}))
+    const animatedTranslateProps = useAnimatedProps(() => ({x: activeTranslate.value}))
 
 
     return (<>
             <View className='rounded-lg bg-red-500 flex items-center bg-dark-element mx-auto' style={{width: graphWidth}}>
-                <Svg scaleY={-1} viewBox={`0 0 75 60`} style={{width: graphWidth, height: 300, backgroundColor: '#292A3E'}}>
-                    <GestureDetector gesture={pinchGesture}>
-                        <G>
-                            <AnimatedPath strokeWidth={0.5} animatedProps={animatedProps} stroke="rgba(245, 133, 43, 1)" fill="none"/>
-                            <AnimatedPath animatedProps={areaAnimatedProps} stroke="none" fill="rgba(245, 133, 43, 0.3)"/>
-
+                <Svg preserveAspectRatio='none' scaleY={-1} viewBox={`${-innerOffset.x} ${-innerOffset.y} ${75 + innerOffset.x} ${60 + innerOffset.y + padding}`} style={{width: graphWidth, height: 300, backgroundColor: '#292A3E'}}>
+                    <Rect y={-innerOffset.y} width={graphWidth} height={innerOffset.y} fill='#292A3E'></Rect>
+                    <AnimatedGroup animatedProps={animatedTranslateProps}>
+                        <G y={ -innerOffset.y / 2}>
+                            {sharedData.value.map((label, index) => <LineChartText labels={sharedData} index={index} activeScale={activeScale} activeTranslate={activeTranslate} savedScale={savedScale} zoomPoint={zoomPoint} key={index}/> )}
                         </G>
-
+                        <GestureDetector gesture={panGesture}>
+                        <GestureDetector gesture={pinchGesture}>
+                            <G>
+                                <AnimatedPath strokeWidth={0.5} animatedProps={animatedProps} stroke="rgba(245, 133, 43, 1)" fill="none"/>
+                                <AnimatedPath animatedProps={areaAnimatedProps} stroke="none" fill="rgba(245, 133, 43, 0.3)"/>
+                            </G>
+                        </GestureDetector>
                     </GestureDetector>
-
-
-
+                    </AnimatedGroup>
                 </Svg>
-
             </View>
         </>
 
