@@ -75,7 +75,7 @@ const SettingsScreen = () => {
                             <Text className='pl-0.5 text-tint pt-1.5'>{success}</Text>
                             <Button
                                 text="Posodobi"
-                                classname='mt-7'
+                                classname='mt-3'
                                 onPress={form.handleSubmit(onSubmit)}
                             />
                         </FormProvider>

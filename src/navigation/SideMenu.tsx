@@ -4,6 +4,7 @@ import {navigate} from "./navigate";
 import {ReactNode} from "react";
 import Svg, {Path} from "react-native-svg";
 import {useSideMenuStore} from "../store/side-menu-store";
+import SideMenuLogo from "./SideMenuLogo";
 
 interface SideMenuItemType {
     route: Routes,
@@ -62,7 +63,7 @@ const SideMenu = () => {
             <View className='relative w-full h-full flex items-end'>
                 <TouchableOpacity className='w-full h-full absolute opacity-50 bg-black' onPress={toggleOpened}/>
                 <View className='w-48 dark:bg-dark-main h-full items-center pt-9'>
-                    <Text className='text-white text-lg font-bold my-10'>Solar Cast</Text>
+                    <SideMenuLogo />
                     <View className='w-full px-8'>
                         {sideMenuItems.map((sideMenuItem, index) => <View key={index}>
                             <TouchableOpacity className='my-2 flex flex-row items-center'
