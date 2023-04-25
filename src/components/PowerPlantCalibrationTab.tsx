@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {ScrollView, View} from "react-native";
+import React, {FC, useState} from 'react';
+import {ScrollView, Text, View} from "react-native";
 import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {ControlledInput} from "./ControlledInput";
 import Button from "../components/Button";
@@ -8,6 +8,7 @@ import useCalibration from "../hooks/useCalibration";
 import {CalibrationDataType} from "../types/powerPlant.types";
 import {CalibrationDataSchema} from "../schemas/calibration.schema";
 import {usePowerPlantStore} from "../store/power-plant-store";
+import {ApiError, FormMessage, FormMessageType} from "../types/common.types";
 
 const DefaultCalibrationData: CalibrationDataType = {
     production: 0,
@@ -15,14 +16,23 @@ const DefaultCalibrationData: CalibrationDataType = {
 
 const PowerPlantCalibrationTab: FC = () => {
     const {id: selectedPowerPlantID} = usePowerPlantStore(state => state.selectedPowerPlant)
-    const {mutate} = useCalibration();
+    const {mutate: calibrate} = useCalibration();
+    const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
 
     const form = useForm({
         resolver: zodResolver(CalibrationDataSchema),
         defaultValues: DefaultCalibrationData
     });
     const onSubmit: SubmitHandler<CalibrationDataType> = (data) => {
-        mutate({id: selectedPowerPlantID, power: data.production});
+        calibrate({id: selectedPowerPlantID, power: data.production},{
+            onSuccess: () => {
+                form.reset();
+                setMessage({type: FormMessageType.SUCCESS, text: 'Uspešno kalibrirano!'})
+            },
+            onError: (err: ApiError) => {
+                setMessage({type: FormMessageType.ERROR, text: err.error})
+            }
+        });
     }
 
     return (
@@ -35,9 +45,10 @@ const PowerPlantCalibrationTab: FC = () => {
                             label="Trenutna proizvodnja elektrarne"
                             placeholder="Proizvodnja"
                         />
+                        <Text className={`pl-0.5 mt-2 ${message.type === 'success' ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
                         <Button
                             text="Potrdi"
-                            classname='mt-7'
+                            classname='mt-2'
                             onPress={form.handleSubmit(onSubmit)}
                         />
                     </FormProvider>
