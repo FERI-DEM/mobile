@@ -15,11 +15,11 @@ const LineChartText = ({labels, activeScale, activeTranslate, index, zoomPoint}:
     const label = useDerivedValue(() => {
         return {
             x: zoomPoint.value + (labels.value[index].x - zoomPoint.value) * activeScale.value,
-            y: 0,
+            y: 3,
         }
     }, [])
     const animatedProps = useAnimatedProps(() => ({x: label.value.x, y: label.value.y}))
 
-    return <AnimatedGroup animatedProps={animatedProps}><G rotation={-35}><Text alignmentBaseline='bottom' textAnchor='middle' vectorEffect='non-scaling-stroke' transform={`scale(1, -1)`} fontSize={2.5} fill="white">{labels.value[index].xLabel}</Text></G></AnimatedGroup>
+    return <AnimatedGroup animatedProps={animatedProps}><G rotation={-35}><Text alignmentBaseline='bottom' vectorEffect='non-scaling-stroke' transform={`scale(1, -1)`} fontSize={2.5} fill="white">{labels.value[index].xLabel}</Text></G></AnimatedGroup>
 }
 export default LineChartText
