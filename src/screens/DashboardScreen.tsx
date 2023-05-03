@@ -12,6 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 import {PanGestureHandler} from "react-native-gesture-handler";
 import ChartWithZoom from "../components/ChartWithZoom";
+import LineChartNoLibrary from "../components/LineChartNoLibrary";
 
 const AnimatedGroup = Animated.createAnimatedComponent(G);
 
@@ -139,8 +140,8 @@ const DashboardScreen = () => {
 
             {/*    </Svg>*/}
             {/*</View>*/}
+            {/*<LineChartNoLibrary/>*/}
             <ChartWithZoom/>
-            {/*<LineChartSvg/>*/}
         </View>
     )
 }
