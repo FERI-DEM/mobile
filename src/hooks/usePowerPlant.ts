@@ -5,6 +5,6 @@ import PowerPlantsService from "../api/power-plants.service";
 import {ApiError} from "../types/common.types";
 
 const usePowerPlant = (id: string) => useQuery<PowerPlantRes, ApiError>(
-    [QueryKey.POWER_PLANT], () => PowerPlantsService.getPowerPlant(id),
+    [QueryKey.POWER_PLANT, id], () => PowerPlantsService.getPowerPlant(id),
 );
 export default usePowerPlant;

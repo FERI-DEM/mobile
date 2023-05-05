@@ -5,29 +5,39 @@ import {usePowerPlantStore} from "../store/power-plant-store";
 import {UpdatePowerPlantDataType} from "../types/powerPlant.types";
 import {zodResolver} from "@hookform/resolvers/zod/dist/zod";
 import {UpdatePowerPlantDataSchema} from "../schemas/powerPlant.schema";
-import {useForm, FormProvider, SubmitHandler, SubmitErrorHandler} from "react-hook-form";
+import {FormProvider, SubmitHandler, SubmitErrorHandler} from "react-hook-form";
 import {ControlledInput} from "./ControlledInput";
 import usePowerPlant from "../hooks/usePowerPlant";
 import {FormMessage, FormMessageType} from "../types/common.types";
-
-const DefaultPowerPlantData: UpdatePowerPlantDataType = {
-    name: '',
-}
+import usePowerPlantDeleteMutation from "../hooks/usePowerPlantDeleteMutation";
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
+import {useQueryClient} from "@tanstack/react-query";
+import {QueryKey} from "../types/queryKey.types";
+import useForm from "../hooks/useForm";
 
 const PowerPlantSettingsTab = () => {
+
+    const queryClient = useQueryClient()
+
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
     const {id: selectedPowerPlantID} = usePowerPlantStore(state => state.selectedPowerPlant);
     const {data: powerPlantData} = usePowerPlant(selectedPowerPlantID)
-    // nena menjava elektrarne
+    console.log(powerPlantData)
 
     const form = useForm<UpdatePowerPlantDataType>({
         resolver: zodResolver(UpdatePowerPlantDataSchema),
-        defaultValues: DefaultPowerPlantData
+        defaultValues: {name: powerPlantData?.powerPlants[0].displayName || ""}
     })
 
-    const deletePowerPlant= () => {
 
-    }
+
+    const {mutate: deletePowerPlant} = usePowerPlantDeleteMutation(selectedPowerPlantID, {
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] })
+            navigate(Routes.DASHBOARD)
+        }
+    })
 
     const onSubmit: SubmitHandler<UpdatePowerPlantDataType> = (data) => {
         //console.log({data});
@@ -47,7 +57,6 @@ const PowerPlantSettingsTab = () => {
                             name="powerPlantName"
                             label="Ime elektrarne"
                             placeholder="Ime"
-                            defaultValue={powerPlantData && powerPlantData.powerPlants[0].displayName}
                         />
                         <Text className={`pl-0.5 mt-2 ${message.type === FormMessageType.SUCCESS ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
                         <Button

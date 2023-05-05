@@ -26,6 +26,10 @@ const PowerPlantsService = {
         const response = await apiInstance.patch(`power-plants/${id}`, powerPlant)
         return response.data
     },
+    deletePowerPlant: async (id: string) => {
+        const response = await apiInstance.delete<unknown>(`power-plants/${id}`)
+        return response.data
+    }
 }
 
 export default PowerPlantsService;
