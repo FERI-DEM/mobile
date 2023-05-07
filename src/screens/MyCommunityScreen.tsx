@@ -8,28 +8,10 @@ import CreateCommunityTab from "../components/CreateCommunityTab";
 import CommunitySettingsTab from "../components/CommunitySettingsTab";
 import CommunityDashboardTab from "../components/CommunityDashboardTab";
 
-const memberList = [
-    {
-        member: 'Član1',
-        power: 23,
-    },
-    {
-        member: 'Član2',
-        power: 5,
-    },
-    {
-        member: 'Član3',
-        power: 12,
-    },
-    {
-        member: 'Član4',
-        power: 100,
-    },]
-
 export enum CommunityTabs {
-    DASHBOARD = 'dashboard',
-    SETTINGS = 'settings',
-    CREATE_COMMUNITY = 'create',
+    DASHBOARD = 'Nadzorna plošča',
+    SETTINGS = 'Nastavitve',
+    CREATE_COMMUNITY = 'Ustvari skupnost',
 }
 
 
@@ -57,10 +39,9 @@ const MyCommunityScreen: FC = () => {
                                                                         className={`text-white opacity-40 ${tab === activeTab && 'text-tint opacity-100'}`}
                                                                         onPress={() => setActiveTab(tab)}>{tab}</Text>)}
             </View>
-            {
-                activeTab === CommunityTabs.DASHBOARD ? <CommunityDashboardTab/> : activeTab === CommunityTabs.SETTINGS ? <CommunitySettingsTab/> : <CreateCommunityTab/>
-
-            }
+            {activeTab === CommunityTabs.DASHBOARD && <CommunityDashboardTab/>}
+            {activeTab === CommunityTabs.SETTINGS && <CommunitySettingsTab/>}
+            {activeTab === CommunityTabs.CREATE_COMMUNITY && <CreateCommunityTab/>}
         </View>
     );
 };

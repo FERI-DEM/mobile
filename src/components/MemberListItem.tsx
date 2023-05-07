@@ -1,15 +1,19 @@
 import React, {FC} from 'react';
-import {Text, View} from "react-native";
+import {Pressable, Text} from "react-native";
 
 interface MemberListItemProps {
-    text: string;
+    member: string;
+    power: number;
+    active: boolean;
+    onPress?: () => void;
 }
 
-const MemberListItem: FC<MemberListItemProps> = ({text}) => {
+const MemberListItem: FC<MemberListItemProps> = ({ member, power , active, onPress}) => {
     return (
-        <View className='flex flex-row justify-start rounded-md bg-dark-element py-3 px-5 mb-0.5 items-center'>
-            <Text className='text-white'>{text}</Text>
-        </View>
+        <Pressable className={`flex flex-row justify-between bg-dark-element py-5 px-5 mb-0.5 items-center ${active && 'border-l-tint border-2 border-y-0 border-r-0'}`} onPress={onPress}>
+            <Text className={`text-white ${active && 'text-tint font-bold'}`}>{member}</Text>
+            <Text className={`text-white ${active && 'text-tint font-bold'}`}>{power} kW</Text>
+        </Pressable>
     );
 };
 
