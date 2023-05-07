@@ -5,3 +5,8 @@ export interface ApiError {
     statusCode: number;
     timestamp: string;
 }
+
+export interface GraphPoint {
+    x: number;
+    y: number;
+}
