@@ -1,5 +1,5 @@
-import React, {FC, useState} from 'react';
-import {Text, View} from "react-native";
+import React, {FC} from 'react';
+import {View} from "react-native";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {InviteMemberDataSchema} from "../schemas/organizationUser.schema";
@@ -7,6 +7,8 @@ import {CreateCommunityDataType, InviteMemberDataType} from "../types/community.
 import CreateCommunityTab from "../components/CreateCommunityTab";
 import CommunitySettingsTab from "../components/CommunitySettingsTab";
 import CommunityDashboardTab from "../components/CommunityDashboardTab";
+import {CommunityTab, useCommunityTabsStore} from '../store/community-tabs-store';
+import Tabs from "../components/Tabs";
 
 const memberList = [
     {
@@ -26,11 +28,6 @@ const memberList = [
         power: 100,
     },]
 
-export enum CommunityTabs {
-    DASHBOARD = 'dashboard',
-    SETTINGS = 'settings',
-    CREATE_COMMUNITY = 'create',
-}
 
 
 const DefaultMemberData: InviteMemberDataType = {
@@ -38,8 +35,7 @@ const DefaultMemberData: InviteMemberDataType = {
 }
 
 const MyCommunityScreen: FC = () => {
-    const [activeTab, setActiveTab] = useState<CommunityTabs>(CommunityTabs.DASHBOARD);
-
+    const {activeTab, setActiveTab} = useCommunityTabsStore(state => state)
     const form = useForm({
         resolver: zodResolver(InviteMemberDataSchema),
         defaultValues: DefaultMemberData
@@ -52,15 +48,11 @@ const MyCommunityScreen: FC = () => {
 
     return (
         <View className='dark:bg-dark-main flex-1 pt-2'>
-            <View className='flex flex-row px-5 gap-5 mb-4'>
-                {Object.values(CommunityTabs).map((tab, index) => <Text key={index}
-                                                                        className={`text-white opacity-40 ${tab === activeTab && 'text-tint opacity-100'}`}
-                                                                        onPress={() => setActiveTab(tab)}>{tab}</Text>)}
-            </View>
-            {
-                activeTab === CommunityTabs.DASHBOARD ? <CommunityDashboardTab/> : activeTab === CommunityTabs.SETTINGS ? <CommunitySettingsTab/> : <CreateCommunityTab/>
+            <Tabs activeTab={activeTab} tabs={Object.values(CommunityTab)} onClickTab={setActiveTab}/>
 
-            }
+            {activeTab === CommunityTab.DASHBOARD && <CommunityDashboardTab />}
+            {activeTab === CommunityTab.SETTINGS && <CommunitySettingsTab />}
+            {activeTab === CommunityTab.CREATE_COMMUNITY && <CreateCommunityTab />}
         </View>
     );
 };
