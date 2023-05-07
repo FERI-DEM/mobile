@@ -11,13 +11,11 @@ interface NotificationCardProps {
 const NotificationCard: FC<NotificationCardProps> = ({message, buttonText, action}) => {
     return (
         <View className='shadow-md shadow-black rounded-md dark:bg-dark-element dark:text-white py-4 px-4 flex flex-row mt-4 items-center'>
-            <View className='grow'>
-                <View className='flex-row items-center'>
+            <View className='flex flex-1 flex-wrap flex-row items-center'>
                     <InformationCircleIcon color='grey' size={30}/>
-                    <Text className='text-white font-bold w-44 grow px-3'>{message}</Text>
-                </View>
-                </View>
-            <Button text={buttonText} onPress={action} classname='px-4'/>
+                    <Text className='text-white font-bold px-3'>{message + ''}</Text>
+            </View>
+            <Button text={buttonText} onPress={action} classname='ml-3'/>
         </View>
     );
 };
