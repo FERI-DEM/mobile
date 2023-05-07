@@ -1,7 +1,7 @@
 import PowerDisplay from "./PowerDisplay";
 import {ScrollView, Text, View} from "react-native";
 import React, {useState} from "react";
-import MemberListItem from "./MemberListItem";
+import MemberProductionListItem from "./MemberProductionListItem";
 
 const members = [
     {
@@ -32,8 +32,8 @@ const CommunityDashboardTab = () => {
             <ScrollView className='my-5 mx-4 flex'>
                 <Text className='text-white mb-2'>Proizvodnja članov</Text>
                 {members.map((member, index) => {
-                    return <MemberListItem member={member.name} power={member.power} onPress={() => setActive(index)}
-                                           active={active === index} key={index}/>
+                    return <MemberProductionListItem member={member.name} power={member.power} onPress={() => setActive(index)}
+                                                     active={active === index} key={index}/>
                 })}
             </ScrollView>
         </View>
