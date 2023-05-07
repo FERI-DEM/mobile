@@ -5,6 +5,7 @@ import AlertCard from "./AlertCard";
 import LineChart2 from "./LineChart2";
 import usePrediction from "../hooks/usePrediction";
 import {usePowerPlantStore} from "../store/power-plant-store";
+import LineChart from "./LineChart";
 
 const PowerPlantDashboardTab = () => {
 
@@ -13,16 +14,16 @@ const PowerPlantDashboardTab = () => {
     return (
         <ScrollView className='dark:bg-dark-main'>
             <View className='flex-1 pt-5'>
-                <View className='flex flex-row justify-around'>
-                    <PowerDisplay power={15} text='Danes' classNameContainer='w-3/12'/>
-                    <PowerDisplay power={22} text='Jutri' classNameContainer='w-3/12'/>
-                    <PowerDisplay power={10} text='Pojutrišnjem' classNameContainer='w-3/12'/>
+                <View className='flex flex-row justify-around px-4'>
+                    <PowerDisplay power={15} text='Danes' classNameContainer='w-1/3 pr-2'/>
+                    <PowerDisplay power={22} text='Jutri' classNameContainer='w-1/3 px-1'/>
+                    <PowerDisplay power={10} text='Pojutrišnjem' classNameContainer='w-1/3 pl-2'/>
                 </View>
-                <AlertCard title={'Obvestilo'} message={'Padec energije čez 1h.'} />
-                <View className='my-6 m-4 shadow-lg shadow-black rounded-xl dark:bg-dark-element'>
-                    <Text className='mt-5 text-white opacity-40 text-center text-xs'>Graf napovedi proizvodnje</Text>
-                    {prediction &&  <LineChart2 prediction={prediction}/>}
+
+                <View className='my-5'>
+                    {prediction &&  <LineChart data={prediction}/>}
                 </View>
+
                 <View className='mx-4 mb-4'>
                     {prediction && <PowerDisplay power={prediction[0].power} text='Čez 15min' classNameContainer='w-3/12'/> }
                 </View>
