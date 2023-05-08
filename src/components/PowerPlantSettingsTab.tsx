@@ -10,16 +10,15 @@ import {ControlledInput} from "./ControlledInput";
 import usePowerPlant from "../hooks/usePowerPlant";
 import {FormMessage, FormMessageType} from "../types/common.types";
 import usePowerPlantDeleteMutation from "../hooks/usePowerPlantDeleteMutation";
-import {navigate} from "../navigation/navigate";
-import {Routes} from "../navigation/routes";
 import {useQueryClient} from "@tanstack/react-query";
 import {QueryKey} from "../types/queryKey.types";
 import useForm from "../hooks/useForm";
+import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
 
 const PowerPlantSettingsTab = () => {
 
     const queryClient = useQueryClient()
-
+    const setActiveTab = useDashboardTabsStore(state => state.setActiveTab)
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant);
     const {data: powerPlantData} = usePowerPlant(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant})
@@ -33,8 +32,8 @@ const PowerPlantSettingsTab = () => {
 
     const {mutate: deletePowerPlant} = usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] })
-            navigate(Routes.DASHBOARD)
+            queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] }, {})
+            setActiveTab(PowerPlantsTab.DASHBOARD)
         }
     })
 

@@ -16,9 +16,11 @@ const DashboardScreen:FC = () => {
         <View className='dark:bg-dark-main flex-1 pt-2'>
             <QueryBoundaries isLoading={!selectedPowerPlant}>
                 <Tabs tabs={Object.values(PowerPlantsTab)} onClickTab={setActiveTab} activeTab={activeTab}/>
-                {activeTab === PowerPlantsTab.DASHBOARD && <PowerPlantDashboardTab />}
-                {activeTab === PowerPlantsTab.SETTINGS && <PowerPlantSettingsTab />}
-                {activeTab === PowerPlantsTab.CALIBRATION && <PowerPlantCalibrationTab />}
+                <QueryBoundaries isLoading={!selectedPowerPlant}>
+                    {activeTab === PowerPlantsTab.DASHBOARD && <PowerPlantDashboardTab />}
+                    {activeTab === PowerPlantsTab.SETTINGS && <PowerPlantSettingsTab />}
+                    {activeTab === PowerPlantsTab.CALIBRATION && <PowerPlantCalibrationTab />}
+                </QueryBoundaries>
             </QueryBoundaries>
         </View>
     );

@@ -8,13 +8,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            suspense: true,
-        },
-    },
-})
+const queryClient = new QueryClient()
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
