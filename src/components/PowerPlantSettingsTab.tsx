@@ -14,6 +14,7 @@ import {useQueryClient} from "@tanstack/react-query";
 import {QueryKey} from "../types/queryKey.types";
 import useForm from "../hooks/useForm";
 import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
+import {useToastStore} from "../store/toast-store";
 
 const PowerPlantSettingsTab = () => {
 
@@ -28,10 +29,12 @@ const PowerPlantSettingsTab = () => {
         defaultValues: {name: powerPlantData?.powerPlants[0].displayName || ""}
     })
 
+    const { showToast } = useToastStore();
 
 
     const {mutate: deletePowerPlant} = usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
         onSuccess: () => {
+            showToast('Elektrarna uspešno izbrisana!')
             queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] }, {})
             setActiveTab(PowerPlantsTab.DASHBOARD)
         }
@@ -65,7 +68,7 @@ const PowerPlantSettingsTab = () => {
                     </FormProvider>
                 </View>
             </ScrollView>
-            <Button text='Izbriši elektrarno' onPress={deletePowerPlant} classname='bg-danger m-auto'/>
+            <Button text='Izbriši elektrarno' onPress={deletePowerPlant} classname='bg-danger m-auto my-4'/>
         </View>
     )
 }
