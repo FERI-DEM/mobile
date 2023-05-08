@@ -7,16 +7,15 @@ import React from "react";
 import {useCommunityStore} from "../store/community-store";
 import useCommunity from "../hooks/useCommunity";
 import MemberListItem from "./MemberListItem";
-import {twMerge} from "tailwind-merge";
 
 
 const CommunitySettingsTab = () => {
-    const {id: selectedCommunityID} = useCommunityStore(state => state.selectedCommunity);
-    const {data: communityData} = useCommunity(selectedCommunityID)
-    const {mutate: deleteCommunity} = useCommunityDeleteMutation(selectedCommunityID, {
-        onSuccess: () => navigate(Routes.DASHBOARD)
+    const selectedCommunity = useCommunityStore(state => state.selectedCommunity);
+    const {data: communityData} = useCommunity(selectedCommunity?.id || '', {enabled: !!selectedCommunity})
+    const {mutate: deleteCommunity} = useCommunityDeleteMutation(selectedCommunity?.id || '', {
+        onSuccess: () => navigate(Routes.DASHBOARD),
     })
-    console.log(communityData?.members)
+
     return (
         <ScrollView className='dark:bg-dark-main flex-1 px-3'>
             <Text className='dark:text-white mb-3 mt-4 ml-0.5'>Člani</Text>

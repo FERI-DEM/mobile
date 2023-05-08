@@ -6,14 +6,11 @@ interface Community {
 }
 
 interface CommunityState {
-    selectedCommunity: Community
+    selectedCommunity: Community | null
     setSelectedCommunity: (selectedCommunity: Community) => void
 }
 
 export const useCommunityStore = create<CommunityState>((set) => ({
-    selectedCommunity: {
-        id: '643db686f4307cba642c8b30',
-        name: 'Moja organizacija'
-    },
+    selectedCommunity: null,
     setSelectedCommunity: (selectedCommunity: Community) => set({selectedCommunity: selectedCommunity}),
 }))

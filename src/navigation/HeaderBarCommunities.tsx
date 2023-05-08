@@ -1,11 +1,9 @@
-import { Text, TouchableOpacity, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import { useSideMenuStore } from '../store/side-menu-store';
-import { useMemo, useState } from 'react';
-import { useCommunityStore } from '../store/community-store';
-import HeaderDropdown, {
-  HeaderDropdownItem,
-} from '../components/HeaderDropdown';
+import {TouchableOpacity, View} from 'react-native';
+import Svg, {Path} from 'react-native-svg';
+import {useSideMenuStore} from '../store/side-menu-store';
+import {useEffect, useMemo, useState} from 'react';
+import {useCommunityStore} from '../store/community-store';
+import HeaderDropdown, {HeaderDropdownItem,} from '../components/HeaderDropdown';
 import useCommunities from '../hooks/useCommunities';
 
 const HeaderBarCommunities = () => {
@@ -31,9 +29,10 @@ const HeaderBarCommunities = () => {
     setSelectedCommunity({ name: item.label, id: item.id });
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpened((prevState) => !prevState);
-  };
+  useEffect(() => {
+      if(communities && communities.length > 0)
+        setSelectedCommunity({name: communities?.[0].name, id: communities?.[0]._id})
+  }, [communities])
 
   return (
     <View className="flex justify-between items-center flex-row dark:bg-dark-main p-4">
@@ -42,7 +41,7 @@ const HeaderBarCommunities = () => {
         setOpened={setDropdownOpened}
         onPressItem={onPressDropdownItem}
         items={dropdownItems}
-        title={selectedCommunity.name}
+        title={selectedCommunity?.name || ''}
       />
       <TouchableOpacity
         activeOpacity={0.6}
