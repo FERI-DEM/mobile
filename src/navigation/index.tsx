@@ -7,6 +7,7 @@ import {useAuthentication} from "../hooks/useAuthentication";
 import UserStack from "./UserStack";
 import NoUserStack from "./NoUserStack";
 import SideMenu from "./SideMenu";
+import Toast from "../components/Toast";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -18,6 +19,7 @@ export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName
                 <RootNavigator/>
             </NavigationContainer>
             <SideMenu/>
+            <Toast/>
         </View>
     );
 }
