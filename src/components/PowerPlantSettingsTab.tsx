@@ -23,7 +23,6 @@ const PowerPlantSettingsTab = () => {
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant);
     const {data: powerPlantData} = usePowerPlant(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant})
-
     const form = useForm<UpdatePowerPlantDataType>({
         resolver: zodResolver(UpdatePowerPlantDataSchema),
         defaultValues: {name: powerPlantData?.powerPlants[0].displayName || ""}
@@ -58,6 +57,7 @@ const PowerPlantSettingsTab = () => {
                             name="powerPlantName"
                             label="Ime elektrarne"
                             placeholder="Ime"
+                            defaultValue={powerPlantData?.powerPlants[0].displayName}
                         />
                         <Text className={`pl-0.5 mt-2 ${message.type === FormMessageType.SUCCESS ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
                         <Button
