@@ -15,7 +15,7 @@ const DefaultCalibrationData: CalibrationDataType = {
 }
 
 const PowerPlantCalibrationTab: FC = () => {
-    const {id: selectedPowerPlantID} = usePowerPlantStore(state => state.selectedPowerPlant)
+    const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
     const {mutate: calibrate} = useCalibration();
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
 
@@ -24,15 +24,17 @@ const PowerPlantCalibrationTab: FC = () => {
         defaultValues: DefaultCalibrationData
     });
     const onSubmit: SubmitHandler<CalibrationDataType> = (data) => {
-        calibrate({id: selectedPowerPlantID, power: data.production},{
-            onSuccess: () => {
-                form.reset();
-                setMessage({type: FormMessageType.SUCCESS, text: 'Uspešno kalibrirano!'})
-            },
-            onError: (err: ApiError) => {
-                setMessage({type: FormMessageType.ERROR, text: err.error})
-            }
-        });
+        if(selectedPowerPlant) {
+            calibrate({id: selectedPowerPlant.id, power: data.production}, {
+                onSuccess: () => {
+                    form.reset();
+                    setMessage({type: FormMessageType.SUCCESS, text: 'Uspešno kalibrirano!'})
+                },
+                onError: (err: ApiError) => {
+                    setMessage({type: FormMessageType.ERROR, text: err.error})
+                }
+            });
+        }
     }
 
     return (

@@ -1,11 +1,9 @@
-import { Text, TouchableOpacity, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import { useSideMenuStore } from '../store/side-menu-store';
-import { useMemo, useState } from 'react';
-import HeaderDropdown, {
-  HeaderDropdownItem,
-} from '../components/HeaderDropdown';
-import { usePowerPlantStore } from '../store/power-plant-store';
+import {TouchableOpacity, View} from 'react-native';
+import Svg, {Path} from 'react-native-svg';
+import {useSideMenuStore} from '../store/side-menu-store';
+import {useEffect, useMemo, useState} from 'react';
+import HeaderDropdown, {HeaderDropdownItem,} from '../components/HeaderDropdown';
+import {usePowerPlantStore} from '../store/power-plant-store';
 import usePowerPlants from '../hooks/usePowerPlants';
 
 const HeaderBarPowerPlants = () => {
@@ -31,9 +29,10 @@ const HeaderBarPowerPlants = () => {
     setSelectedPowerPlant({ name: item.label, id: item.id });
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpened((prevState) => !prevState);
-  };
+    useEffect(() => {
+        if (powerPlants && powerPlants.length > 0)
+            setSelectedPowerPlant({name: powerPlants?.[0].displayName, id: powerPlants?.[0]._id})
+    }, [powerPlants])
 
   return (
     <View className="flex justify-between items-center flex-row dark:bg-dark-main p-4">
@@ -42,7 +41,7 @@ const HeaderBarPowerPlants = () => {
         setOpened={setDropdownOpened}
         onPressItem={onPressDropdownItem}
         items={dropdownItems}
-        title={selectedPowerPlant.name}
+        title={selectedPowerPlant?.name || ''}
       />
       <TouchableOpacity
         activeOpacity={0.6}

@@ -7,11 +7,15 @@ interface LoadingViewProps {
 }
 interface QueryBoundariesProps extends LoadingViewProps{
     children: ReactNode;
+    isLoading?: boolean;
 }
-export const QueryBoundaries = ({ children, loadingClassName }: QueryBoundariesProps) => (
-    <Suspense fallback={<LoadingView loadingClassName={loadingClassName}/>}>
+export const QueryBoundaries = ({ children, loadingClassName, isLoading = false }: QueryBoundariesProps) => {
+    console.log('isLoading', isLoading)
+    if (isLoading) return <LoadingView loadingClassName={loadingClassName}/>;
+
+    return <Suspense fallback={<LoadingView loadingClassName={loadingClassName}/>}>
         {children}
     </Suspense>
-);
+};
 
 const LoadingView = ({loadingClassName}: LoadingViewProps) => <View className={twMerge('h-full w-full flex items-center justify-center', loadingClassName)}><ActivityIndicator color='white' size={35}/></View>

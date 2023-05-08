@@ -5,7 +5,7 @@ import {usePowerPlantStore} from "../store/power-plant-store";
 import {UpdatePowerPlantDataType} from "../types/powerPlant.types";
 import {zodResolver} from "@hookform/resolvers/zod/dist/zod";
 import {UpdatePowerPlantDataSchema} from "../schemas/powerPlant.schema";
-import {FormProvider, SubmitHandler, SubmitErrorHandler} from "react-hook-form";
+import {FormProvider, SubmitErrorHandler, SubmitHandler} from "react-hook-form";
 import {ControlledInput} from "./ControlledInput";
 import usePowerPlant from "../hooks/usePowerPlant";
 import {FormMessage, FormMessageType} from "../types/common.types";
@@ -21,9 +21,8 @@ const PowerPlantSettingsTab = () => {
     const queryClient = useQueryClient()
 
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
-    const {id: selectedPowerPlantID} = usePowerPlantStore(state => state.selectedPowerPlant);
-    const {data: powerPlantData} = usePowerPlant(selectedPowerPlantID)
-    console.log(powerPlantData)
+    const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant);
+    const {data: powerPlantData} = usePowerPlant(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant})
 
     const form = useForm<UpdatePowerPlantDataType>({
         resolver: zodResolver(UpdatePowerPlantDataSchema),
@@ -32,7 +31,7 @@ const PowerPlantSettingsTab = () => {
 
 
 
-    const {mutate: deletePowerPlant} = usePowerPlantDeleteMutation(selectedPowerPlantID, {
+    const {mutate: deletePowerPlant} = usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] })
             navigate(Routes.DASHBOARD)

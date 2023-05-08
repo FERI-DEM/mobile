@@ -1,16 +1,14 @@
 import PowerDisplay from "./PowerDisplay";
-import {ScrollView, Text, View} from "react-native";
+import {ScrollView, View} from "react-native";
 import React from "react";
-import AlertCard from "./AlertCard";
-import LineChart2 from "./LineChart2";
 import usePrediction from "../hooks/usePrediction";
 import {usePowerPlantStore} from "../store/power-plant-store";
 import LineChart from "./LineChart";
 
 const PowerPlantDashboardTab = () => {
+    const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
+    const {data: prediction, error} = usePrediction(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant});
 
-    const {id: selectedPowerPlantID} = usePowerPlantStore(state => state.selectedPowerPlant)
-    const {data: prediction, error} = usePrediction(selectedPowerPlantID)
     return (
         <ScrollView className='dark:bg-dark-main'>
             <View className='flex-1 pt-5'>
