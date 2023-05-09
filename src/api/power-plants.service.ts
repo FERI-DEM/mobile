@@ -1,5 +1,10 @@
 import {apiInstance} from "./axios";
-import {CalibrationReq, PredictedValue, PowerPlantCreateReq, PowerPlantRes} from "../types/powerPlant.types";
+import {
+    CalibrationReq,
+    PredictedValue,
+    PowerPlantCreateReq,
+    PowerPlantRes,
+} from "../types/powerPlant.types";
 
 const PowerPlantsService = {
     getPowerPlants: async () => {
@@ -16,6 +21,10 @@ const PowerPlantsService = {
     },
     getPrediction: async (id: string) => {
         const response = await apiInstance.get<PredictedValue[]>(`power-plants/predict/${id}`)
+        return response.data
+    },
+    getPredictionByDays: async (id: string) => {
+        const response = await apiInstance.get<number[]>(`power-plants/predict-by-days/${id}`)
         return response.data
     },
     create: async (powerPlant: PowerPlantCreateReq) => {

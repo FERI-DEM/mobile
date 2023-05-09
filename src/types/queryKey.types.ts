@@ -6,6 +6,7 @@ export enum QueryKey {
     'COMMUNITY_MUTATION' = 'community',
     'COMMUNITY_DELETE_MUTATION' = 'communityDelete',
     'PREDICTION' = 'prediction',
+    'PREDICTION_BY_DAYS' = 'predictionByDays',
     'REGISTER_DETAILS' = 'registerDetails',
     'GOOGLE_LOGIN' = 'googleLogin',
     'COMMUNITIES' = 'communities',

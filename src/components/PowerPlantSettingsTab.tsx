@@ -14,6 +14,7 @@ import {useQueryClient} from "@tanstack/react-query";
 import {QueryKey} from "../types/queryKey.types";
 import useForm from "../hooks/useForm";
 import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
+import {useToastStore} from "../store/toast-store";
 
 const PowerPlantSettingsTab = () => {
 
@@ -22,16 +23,17 @@ const PowerPlantSettingsTab = () => {
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant);
     const {data: powerPlantData} = usePowerPlant(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant})
-
     const form = useForm<UpdatePowerPlantDataType>({
         resolver: zodResolver(UpdatePowerPlantDataSchema),
         defaultValues: {name: powerPlantData?.powerPlants[0].displayName || ""}
     })
 
+    const { showToast } = useToastStore();
 
 
     const {mutate: deletePowerPlant} = usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
         onSuccess: () => {
+            showToast('Elektrarna uspešno izbrisana!')
             queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] }, {})
             setActiveTab(PowerPlantsTab.DASHBOARD)
         }
@@ -55,6 +57,7 @@ const PowerPlantSettingsTab = () => {
                             name="powerPlantName"
                             label="Ime elektrarne"
                             placeholder="Ime"
+                            defaultValue={powerPlantData?.powerPlants[0].displayName}
                         />
                         <Text className={`pl-0.5 mt-2 ${message.type === FormMessageType.SUCCESS ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
                         <Button
@@ -65,7 +68,7 @@ const PowerPlantSettingsTab = () => {
                     </FormProvider>
                 </View>
             </ScrollView>
-            <Button text='Izbriši elektrarno' onPress={deletePowerPlant} classname='bg-danger m-auto'/>
+            <Button text='Izbriši elektrarno' onPress={deletePowerPlant} classname='bg-danger m-auto my-4'/>
         </View>
     )
 }

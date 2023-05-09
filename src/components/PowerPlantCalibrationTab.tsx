@@ -9,6 +9,7 @@ import {CalibrationDataType} from "../types/powerPlant.types";
 import {CalibrationDataSchema} from "../schemas/calibration.schema";
 import {usePowerPlantStore} from "../store/power-plant-store";
 import {ApiError, FormMessage, FormMessageType} from "../types/common.types";
+import {useToastStore} from "../store/toast-store";
 
 const DefaultCalibrationData: CalibrationDataType = {
     production: 0,
@@ -19,6 +20,9 @@ const PowerPlantCalibrationTab: FC = () => {
     const {mutate: calibrate} = useCalibration();
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
 
+    const { showToast } = useToastStore();
+
+
     const form = useForm({
         resolver: zodResolver(CalibrationDataSchema),
         defaultValues: DefaultCalibrationData
@@ -28,7 +32,7 @@ const PowerPlantCalibrationTab: FC = () => {
             calibrate({id: selectedPowerPlant.id, power: data.production}, {
                 onSuccess: () => {
                     form.reset();
-                    setMessage({type: FormMessageType.SUCCESS, text: 'Uspešno kalibrirano!'})
+                    showToast('Uspešno kalibrirano!')
                 },
                 onError: (err: ApiError) => {
                     setMessage({type: FormMessageType.ERROR, text: err.error})
