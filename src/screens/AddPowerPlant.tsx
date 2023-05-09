@@ -1,14 +1,14 @@
 import {ScrollView, Text, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import Button from "../components/Button";
-import {useForm, FormProvider, SubmitHandler} from 'react-hook-form';
+import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {ControlledInput} from "../components/ControlledInput";
 import {zodResolver} from '@hookform/resolvers/zod';
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import Map from "../components/Map";
-import {RegisterDetailsType} from "../types/user.types";
-import {RegisterDetailsSchema} from "../schemas/user.schema";
+import {AddPowerPlantType} from "../types/user.types";
+import {AddPowerPlantSchema} from "../schemas/user.schema";
 import LocationAutoCompleteInput from "../components/LocationAutoCompleteInput";
 import {MapboxResponse} from "../types/mapbox.types";
 import useUserGeocodedLocation from "../hooks/useUserGeocodedLocation";
@@ -18,15 +18,15 @@ import {QueryKey} from "../types/queryKey.types";
 import {mapboxToUserLocation} from "../utils/mapbox-to-user-location";
 import useRegisterDetailsMutation from "../hooks/useRegisterDetailsMutation";
 
-const DefaultRegisterData: RegisterDetailsType = {
+const AddPowerPlantData: AddPowerPlantType = {
     powerPlantName: 'Moja elektrarna',
     location: ''
 }
 
-const RegisterDetailsScreen = () => {
+const AddPowerPlant = () => {
     const form = useForm({
-        resolver: zodResolver(RegisterDetailsSchema),
-        defaultValues: DefaultRegisterData
+        resolver: zodResolver(AddPowerPlantSchema),
+        defaultValues: AddPowerPlantData
     });
 
     const queryClient = useQueryClient()
@@ -40,7 +40,7 @@ const RegisterDetailsScreen = () => {
     })
 
 
-    const onSubmit: SubmitHandler<RegisterDetailsType> = () => {
+    const onSubmit: SubmitHandler<AddPowerPlantType> = () => {
         createPowerPlant({
             displayName: form.getValues().powerPlantName,
             latitude: userLocation?.coordinates?.latitude || 0,
@@ -88,4 +88,4 @@ const RegisterDetailsScreen = () => {
         </View>
     )
 }
-export default RegisterDetailsScreen
+export default AddPowerPlant

@@ -1,7 +1,6 @@
-import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
+import {DarkTheme, DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import * as React from 'react';
 import {ColorSchemeName, Text, View} from 'react-native';
-import LinkingConfiguration from './LinkingConfiguration';
 import {navigationRef} from "./navigate";
 import {useAuthentication} from "../hooks/useAuthentication";
 import UserStack from "./UserStack";
@@ -13,7 +12,6 @@ export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName
         <View className='flex-1 bg-dark-main'>
             <NavigationContainer
                 ref={navigationRef}
-                linking={LinkingConfiguration}
                 theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                 <RootNavigator/>
             </NavigationContainer>

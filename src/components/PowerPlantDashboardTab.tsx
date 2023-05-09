@@ -19,7 +19,7 @@ const PowerPlantDashboardTab = () => {
                 </View>
 
                 <View className='my-5'>
-                    {prediction &&  <LineChart data={prediction}/>}
+                    {prediction && <LineChart data={prediction}/>}
                 </View>
 
                 <View className='mx-4 mb-4'>

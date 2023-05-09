@@ -1,7 +1,6 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {RootStackParamList} from "../../types";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {Routes, userStackInitialRoute} from "./routes";
+import {Routes, RoutesParams, userStackInitialRoute} from "./routes";
 import HeaderBar from "./HeaderBar";
 import DashboardScreen from "../screens/DashboardScreen";
 import NotificationScreen from "../screens/NotificationScreen";
@@ -11,7 +10,7 @@ import SettingsScreen from "../screens/SettingsScreen";
 import HeaderBarCommunities from "./HeaderBarCommunities";
 import HeaderBarPowerPlants from "../components/HeaderBarPowerPlants";
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RoutesParams>();
 
 const UserStack = () => {
     return (

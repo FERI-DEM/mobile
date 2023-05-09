@@ -37,7 +37,7 @@ const RegisterScreen = () => {
             const token = await userCredentials.user.getIdToken()
 
             setUserToken(token)
-            navigate(Routes.REGISTER_DETAILS)
+            navigate(Routes.ADD_POWER_PLANT)
 
         } catch (e) {
             form.setError('root', {
