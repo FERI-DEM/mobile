@@ -1,14 +1,14 @@
-import {FC, useRef} from "react";
-import React, {  useEffect  } from 'react';
-import { Text } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming, runOnJS } from 'react-native-reanimated';
+import React, {FC, useEffect, useRef} from "react";
+import {Text} from 'react-native';
+import Animated, {runOnJS, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated';
 import {useToastStore} from "../store/toast-store";
+import {ToastTypes} from "../types/toast.types";
 
 const Toast: FC = () => {
     const translateY = useSharedValue(0);
     const toastRef = useRef(null);
 
-    const { isVisible, text } = useToastStore();
+    const { isVisible, text, type } = useToastStore();
 
     useEffect(() => {
         if (isVisible) {
@@ -33,10 +33,23 @@ const Toast: FC = () => {
         };
     });
 
+    const getToastBackgroundColor = (type: ToastTypes) => {
+        switch (type) {
+            case ToastTypes.SUCCESS:
+                return "bg-tint";
+            case ToastTypes.ERROR:
+                return "bg-red-500";
+            case ToastTypes.INFORMATION:
+                return "bg-amber-400";
+            default:
+                return "bg-stone-500";
+        }
+    };
+
     return (
         <>
             {isVisible && (
-                <Animated.View ref={toastRef} className='bg-tint p-4 absolute bottom-0 w-full items-center' style={animatedStyle}>
+                <Animated.View ref={toastRef} className={`${getToastBackgroundColor(type)} p-4 absolute bottom-0 w-full items-center`} style={animatedStyle}>
                     <Text className='text-white text-center'>{text}</Text>
                 </Animated.View>
             )}

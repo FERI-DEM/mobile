@@ -15,6 +15,7 @@ import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import {useUserStore} from "../store/user-store";
 import {UserState} from "../types/user.types";
+import {ToastTypes} from "../types/toast.types";
 
 const DefaultCalibrationData: CalibrationDataType = {
     production: 0,
@@ -43,9 +44,10 @@ const CalibrationForm: FC = () => {
                     setUserState(UserState.USER)
                     setActiveTab(PowerPlantsTab.DASHBOARD)
                     navigate(Routes.DASHBOARD)
-                    showToast('Uspešno kalibrirano!')
+                    showToast('Uspešno kalibrirano!', ToastTypes.SUCCESS)
                 },
                 onError: (err: ApiError) => {
+                    showToast('Napaka pri kalibriranju!', ToastTypes.ERROR)
                     setMessage({type: FormMessageType.ERROR, text: err.error})
                 }
             });

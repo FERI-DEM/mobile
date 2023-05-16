@@ -8,13 +8,14 @@ import {UpdatePowerPlantDataSchema} from "../schemas/powerPlant.schema";
 import {FormProvider, SubmitErrorHandler, SubmitHandler} from "react-hook-form";
 import {ControlledInput} from "./ControlledInput";
 import usePowerPlant from "../hooks/usePowerPlant";
-import {FormMessage, FormMessageType} from "../types/common.types";
+import { FormMessage, FormMessageType} from "../types/common.types";
 import usePowerPlantDeleteMutation from "../hooks/usePowerPlantDeleteMutation";
 import {useQueryClient} from "@tanstack/react-query";
 import {QueryKey} from "../types/queryKey.types";
 import useForm from "../hooks/useForm";
 import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
 import {useToastStore} from "../store/toast-store";
+import {ToastTypes} from "../types/toast.types";
 
 const PowerPlantSettingsTab = () => {
 
@@ -33,9 +34,12 @@ const PowerPlantSettingsTab = () => {
 
     const {mutate: deletePowerPlant} = usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
         onSuccess: () => {
-            showToast('Elektrarna uspešno izbrisana!')
+            showToast('Elektrarna uspešno izbrisana!', ToastTypes.SUCCESS)
             queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] }, {})
             setActiveTab(PowerPlantsTab.DASHBOARD)
+        },
+        onError: (err) => {
+            showToast('Napaka pri brisanju elektrarne!', ToastTypes.ERROR)
         }
     })
 
