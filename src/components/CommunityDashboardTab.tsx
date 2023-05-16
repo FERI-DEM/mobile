@@ -2,24 +2,13 @@ import PowerDisplay from "./PowerDisplay";
 import {ScrollView, Text, View} from "react-native";
 import React, {useState} from "react";
 import MemberProductionListItem from "./MemberProductionListItem";
-
-const members = [
-    {
-        name: 'Janez Novak',
-        power: 1,
-    },
-    {
-        name: 'Peter Pero',
-        power: 102000,
-    },
-    {
-        name: 'Mujo Haso',
-        power: 2000,
-    },
-]
+import {useCommunityStore} from "../store/community-store";
+import useCommunity from "../hooks/useCommunity";
 
 const CommunityDashboardTab = () => {
     const [active, setActive] = useState<number>(0);
+    const {id: selectedCommunityID} = useCommunityStore(state => state.selectedCommunity);
+    const {data: communityData} = useCommunity(selectedCommunityID)
 
     return (
         <View className='flex-1 pt-5 dark:bg-dark-main'>
@@ -31,8 +20,9 @@ const CommunityDashboardTab = () => {
 
             <ScrollView className='my-5 mx-4 flex'>
                 <Text className='text-white mb-2'>Proizvodnja članov</Text>
-                {members.map((member, index) => {
-                    return <MemberProductionListItem member={member.name} power={member.power} onPress={() => setActive(index)}
+                {communityData?.members.map((member, index) => {
+                    return <MemberProductionListItem member={member.userName} power={100}
+                                                     onPress={() => setActive(index)}
                                                      active={active === index} key={index}/>
                 })}
             </ScrollView>
