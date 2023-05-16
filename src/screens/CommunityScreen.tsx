@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {View} from "react-native";
+import React, {FC, useState} from 'react';
+import {Text, View} from "react-native";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {InviteMemberDataSchema} from "../schemas/organizationUser.schema";
@@ -11,24 +11,6 @@ import {CommunityTab, useCommunityTabsStore} from '../store/community-tabs-store
 import Tabs from "../components/Tabs";
 import {QueryBoundaries} from "../components/QueryBoundaries";
 import {useCommunityStore} from "../store/community-store";
-
-const memberList = [
-    {
-        member: 'Član1',
-        power: 23,
-    },
-    {
-        member: 'Član2',
-        power: 5,
-    },
-    {
-        member: 'Član3',
-        power: 12,
-    },
-    {
-        member: 'Član4',
-        power: 100,
-    },]
 
 
 
