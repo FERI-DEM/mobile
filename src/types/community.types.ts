@@ -22,6 +22,7 @@ interface CommunityMember {
     powerPlantName: string;
     powerPlantId: string;
     userName: string;
+    isAdmin: boolean;
 }
 export interface CommunityRes {
     name: string;

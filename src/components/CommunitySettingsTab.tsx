@@ -18,7 +18,8 @@ const CommunitySettingsTab = () => {
     return (
         <ScrollView className='dark:bg-dark-main flex-1 px-3'>
             <Text className='dark:text-white mb-3 mt-4 ml-0.5'>Člani</Text>
-            {communityData?.members.map((member, index) => <MemberListItem text={`${member.userName} / ${member.powerPlantName}`} key={index}/>)}
+
+            {communityData?.members.map((member, index) => <MemberListItem user={member.userName} powerPlant={member.powerPlantName} isAdmin={member.isAdmin} action={() => console.log('remove')} key={index}/>)}
             <Text className='dark:text-white mb-3 mt-8 ml-0.5'>Dodatno</Text>
             <Button text='Izbriši' onPress={deleteCommunity} classname='bg-danger'/>
         </ScrollView>
