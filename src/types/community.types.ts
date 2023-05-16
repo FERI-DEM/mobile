@@ -17,7 +17,7 @@ export interface CommunityReq {
     powerPlants: {powerPlantId: string}[]
 }
 
-interface CommunityMember {
+export interface CommunityMember {
     userId: string;
     powerPlantName: string;
     powerPlantId: string;

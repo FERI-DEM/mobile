@@ -14,12 +14,16 @@ const CommunitySettingsTab = () => {
     const {mutate: deleteCommunity} = useCommunityDeleteMutation(selectedCommunityID, {
         onSuccess: () => navigate(Routes.DASHBOARD)
     })
+
     console.log(communityData?.members)
     return (
         <ScrollView className='dark:bg-dark-main flex-1 px-3'>
             <Text className='dark:text-white mb-3 mt-4 ml-0.5'>Člani</Text>
 
-            {communityData?.members.map((member, index) => <MemberListItem user={member.userName} powerPlant={member.powerPlantName} isAdmin={member.isAdmin} action={() => console.log('remove')} key={index}/>)}
+            {communityData?.members.map((member, index) => <MemberListItem
+                member={member}
+                communityId={selectedCommunityID}
+                key={index}/>)}
             <Text className='dark:text-white mb-3 mt-8 ml-0.5'>Dodatno</Text>
             <Button text='Izbriši' onPress={deleteCommunity} classname='bg-danger'/>
         </ScrollView>
