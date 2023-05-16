@@ -16,8 +16,6 @@ export interface PowerPlant {
     displayName: string;
     latitude: number;
     longitude: number;
-    coefficient: number;
-    predictedProduction: number;
     _id: string;
     calibration: Calibration[];
 }

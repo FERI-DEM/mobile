@@ -23,12 +23,15 @@ export interface Coordinates {
     longitude: number;
 }
 
-export interface User {
-    token?: string;
-    coordinates?: Coordinates;
-}
 
 export interface UserLocation {
     address?: string;
     coordinates?: Coordinates;
+}
+
+export enum UserState {
+    USER = 'user',
+    NO_USER = 'noUser',
+    LOADING = 'loading',
+    INCOMPLETE_USER = 'incompleteUser'
 }

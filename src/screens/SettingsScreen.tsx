@@ -2,7 +2,6 @@ import {ScrollView, Text, View} from "react-native";
 import Button from "../components/Button";
 import {auth, updatePasswordFoo} from "../config/firebase";
 import {signOut} from 'firebase/auth'
-import {useAuthentication} from "../hooks/useAuthentication";
 import React, {useEffect, useState} from "react";
 import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {ControlledInput} from "../components/ControlledInput";
@@ -10,6 +9,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {ChangePasswordSchema} from "../schemas/user.schema";
 import {ChangePasswordType} from "../types/user.types";
 import {twMerge} from "tailwind-merge";
+import {useUserStore} from "../store/user-store";
 
 const DefaultChangePasswordData: ChangePasswordType = {
     password: '',
@@ -17,7 +17,7 @@ const DefaultChangePasswordData: ChangePasswordType = {
 }
 
 const SettingsScreen = () => {
-    const {user} = useAuthentication();
+    const {user} = useUserStore();
     const [provider, setProvider] = useState<string>('')
     const [formOpened, setFormOpened] = useState<boolean>(false)
     const [success, setSuccess] = useState<string>('')

@@ -10,15 +10,22 @@ import {CalibrationDataSchema} from "../schemas/calibration.schema";
 import {usePowerPlantStore} from "../store/power-plant-store";
 import {ApiError, FormMessage, FormMessageType} from "../types/common.types";
 import {useToastStore} from "../store/toast-store";
+import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
+import {useUserStore} from "../store/user-store";
+import {UserState} from "../types/user.types";
 
 const DefaultCalibrationData: CalibrationDataType = {
     production: 0,
 }
 
-const PowerPlantCalibrationTab: FC = () => {
+const CalibrationForm: FC = () => {
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
-    const {mutate: calibrate} = useCalibration();
+    const setActiveTab = useDashboardTabsStore(state => state.setActiveTab)
+    const {mutate: calibrate, isLoading: calibrateLoading} = useCalibration();
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
+    const setUserState = useUserStore(state => state.setUserState)
 
     const { showToast } = useToastStore();
 
@@ -32,6 +39,10 @@ const PowerPlantCalibrationTab: FC = () => {
             calibrate({id: selectedPowerPlant.id, power: data.production}, {
                 onSuccess: () => {
                     form.reset();
+                    console.log('CALIBRATED')
+                    setUserState(UserState.USER)
+                    setActiveTab(PowerPlantsTab.DASHBOARD)
+                    navigate(Routes.DASHBOARD)
                     showToast('Uspešno kalibrirano!')
                 },
                 onError: (err: ApiError) => {
@@ -54,8 +65,9 @@ const PowerPlantCalibrationTab: FC = () => {
                         <Text className={`pl-0.5 mt-2 ${message.type === FormMessageType.SUCCESS ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
                         <Button
                             text="Potrdi"
-                            classname='mt-2'
+                            classname='mt-2 w-24 h-11'
                             onPress={form.handleSubmit(onSubmit)}
+                            loading={calibrateLoading}
                         />
                     </FormProvider>
                 </View>
@@ -64,4 +76,4 @@ const PowerPlantCalibrationTab: FC = () => {
     );
 };
 
-export default PowerPlantCalibrationTab;
+export default CalibrationForm;
