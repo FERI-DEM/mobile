@@ -13,7 +13,9 @@ const PowerDisplay:FC<PowerDisplayProps> = ({power, text, classNameContainer, cl
         <View className={classNameContainer}>
            <View className={twMerge('py-6 shadow-lg shadow-black rounded-xl grow dark:bg-dark-element flex item-center', classNameInnerContainer)}>
                <Text className='text-white opacity-40 text-center text-xs'>{text}</Text>
-               <Text className='text-lg pt-2 text-white  text-center font-semibold'>{power + ' kw'}</Text>
+               <Text className='text-lg pt-2 text-white  text-center font-semibold'>{power}</Text>
+               <Text className='text-md pt-2 text-white  text-center font-semibold'>kWh</Text>
+
            </View>
         </View>
     )

@@ -5,7 +5,8 @@ import usePrediction from "../hooks/usePrediction";
 import {usePowerPlantStore} from "../store/power-plant-store";
 import LineChart from "./LineChart";
 import usePredictionByDays from "../hooks/usePredictionByDays";
-import {roundToTwoDecimalPlaces} from "../utils/power";
+import {calculatePowerPercentageDifference, roundToTwoDecimalPlaces} from "../utils/power";
+import AlertCard from "./AlertCard";
 
 const PowerPlantDashboardTab = () => {
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
@@ -23,7 +24,10 @@ const PowerPlantDashboardTab = () => {
                         </>
                     }
                 </View>
-
+                {
+                    calculatePowerPercentageDifference(prediction![0].power, prediction![1].power) &&
+                    <AlertCard title={"Pozor padec energije čez 15 minut!"} message={`Čez 15min bo proizvodnja padla za ${calculatePowerPercentageDifference(prediction![0].power, prediction![1].power)}%.`} />
+                }
                 <View className='my-5'>
                     {prediction && <LineChart data={prediction}/>}
                 </View>
