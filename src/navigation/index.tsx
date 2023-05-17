@@ -30,6 +30,7 @@ export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName
 function RootNavigator() {
     const { setUser, setUserState, userState} = useUserStore();
     console.log(userState)
+
     const onUserStateChange = async (user: User | null) => {
         setUserState(UserState.LOADING)
         if (user) {

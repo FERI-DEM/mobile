@@ -10,7 +10,9 @@ export const BaseRegisterSchema = z.object({
 
 export const AddPowerPlantSchema = z.object({
     powerPlantName: z.string().min(3, { message: "Ime elektrarne mora biti dolgo vsaj 3 znake" }).max(20, { message: "Ime elektrarne ne sme biti daljše od 20 znakov" }),
-    location: z.string().min(1, { message: "Location must be at least 1 character long" })
+    location: z.string().min(1, { message: "Location must be at least 1 character long" }),
+    maxPower: z.number().min(1, { message: "Maksimalna moč mora biti večja od 0" }),
+    size: z.number().min(1, { message: "Velikost elektrarne mora biti večja od 0" }),
 });
 
 export const LoginSchema = z.object({
