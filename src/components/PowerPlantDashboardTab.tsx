@@ -1,5 +1,5 @@
 import PowerDisplay from "./PowerDisplay";
-import {ScrollView, View} from "react-native";
+import {ScrollView, Text, View} from "react-native";
 import React from "react";
 import usePrediction from "../hooks/usePrediction";
 import {usePowerPlantStore} from "../store/power-plant-store";
@@ -12,6 +12,9 @@ const PowerPlantDashboardTab = () => {
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
     const {data: prediction, error} = usePrediction(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant});
     const {data: predictionByDays, error: error2} = usePredictionByDays(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant});
+
+    // TODO: loading
+    if(!prediction || !predictionByDays) return <Text>Loading</Text>
     return (
         <ScrollView className='dark:bg-dark-main'>
             <View className='flex-1 pt-5'>
