@@ -16,8 +16,6 @@ export interface PowerPlant {
     displayName: string;
     latitude: number;
     longitude: number;
-    coefficient: number;
-    predictedProduction: number;
     _id: string;
     calibration: Calibration[];
 }
@@ -32,6 +30,8 @@ export interface PowerPlantCreateReq {
     displayName: string;
     latitude: number;
     longitude: number;
+    maxPower: number;
+    size: number;
 }
 
 export interface PredictedValue {

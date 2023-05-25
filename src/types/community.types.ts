@@ -17,11 +17,12 @@ export interface CommunityReq {
     powerPlants: {powerPlantId: string}[]
 }
 
-interface CommunityMember {
+export interface CommunityMember {
     userId: string;
     powerPlantName: string;
     powerPlantId: string;
     userName: string;
+    isAdmin: boolean;
 }
 export interface CommunityRes {
     name: string;

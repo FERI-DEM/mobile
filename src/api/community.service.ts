@@ -17,6 +17,10 @@ const CommunityService = {
     deleteCommunity: async (id: string) => {
         const response = await apiInstance.delete<unknown>(`communities/${id}`)
         return response.data
+    },
+    removeCommunityMember: async (id: string, memberId: string) => {
+        const response = await apiInstance.delete<unknown>(`communities/remove/${id}/${memberId}`)
+        return response.data
     }
 }
 

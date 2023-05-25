@@ -1,28 +1,31 @@
-import { Text, View} from "react-native";
-import React, {useState} from "react";
+import {View} from "react-native";
+import React, {FC} from "react";
 import PowerPlantDashboardTab from "../components/PowerPlantDashboardTab";
 import PowerPlantSettingsTab from "../components/PowerPlantSettingsTab";
+import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
+import Tabs from "../components/Tabs";
+import {usePowerPlantStore} from "../store/power-plant-store";
+import {QueryBoundaries} from "../components/QueryBoundaries";
+import AddPowerPlantForm from "../components/AddPowerPlantForm";
+import CalibrationForm from "../components/CalibrationForm";
 
-export enum PowerPlantsTabs {
-    DASHBOARD = 'Nadzorna plošča',
-    SETTINGS = 'Nastavitve',
-}
-
-const DashboardScreen = () => {
-    const [activeTab, setActiveTab] = useState<PowerPlantsTabs>(PowerPlantsTabs.DASHBOARD);
+const DashboardScreen:FC = () => {
+    const {activeTab, setActiveTab} = useDashboardTabsStore(state => state)
+    const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
 
     return (
         <View className='dark:bg-dark-main flex-1 pt-2'>
-            <View className='flex flex-row px-5 gap-5 mb-4'>
-                {Object.values(PowerPlantsTabs).map((tab, index) => <Text key={index}
-                                                                        className={`text-white opacity-40 ${tab === activeTab && 'text-tint opacity-100'}`}
-                                                                        onPress={() => setActiveTab(tab)}>{tab}</Text>)}
-            </View>
-            {
-                activeTab === PowerPlantsTabs.DASHBOARD ? <PowerPlantDashboardTab/> : activeTab === PowerPlantsTabs.SETTINGS && <PowerPlantSettingsTab/>
-
-            }
+            <QueryBoundaries isLoading={!selectedPowerPlant}>
+                <Tabs tabs={Object.values(PowerPlantsTab)} onClickTab={setActiveTab} activeTab={activeTab}/>
+                <QueryBoundaries isLoading={!selectedPowerPlant}>
+                    {activeTab === PowerPlantsTab.DASHBOARD && <PowerPlantDashboardTab />}
+                    {activeTab === PowerPlantsTab.SETTINGS && <PowerPlantSettingsTab />}
+                    {activeTab === PowerPlantsTab.CALIBRATION && <CalibrationForm />}
+                    {activeTab === PowerPlantsTab.ADD_POWER_PLANT && <AddPowerPlantForm />}
+                </QueryBoundaries>
+            </QueryBoundaries>
         </View>
-    )
-}
+    );
+};
+
 export default DashboardScreen;

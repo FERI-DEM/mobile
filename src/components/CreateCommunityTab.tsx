@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {View, Text, FlatList} from "react-native";
+import {FlatList, Text, View} from "react-native";
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useFieldArray, useForm} from "react-hook-form";
 import {ControlledInput} from "./ControlledInput";
 import Button from "../components/Button";
@@ -28,7 +28,7 @@ const CreateCommunityTab: FC = () => {
     });
 
 
-    const {mutate} = useCommunityMutation({
+    const {mutate, isLoading: createCommunityLoading} = useCommunityMutation({
         onSuccess: () => navigate(Routes.ORGANIZATION)
     });
     const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
@@ -64,8 +64,9 @@ const CreateCommunityTab: FC = () => {
                         )}/>
                         <Button
                             text="Ustvari"
-                            classname='mt-7'
+                            classname='mt-7 w-24 h-11'
                             onPress={form.handleSubmit(onSubmit, onError)}
+                            loading={createCommunityLoading}
                         />
                     </FormProvider>
                 </View>

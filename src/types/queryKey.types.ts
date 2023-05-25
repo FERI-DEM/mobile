@@ -6,6 +6,7 @@ export enum QueryKey {
     'COMMUNITY_MUTATION' = 'community',
     'COMMUNITY_DELETE_MUTATION' = 'communityDelete',
     'PREDICTION' = 'prediction',
+    'PREDICTION_BY_DAYS' = 'predictionByDays',
     'REGISTER_DETAILS' = 'registerDetails',
     'GOOGLE_LOGIN' = 'googleLogin',
     'COMMUNITIES' = 'communities',
@@ -13,5 +14,6 @@ export enum QueryKey {
     'POWER_PLANTS' = 'powerPlants',
     'POWER_PLANT' = 'powerPlant',
     'POWER_PLANT_UPDATE_MUTATION' = 'powerPlantUpdate',
-
+    'POWER_PLANT_DELETE_MUTATION' = 'powerPlantDelete',
+    'COMMUNITY_REMOVE_MEMBER_MUTATION' = 'communityRemoveMember',
 }

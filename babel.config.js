@@ -9,6 +9,6 @@ module.exports = function(api) {
                 verbose: false,
 
             },
-        ], "nativewind/babel"],
+        ], "nativewind/babel", "react-native-reanimated/plugin"],
     };
 };

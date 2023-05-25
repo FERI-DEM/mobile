@@ -1,10 +1,10 @@
 import {CommunityRes} from "../types/community.types";
-import {AxiosError} from "axios";
 import {QueryKey} from "../types/queryKey.types";
 import CommunityService from "../api/community.service";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, UseQueryOptions} from "@tanstack/react-query";
+import {ApiError} from "../types/common.types";
 
-const useCommunity = (id: string) => useQuery<CommunityRes, AxiosError>(
-    [QueryKey.COMMUNITY], () => CommunityService.getCommunity(id),
+const useCommunity = (id: string, options: UseQueryOptions<CommunityRes, ApiError>) => useQuery<CommunityRes, ApiError>(
+    [QueryKey.COMMUNITY], () => CommunityService.getCommunity(id), options
 );
 export default useCommunity;
