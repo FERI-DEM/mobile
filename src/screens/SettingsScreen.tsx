@@ -1,7 +1,5 @@
 import {ScrollView, Text, View} from "react-native";
 import Button from "../components/Button";
-import {auth, updatePasswordFoo} from "../config/firebase";
-import {signOut} from 'firebase/auth'
 import React, {useEffect, useState} from "react";
 import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {ControlledInput} from "../components/ControlledInput";
@@ -11,7 +9,8 @@ import {ChangePasswordType} from "../types/user.types";
 import {twMerge} from "tailwind-merge";
 import {useUserStore} from "../store/user-store";
 import {useToastStore} from "../store/toast-store";
-import {ToastTypes} from "../types/toast.types";
+import useSignOut from "../hooks/useSignOut";
+import useUpdatePasswordMutation from "../hooks/useUpdatePasswordMutation";
 
 const DefaultChangePasswordData: ChangePasswordType = {
     password: '',
@@ -23,19 +22,13 @@ const SettingsScreen = () => {
     const [provider, setProvider] = useState<string>('')
     const [formOpened, setFormOpened] = useState<boolean>(true)
     const showToast = useToastStore(state => state.showToast);
+    const {mutate: signOut, isLoading: isSignOutLoading} = useSignOut()
+    const {mutate: updatePassword, isLoading: isUpdatePasswordLoading} = useUpdatePasswordMutation()
 
     const form = useForm({
         resolver: zodResolver(ChangePasswordSchema),
         defaultValues: DefaultChangePasswordData
     });
-    const logout = async () => {
-        try{
-            await signOut(auth)
-        }
-        catch (e) {
-            showToast('Napaka pri odjavi', ToastTypes.ERROR)
-        }
-    }
 
     useEffect(() => {
         user?.providerData.forEach((userInfo) => {
@@ -46,13 +39,7 @@ const SettingsScreen = () => {
     const onSubmit: SubmitHandler<ChangePasswordType> = async (data) => {
         if (data.password !== data.confirmPassword)
             return form.setError('root', {type: 'manual', message: 'Gesli se ne ujemata'});
-        try{
-            await updatePasswordFoo(data.password)
-            showToast('Geslo uspešno posodobljeno', ToastTypes.SUCCESS)
-        }
-        catch (e) {
-            showToast('Napaka pri posodabljanju gesla', ToastTypes.ERROR)
-        }
+        updatePassword(data.password)
     }
 
     return (
@@ -85,15 +72,16 @@ const SettingsScreen = () => {
                                    {!!form.formState.errors.root?.message && <Text
                                        className={twMerge('pl-0.5 text-warning pt-1.5')}>{form.formState.errors.root?.message}</Text>}
                                    <Button
+                                       loading={isUpdatePasswordLoading}
                                        text="Posodobi"
-                                       classname='mt-7'
+                                       classname='w-28 h-11 mt-7'
                                        onPress={form.handleSubmit(onSubmit)}
                                    />
                                </FormProvider>
                            )}
                        </View>
                    )}
-                   <Button text='Odjava' onPress={logout} classname='bg-danger m-auto mb-4'/>
+                   <Button loading={isSignOutLoading} text='Odjava' onPress={signOut} classname='w-24 h-11 bg-danger m-auto mb-4'/>
                </View>
             </ScrollView>
         </View>
