@@ -52,7 +52,8 @@ const PowerPlantSettingsTab = () => {
     })
 
     const onSubmit: SubmitHandler<UpdatePowerPlantDataType> = (data) => {
-        updatePowerPlant({ displayName: data.name, latitude: powerPlantData!.powerPlants[0].latitude, longitude: powerPlantData!.powerPlants[0].longitude})
+        // TODO add max power & size
+        //updatePowerPlant({ displayName: data.name, latitude: powerPlantData!.powerPlants[0].latitude, longitude: powerPlantData!.powerPlants[0].longitude})
     };
 
     return (

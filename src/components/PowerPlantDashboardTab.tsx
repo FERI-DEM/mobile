@@ -12,7 +12,6 @@ const PowerPlantDashboardTab = () => {
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
     const {data: prediction, error} = usePrediction(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant});
     const {data: predictionByDays, error: error2} = usePredictionByDays(selectedPowerPlant?.id || '', {enabled: !!selectedPowerPlant});
-
     // TODO: loading
     if(!prediction || !predictionByDays) return <Text>Loading</Text>
     return (
