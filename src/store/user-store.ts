@@ -1,14 +1,18 @@
 import {create} from "zustand";
-import { Coordinates, User} from "../types/user.types";
+import {User} from "firebase/auth";
+import {UserState as UserStateType} from "../types/user.types";
 
-type UserState = User & {
-    setToken: (token: string) => void
-    setCoordinates: (location: Coordinates) => void
+
+interface UserState {
+    user: User | undefined;
+    userState: UserStateType;
+    setUser: (user: User | undefined) => void;
+    setUserState: (userState: UserStateType) => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
-    setToken: (token: string) => {
-        set({token})
-    },
-    setCoordinates: (location: Coordinates) => set({coordinates: location}),
-}))
+    user: undefined,
+    userState: UserStateType.LOADING,
+    setUser: (user: User | undefined) => set({ user }),
+    setUserState: (userState: UserStateType) => set({ userState })
+}));

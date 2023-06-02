@@ -9,30 +9,49 @@ import {CalibrationDataType} from "../types/powerPlant.types";
 import {CalibrationDataSchema} from "../schemas/calibration.schema";
 import {usePowerPlantStore} from "../store/power-plant-store";
 import {ApiError, FormMessage, FormMessageType} from "../types/common.types";
+import {useToastStore} from "../store/toast-store";
+import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
+import {useUserStore} from "../store/user-store";
+import {UserState} from "../types/user.types";
+import {ToastTypes} from "../types/toast.types";
 
 const DefaultCalibrationData: CalibrationDataType = {
     production: 0,
 }
 
-const PowerPlantCalibrationTab: FC = () => {
-    const {id: selectedPowerPlantID} = usePowerPlantStore(state => state.selectedPowerPlant)
-    const {mutate: calibrate} = useCalibration();
+const CalibrationForm: FC = () => {
+    const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
+    const setActiveTab = useDashboardTabsStore(state => state.setActiveTab)
+    const {mutate: calibrate, isLoading: calibrateLoading} = useCalibration();
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
+    const setUserState = useUserStore(state => state.setUserState)
+
+    const { showToast } = useToastStore();
+
 
     const form = useForm({
         resolver: zodResolver(CalibrationDataSchema),
         defaultValues: DefaultCalibrationData
     });
     const onSubmit: SubmitHandler<CalibrationDataType> = (data) => {
-        calibrate({id: selectedPowerPlantID, power: data.production},{
-            onSuccess: () => {
-                form.reset();
-                setMessage({type: FormMessageType.SUCCESS, text: 'Uspešno kalibrirano!'})
-            },
-            onError: (err: ApiError) => {
-                setMessage({type: FormMessageType.ERROR, text: err.error})
-            }
-        });
+        if(selectedPowerPlant) {
+            calibrate({id: selectedPowerPlant.id, power: data.production}, {
+                onSuccess: () => {
+                    form.reset();
+                    console.log('CALIBRATED')
+                    setUserState(UserState.USER)
+                    setActiveTab(PowerPlantsTab.DASHBOARD)
+                    navigate(Routes.DASHBOARD)
+                    showToast('Uspešno kalibrirano!', ToastTypes.SUCCESS)
+                },
+                onError: (err: ApiError) => {
+                    showToast('Napaka pri kalibriranju!', ToastTypes.ERROR)
+                    setMessage({type: FormMessageType.ERROR, text: err.error})
+                }
+            });
+        }
     }
 
     return (
@@ -48,8 +67,9 @@ const PowerPlantCalibrationTab: FC = () => {
                         <Text className={`pl-0.5 mt-2 ${message.type === FormMessageType.SUCCESS ? 'text-tint' : 'text-warning'}`}>{message.text}</Text>
                         <Button
                             text="Potrdi"
-                            classname='mt-2'
+                            classname='mt-2 w-24 h-11'
                             onPress={form.handleSubmit(onSubmit)}
+                            loading={calibrateLoading}
                         />
                     </FormProvider>
                 </View>
@@ -58,4 +78,4 @@ const PowerPlantCalibrationTab: FC = () => {
     );
 };
 
-export default PowerPlantCalibrationTab;
+export default CalibrationForm;

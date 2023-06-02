@@ -12,7 +12,6 @@ import {twMerge} from "tailwind-merge";
 import React from "react";
 import {BaseRegisterType} from "../types/user.types";
 import {BaseRegisterSchema} from "../schemas/user.schema";
-import {useUserStore} from "../store/user-store";
 
 
 const DefaultRegisterData: BaseRegisterType = {
@@ -27,7 +26,6 @@ const RegisterScreen = () => {
         defaultValues: DefaultRegisterData
     });
 
-    const setUserToken = useUserStore(state => state.setToken)
 
     const createAccount: SubmitHandler<BaseRegisterType> = async (data) => {
         if (data.password !== data.confirmPassword)
@@ -35,9 +33,7 @@ const RegisterScreen = () => {
         try {
             const userCredentials = await createUserWithEmailAndPassword(auth, data.email, data.password);
             const token = await userCredentials.user.getIdToken()
-
-            setUserToken(token)
-            navigate(Routes.REGISTER_DETAILS)
+            navigate(Routes.ADD_POWER_PLANT)
 
         } catch (e) {
             form.setError('root', {

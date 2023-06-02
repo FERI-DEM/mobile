@@ -2,6 +2,10 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,4 +25,4 @@ jobs:
       - name: Install Dependencies
         run: yarn
       - name: EAS Build Android
-        run: npx eas-cli build --platform android --profile staging
+        run: npx eas-cli build --platform android --profile staging --non-interactive

@@ -6,14 +6,11 @@ interface PowerPlant {
 }
 
 interface PowerPlantState {
-    selectedPowerPlant: PowerPlant
+    selectedPowerPlant: PowerPlant | null
     setSelectedPowerPlant: (selectedPowerPlant: PowerPlant) => void
 }
 
 export const usePowerPlantStore = create<PowerPlantState>((set) => ({
-    selectedPowerPlant: {
-        id: '64358df692af515dca30cb9b',
-        name: 'Moja elektrarna'
-    },
+    selectedPowerPlant: null,
     setSelectedPowerPlant: (selectedPowerPlant: PowerPlant) => set({selectedPowerPlant: selectedPowerPlant}),
 }))

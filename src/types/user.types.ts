@@ -1,15 +1,15 @@
 import * as z from "zod";
 import {
+    AddPowerPlantSchema,
     BaseRegisterSchema,
     ChangePasswordSchema,
     ForgotPasswordSchema,
-    LoginSchema,
-    RegisterDetailsSchema
+    LoginSchema
 } from "../schemas/user.schema";
 
 export type BaseRegisterType = z.infer<typeof BaseRegisterSchema>
 
-export type RegisterDetailsType = z.infer<typeof RegisterDetailsSchema>
+export type AddPowerPlantType = z.infer<typeof AddPowerPlantSchema>
 
 export type LoginType = z.infer<typeof LoginSchema>
 
@@ -23,12 +23,15 @@ export interface Coordinates {
     longitude: number;
 }
 
-export interface User {
-    token?: string;
-    coordinates?: Coordinates;
-}
 
 export interface UserLocation {
     address?: string;
     coordinates?: Coordinates;
+}
+
+export enum UserState {
+    USER = 'user',
+    NO_USER = 'noUser',
+    LOADING = 'loading',
+    INCOMPLETE_USER = 'incompleteUser'
 }
