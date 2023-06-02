@@ -8,7 +8,7 @@ import useCommunity from "../hooks/useCommunity";
 const CommunityDashboardTab = () => {
     const [active, setActive] = useState<number>(0);
     const {id: selectedCommunityID} = useCommunityStore(state => state.selectedCommunity);
-    const {data: communityData} = useCommunity(selectedCommunityID)
+    const {data: communityData} = useCommunity(selectedCommunityID);
 
     return (
         <View className='flex-1 pt-5 dark:bg-dark-main'>
