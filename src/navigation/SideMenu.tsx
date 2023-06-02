@@ -1,13 +1,14 @@
 import {TouchableOpacity, View} from "react-native";
 import {Routes} from "./routes";
 import {navigate} from "./navigate";
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 import Svg, {Path} from "react-native-svg";
 import {useSideMenuStore} from "../store/side-menu-store";
 import SideMenuLogo from "./SideMenuLogo";
 import NavigationAccordion, {NavigationAccordionItem} from "../components/NavigationAccordion";
 import {PlusCircleIcon, UserPlusIcon} from "react-native-heroicons/mini";
 import {UserGroupIcon} from "react-native-heroicons/solid";
+import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 
 type SideMenuSubItem = Omit<NavigationAccordionItem<Routes>, 'onPressItem'>
 interface SideMenuItem extends SideMenuSubItem {
@@ -74,6 +75,13 @@ export const sideMenuItems: SideMenuItem[] = [
 
 const SideMenu = () => {
     const {opened, toggleOpened} = useSideMenuStore()
+    const translateX = useSharedValue(200);
+
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ translateX: translateX.value }],
+        };
+    });
 
     const onPressItem = (item: SideMenuSubItem) => {
         toggleOpened()
@@ -82,19 +90,21 @@ const SideMenu = () => {
 
     const items = useMemo(() => sideMenuItems.map(item => ({...item, onPressItem: () => onPressItem(item), subItems: item.subItems?.map(subItem => ({...subItem, onPressItem: () => onPressItem(subItem) }))})), [])
 
-
-    if (!opened) return null;
+    useEffect(() => {
+        translateX.value = withTiming(opened ? 0 : 200, { duration: 200 });
+    }, [opened]);
 
     return (
         <View className='absolute w-full h-full'>
             <View className='relative w-full h-full flex items-end'>
-                <TouchableOpacity className='w-full h-full absolute opacity-50 bg-black' onPress={toggleOpened}/>
-                <View className='w-52 dark:bg-dark-main h-full items-center pt-9'>
+                {opened && <TouchableOpacity className='w-full h-full absolute opacity-50 bg-black'
+                                   onPress={() => toggleOpened()}/>}
+                <Animated.View className='w-[200px] dark:bg-dark-main h-full items-center pt-9' style={animatedStyle}>
                     <SideMenuLogo />
-                    <View className='w-full px-8'>
+                    <View className='w-full px-7'>
                         {items.map((item, index) => <NavigationAccordion item={item} key={index}/>)}
                     </View>
-                </View>
+                </Animated.View>
             </View>
         </View>
     )
