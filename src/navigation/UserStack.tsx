@@ -9,6 +9,8 @@ import * as React from "react";
 import SettingsScreen from "../screens/SettingsScreen";
 import HeaderBarCommunities from "./HeaderBarCommunities";
 import HeaderBarPowerPlants from "../components/HeaderBarPowerPlants";
+import AddPowerPlantForm from "../components/AddPowerPlantForm";
+import CreateCommunityScreen from "../screens/CreateCommunityScreen";
 
 const Stack = createNativeStackNavigator<RoutesParams>();
 
@@ -20,6 +22,8 @@ const UserStack = () => {
                 <Stack.Screen name={Routes.NOTIFICATIONS} component={NotificationScreen}  />
                 <Stack.Screen name={Routes.ORGANIZATION} component={CommunityScreen} options={{header: () => <HeaderBarCommunities/>}} />
                 <Stack.Screen name={Routes.SETTINGS} component={SettingsScreen} />
+                <Stack.Screen name={Routes.ADD_POWER_PLANT} component={AddPowerPlantForm} />
+                <Stack.Screen name={Routes.ADD_COMMUNITY} component={CreateCommunityScreen} />
             </Stack.Navigator>
         </SafeAreaView>
 

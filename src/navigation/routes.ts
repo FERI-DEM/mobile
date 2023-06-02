@@ -9,6 +9,7 @@ export enum Routes {
     ORGANIZATION = 'Organization',
     LOGIN = 'Login',
     FORGOT_PASSWORD = 'ForgotPassword',
+    ADD_COMMUNITY = 'AddCommunity',
 }
 export const noUserStackInitialRoute = Routes.LANDING;
 export const userStackInitialRoute = Routes.DASHBOARD;
@@ -24,4 +25,5 @@ export type RoutesParams = {
     [Routes.SETTINGS]: undefined;
     [Routes.FORGOT_PASSWORD]: undefined;
     [Routes.CALIBRATION]: undefined;
+    [Routes.ADD_COMMUNITY]: undefined;
 };

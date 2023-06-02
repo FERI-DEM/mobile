@@ -70,7 +70,7 @@ const AddPowerPlantForm = () => {
     }, [form, queryClient])
 
     return (
-        <ScrollView className='mt-5 w-full' keyboardShouldPersistTaps='always'>
+        <ScrollView className='pt-5 w-full bg-dark-main' keyboardShouldPersistTaps='always'>
             <View className='px-4 mb-6'>
                 <FormProvider {...form}>
                     <ControlledInput

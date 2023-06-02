@@ -2,7 +2,7 @@ import {Text, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import AddPowerPlantForm from "../components/AddPowerPlantForm";
 
-const AddPowerPlant = () => {
+const AddPowerPlantScreen = () => {
     return (
         <View className='flex-1 items-center dark:bg-dark-main'>
             <View className='flex w-full justify-center'>
@@ -18,4 +18,4 @@ const AddPowerPlant = () => {
         </View>
     )
 }
-export default AddPowerPlant
+export default AddPowerPlantScreen

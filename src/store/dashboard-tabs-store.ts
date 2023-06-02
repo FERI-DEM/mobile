@@ -4,7 +4,6 @@ export enum PowerPlantsTab {
     DASHBOARD = 'Nadzorna plošča',
     CALIBRATION = 'Kalibracija',
     SETTINGS = 'Nastavitve',
-    ADD_POWER_PLANT = 'Dodaj elektrarno',
 }
 interface DashboardTabsState {
     activeTab: PowerPlantsTab

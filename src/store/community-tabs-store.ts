@@ -3,7 +3,6 @@ import {create} from "zustand";
 export enum CommunityTab {
     DASHBOARD = 'dashboard',
     SETTINGS = 'settings',
-    CREATE_COMMUNITY = 'create',
 }
 interface CommunityTabsState {
     activeTab: CommunityTab

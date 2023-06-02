@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {FlatList, Text, View} from "react-native";
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useFieldArray, useForm} from "react-hook-form";
-import {ControlledInput} from "./ControlledInput";
 import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CreateCommunityDataType} from "../types/community.types";
@@ -11,12 +10,13 @@ import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import Checkbox from 'expo-checkbox';
 import usePowerPlants from "../hooks/usePowerPlants";
+import {ControlledInput} from "../components/ControlledInput";
 
 const DefaultCommunityData: CreateCommunityDataType = {
     communityName: '',
     powerPlants: []
 }
-const CreateCommunityTab: FC = () => {
+const CreateCommunityScreen: FC = () => {
     const {data: powerPlants} = usePowerPlants();
     const form = useForm<CreateCommunityDataType>({
         resolver: zodResolver(CreateCommunityDataSchema),
@@ -75,4 +75,4 @@ const CreateCommunityTab: FC = () => {
     );
 };
 
-export default CreateCommunityTab;
+export default CreateCommunityScreen;
