@@ -4,14 +4,14 @@ import {
     BaseRegisterSchema,
     ChangePasswordSchema,
     ForgotPasswordSchema,
-    LoginSchema
+    SignInCredentialsSchema
 } from "../schemas/user.schema";
 
 export type BaseRegisterType = z.infer<typeof BaseRegisterSchema>
 
 export type AddPowerPlantType = z.infer<typeof AddPowerPlantSchema>
 
-export type LoginType = z.infer<typeof LoginSchema>
+export type SignInCredentialsType = z.infer<typeof SignInCredentialsSchema>
 
 export type ChangePasswordType = z.infer<typeof ChangePasswordSchema>
 

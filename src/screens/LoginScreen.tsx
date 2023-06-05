@@ -1,9 +1,7 @@
 import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {LoginSchema} from "../schemas/user.schema";
-import {LoginType} from "../types/user.types";
-import {signInWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../config/firebase";
+import {SignInCredentialsSchema} from "../schemas/user.schema";
+import {SignInCredentialsType} from "../types/user.types";
 import {ScrollView, Text, View} from "react-native";
 import Svg, {Path} from "react-native-svg";
 import {ControlledInput} from "../components/ControlledInput";
@@ -13,32 +11,26 @@ import FormError from "../components/FormError";
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+import useSignIn from "../hooks/useSignIn";
 
-
-
-const DefaultLoginData: LoginType = {
+const DefaultLoginData: SignInCredentialsType = {
     email: '',
     password: ''
 }
 
 const LoginScreen = () => {
     const form = useForm({
-        resolver: zodResolver(LoginSchema),
+        resolver: zodResolver(SignInCredentialsSchema),
         defaultValues: DefaultLoginData
     });
-
-
-    const login: SubmitHandler<LoginType> = async (data) => {
-        try{
-            await signInWithEmailAndPassword(auth, data.email, data.password)
+    const {mutate: signIn, isLoading: isSignInLoading} = useSignIn({
+        onSuccess: () => {
             navigate(Routes.DASHBOARD)
-        }
-        catch (e) {
-            form.setError('root', {
-                type: 'manual',
-                message: 'Vneseni podatki so napačni.'
-            })
-        }
+        },
+    })
+
+    const onSubmit: SubmitHandler<SignInCredentialsType> = async (credentials) => {
+        signIn(credentials)
     }
 
     return (
@@ -70,8 +62,9 @@ const LoginScreen = () => {
                         <FormError form={form}/>
                         <Button
                             text="Potrdi"
-                            classname='mt-7'
-                            onPress={form.handleSubmit(login)}
+                            classname='mt-7 w-24 h-11'
+                            onPress={form.handleSubmit(onSubmit)}
+                            loading={isSignInLoading}
                         />
                     </FormProvider>
                     <View className='pb-4 pt-14'>

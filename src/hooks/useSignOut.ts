@@ -1,9 +1,9 @@
-import {useMutation, UseMutationOptions} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import {MutationKey} from "../types/keys.types";
 import {signOut} from "firebase/auth";
 import {auth} from "../config/firebase";
 
-const useSignOut = (options?: UseMutationOptions) => useMutation(
+const useSignOut = () => useMutation(
     [MutationKey.SIGN_OUT], () => signOut(auth),
 );
 

@@ -18,6 +18,7 @@ export enum MutationKey {
     'DELETE_POWER_PLANT' = 'deletePowerPlant',
     'REMOVE_MEMBER_FROM_COMMUNITY' = 'removeMemberFromCommunity',
     'SIGN_OUT' = 'signOut',
+    'SIGN_IN' = 'signIn',
     'UPDATE_PASSWORD' = 'updatePassword',
     'CREATE_JOIN_COMMUNITY_REQUEST' = 'createJoinCommunityRequest',
     'PROCESS_JOIN_COMMUNITY_REQUEST' = 'processJoinCommunityRequest',

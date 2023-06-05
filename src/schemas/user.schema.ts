@@ -15,7 +15,7 @@ export const AddPowerPlantSchema = z.object({
     size: z.number().min(1, { message: "Velikost elektrarne mora biti večja od 0" }),
 });
 
-export const LoginSchema = z.object({
+export const SignInCredentialsSchema = z.object({
     email: z.string().min(1, { message: "Elektronski naslov je obvezen" }).email({
         message: "Vpisan elektronski naslov ni veljaven"
     }),
