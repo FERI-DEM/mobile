@@ -6,3 +6,9 @@ export const CreateCommunityDataSchema = z.object({
         powerPlantId: z.string(),
     })).min(1, { message: "Dodati je potrebno vsaj eno elektrarno" })
 });
+export const JoinCommunityDataSchema = z.object({
+    communityId: z.string().min(3, { message: "Organizacija s tako kratkim ID ne obstaja" }),
+    powerPlants: z.array(z.object({
+        powerPlantId: z.string(),
+    })).min(1, { message: "Dodati je potrebno vsaj eno elektrarno" })
+});

@@ -11,6 +11,7 @@ import HeaderBarCommunities from "./HeaderBarCommunities";
 import HeaderBarPowerPlants from "../components/HeaderBarPowerPlants";
 import AddPowerPlantForm from "../components/AddPowerPlantForm";
 import CreateCommunityScreen from "../screens/CreateCommunityScreen";
+import JoinCommunityScreen from "../screens/JoinCommunityScreen";
 
 const Stack = createNativeStackNavigator<RoutesParams>();
 
@@ -24,6 +25,7 @@ const UserStack = () => {
                 <Stack.Screen name={Routes.SETTINGS} component={SettingsScreen} />
                 <Stack.Screen name={Routes.ADD_POWER_PLANT} component={AddPowerPlantForm} />
                 <Stack.Screen name={Routes.ADD_COMMUNITY} component={CreateCommunityScreen} />
+                <Stack.Screen name={Routes.JOIN_COMMUNITY} component={JoinCommunityScreen} />
             </Stack.Navigator>
         </SafeAreaView>
 

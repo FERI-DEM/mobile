@@ -54,8 +54,13 @@ export const sideMenuItems: SideMenuItem[] = [
                 icon: <UserGroupIcon size={15} color='white'/>
             },
             {
-                title: 'Dodaj skupnost',
+                title: 'Ustvari skupnost',
                 route: Routes.ADD_COMMUNITY,
+                icon: <UserPlusIcon color='white' size={15}/>
+            },
+            {
+                title: 'Pridružitev',
+                route: Routes.JOIN_COMMUNITY,
                 icon: <UserPlusIcon color='white' size={15}/>
             }
         ]

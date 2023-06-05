@@ -1,25 +1,25 @@
-import React, {FC} from 'react';
 import {FlatList, Text, View} from "react-native";
+import {CreateCommunityDataType, JoinCommunityDataType} from "../types/community.types";
+import usePowerPlants from "../hooks/usePowerPlants";
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useFieldArray, useForm} from "react-hook-form";
-import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {CreateCommunityDataType} from "../types/community.types";
-import {CreateCommunityDataSchema} from "../schemas/community.schema";
-import useCommunityMutation from "../hooks/useCommunityMutation";
+import {JoinCommunityDataSchema} from "../schemas/community.schema";
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
-import Checkbox from 'expo-checkbox';
-import usePowerPlants from "../hooks/usePowerPlants";
 import {ControlledInput} from "../components/ControlledInput";
+import Checkbox from "expo-checkbox";
+import Button from "../components/Button";
+import React from "react";
+import useCommunityJoinMutation from "../hooks/useCommunityJoinMutation";
 
-const DefaultCommunityData: CreateCommunityDataType = {
-    communityName: '',
+const DefaultCommunityData: JoinCommunityDataType = {
+    communityId: '',
     powerPlants: []
 }
-const CreateCommunityScreen: FC = () => {
+const JoinCommunityScreen = () => {
     const {data: powerPlants} = usePowerPlants();
-    const form = useForm<CreateCommunityDataType>({
-        resolver: zodResolver(CreateCommunityDataSchema),
+    const form = useForm<JoinCommunityDataType>({
+        resolver: zodResolver(JoinCommunityDataSchema),
         defaultValues: DefaultCommunityData
     });
     const { fields, append, remove } = useFieldArray({
@@ -28,12 +28,12 @@ const CreateCommunityScreen: FC = () => {
     });
 
 
-    const {mutate, isLoading: createCommunityLoading} = useCommunityMutation({
+    const {mutate, isLoading: joinCommunityMutationLoading} = useCommunityJoinMutation({
         onSuccess: () => navigate(Routes.ORGANIZATION)
     });
-    const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
-        console.log({data});
-        mutate({name: data.communityName, powerPlants: data.powerPlants})
+    const onSubmit: SubmitHandler<JoinCommunityDataType> = (data) => {
+        console.log(data);
+        mutate({communityId: data.communityId, powerPlants: data.powerPlants.map((powerPlant) => powerPlant.powerPlantId)})
     };
 
     const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
@@ -46,9 +46,9 @@ const CreateCommunityScreen: FC = () => {
                 <View className='px-2'>
                     <FormProvider {...form}>
                         <ControlledInput
-                            name="communityName"
-                            label="Ime organizacije"
-                            placeholder="Ime"
+                            name="communityId"
+                            label="ID skupnosti"
+                            placeholder="ID"
                         />
                         <Text className='dark:text-white mb-3 ml-0.5 mt-6'>Izberite elektrarno</Text>
                         <FlatList className='max-h-52' nestedScrollEnabled keyExtractor={item => item._id} data={powerPlants} renderItem={({item}) => (
@@ -62,16 +62,15 @@ const CreateCommunityScreen: FC = () => {
                             </View>
                         )}/>
                         <Button
-                            text="Ustvari"
+                            text="Pridruži se"
                             classname='mt-7 w-24 h-11'
                             onPress={form.handleSubmit(onSubmit, onError)}
-                            loading={createCommunityLoading}
+                            loading={joinCommunityMutationLoading}
                         />
                     </FormProvider>
                 </View>
             </View>
         </View>
     );
-};
-
-export default CreateCommunityScreen;
+}
+export default JoinCommunityScreen;

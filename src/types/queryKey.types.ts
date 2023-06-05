@@ -18,4 +18,6 @@ export enum QueryKey {
     'COMMUNITY_REMOVE_MEMBER_MUTATION' = 'communityRemoveMember',
     'SIGN_OUT' = 'signOut',
     'UPDATE_PASSWORD' = 'updatePassword',
+    'JOIN_COMMUNITY' = 'joinCommunity',
+    'JOIN_COMMUNITY_PROCESS' = 'joinCommunityProcess',
 }

@@ -28,8 +28,8 @@ export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName
 }
 
 function RootNavigator() {
-    const { setUser, setUserState, userState} = useUserStore();
-    console.log(userState)
+    const { setUser, setUserState, userState, user} = useUserStore();
+    console.log(userState, user?.uid, user?.email)
 
     const onUserStateChange = async (user: User | null) => {
         setUserState(UserState.LOADING)
@@ -51,9 +51,7 @@ function RootNavigator() {
 
     useEffect(() => {
         setUserState(UserState.LOADING)
-        const unsubscribeFromAuthStatusChanged = auth.onAuthStateChanged(onUserStateChange);
-
-        return unsubscribeFromAuthStatusChanged;
+        return auth.onAuthStateChanged(onUserStateChange);
     }, []);
 
 

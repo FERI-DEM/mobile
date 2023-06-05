@@ -1,8 +1,10 @@
 import * as z from "zod";
-import {CreateCommunityDataSchema} from "../schemas/community.schema";
+import {CreateCommunityDataSchema, JoinCommunityDataSchema} from "../schemas/community.schema";
 import {InviteMemberDataSchema} from "../schemas/organizationUser.schema";
+import {NotificationType} from "./common.types";
 
 export type CreateCommunityDataType = z.infer<typeof CreateCommunityDataSchema>
+export type JoinCommunityDataType = z.infer<typeof JoinCommunityDataSchema>
 export type InviteMemberDataType = z.infer<typeof InviteMemberDataSchema>
 
 interface Community {
@@ -15,6 +17,11 @@ interface Community {
 export interface CommunityReq {
    name: string;
     powerPlants: {powerPlantId: string}[]
+}
+
+export interface CommunityReqJoin {
+    communityId: string;
+    powerPlants: string[]
 }
 
 export interface CommunityMember {
@@ -33,4 +40,24 @@ export interface CommunityRes {
     createdAt: string;
     updatedAt: string;
     community: Community;
+}
+export interface JoinCommunityNotification {
+    id: string;
+    receiverId: string;
+    senderId: string;
+    type: NotificationType;
+    data: {
+        communityId: string,
+        userId: string,
+        powerPlants: string[],
+        message: string,
+
+    };
+    processed: boolean;
+    createdAt: string;
+}
+
+export interface JoinCommunityRequestProcess {
+    notificationId: string;
+    accepted: boolean;
 }
