@@ -79,7 +79,7 @@ export const sideMenuItems: SideMenuItem[] = [
 ];
 
 const SideMenu = () => {
-    const {opened, toggleOpened} = useSideMenuStore()
+    const {opened, toggleOpened, setOpened} = useSideMenuStore()
     const translateX = useSharedValue(200);
 
     const animatedStyle = useAnimatedStyle(() => {
@@ -88,7 +88,9 @@ const SideMenu = () => {
         };
     });
     const animatedOpacity = useAnimatedStyle(() => {
+        console.log(translateX.value)
         return {
+            display: translateX.value === 200 ? 'none' : 'flex',
             opacity: interpolate(translateX.value, [0, 200], [0.5, 0]),
         };
     })
@@ -109,7 +111,7 @@ const SideMenu = () => {
             <View className='relative w-full h-full flex items-end'>
                 {<Animated.View style={animatedOpacity} className='w-full h-full absolute bg-black'>
                     <TouchableOpacity activeOpacity={1} className='w-full h-full bg-black'
-                                      onPress={() => toggleOpened()}/>
+                                      onPress={() => setOpened(false)}/>
                 </Animated.View>}
                 <Animated.View className='w-[200px] dark:bg-dark-main h-full items-center pt-9' style={animatedStyle}>
                     <SideMenuLogo />
