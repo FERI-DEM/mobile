@@ -1,18 +1,22 @@
 import React, {FC} from 'react';
-import {ScrollView, View} from "react-native";
-import JoinCommunityNotification from "../components/JoinCommunityNotification";
+import {ScrollView} from "react-native";
+import {JoinCommunityNotification as JoinCommunityNotificationType} from "../types/community.types";
 import useNotifications from "../hooks/useNotifications";
+import DataView from "../components/DataView";
+import JoinCommunityNotification from "../components/JoinCommunityNotification";
 
 const NotificationScreen: FC = () => {
-    const notifications = useNotifications()
+    const {data: notifications, isLoading} = useNotifications()
     return (
-        <View className="dark:bg-dark-main flex-1 px-5">
-            <ScrollView>
-                {notifications.map((notification, index) =>
-                    <JoinCommunityNotification key={index} notification={notification}/>
-                )}
-            </ScrollView>
-        </View>
+        <DataView<JoinCommunityNotificationType[]> isLoading={isLoading} data={notifications} fallbackText={'Trenutno nimate nobenih obvestil'}>
+            {(notifications) => (
+                <ScrollView className='flex-1 bg-dark-main'>
+                    {notifications.map((notification, index) =>
+                        <JoinCommunityNotification key={index} notification={notification}/>
+                    )}
+                </ScrollView>
+            )}
+        </DataView>
     );
 };
 
