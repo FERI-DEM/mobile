@@ -13,7 +13,7 @@ import {MapboxResponse} from "../types/mapbox.types";
 import useUserGeocodedLocation from "../hooks/useUserGeocodedLocation";
 import React, {useCallback} from "react";
 import {useQueryClient} from "@tanstack/react-query";
-import {QueryKey} from "../types/queryKey.types";
+import {QueryKey} from "../types/keys.types";
 import {mapboxToUserLocation} from "../utils/mapbox-to-user-location";
 import useRegisterDetailsMutation from "../hooks/useRegisterDetailsMutation";
 import {usePowerPlantStore} from "../store/power-plant-store";

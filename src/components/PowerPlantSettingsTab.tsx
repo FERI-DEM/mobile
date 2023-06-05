@@ -10,7 +10,7 @@ import {ControlledInput} from "./ControlledInput";
 import usePowerPlant from "../hooks/usePowerPlant";
 import usePowerPlantDeleteMutation from "../hooks/usePowerPlantDeleteMutation";
 import {useQueryClient} from "@tanstack/react-query";
-import {QueryKey} from "../types/queryKey.types";
+import {QueryKey} from "../types/keys.types";
 import useForm from "../hooks/useForm";
 import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-store";
 import {useToastStore} from "../store/toast-store";

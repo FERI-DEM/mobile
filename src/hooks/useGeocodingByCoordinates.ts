@@ -1,5 +1,5 @@
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
-import {QueryKey} from "../types/queryKey.types";
+import {QueryKey} from "../types/keys.types";
 import MapboxService from "../api/mapbox.service";
 import {MapboxResponse} from "../types/mapbox.types";
 import {AxiosError} from "axios";

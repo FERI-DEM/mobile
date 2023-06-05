@@ -4,7 +4,7 @@ import * as WebBrowser from "expo-web-browser";
 import firebase from "firebase/compat";
 import {signInWithCredential} from "firebase/auth";
 import {auth} from "../config/firebase";
-import {GOOGLE_CLIENT_ID, ANDROID_CLIENT_ID} from "@env";
+import {ANDROID_CLIENT_ID, GOOGLE_CLIENT_ID} from "@env";
 import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 
@@ -15,7 +15,6 @@ const useGoogleAuth = () => {
         clientId: GOOGLE_CLIENT_ID,
         androidClientId: ANDROID_CLIENT_ID
     })
-
 
     const signIn = async () => {
         try{

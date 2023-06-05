@@ -1,10 +1,10 @@
 import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 import {AxiosError} from "axios";
-import {QueryKey} from "../types/queryKey.types";
+import {MutationKey} from "../types/keys.types";
 import CommunityService from "../api/community.service";
 
-const useCommunityDeleteMutation = (id: string, options: UseMutationOptions<unknown, AxiosError>) => useMutation<unknown, AxiosError>(
-    [QueryKey.COMMUNITY_DELETE_MUTATION], () => CommunityService.deleteCommunity(id), options
+const useCommunityDeleteMutation = (id: string, options?: UseMutationOptions<unknown, AxiosError>) => useMutation<unknown, AxiosError>(
+    [MutationKey.DELETE_COMMUNITY], () => CommunityService.deleteCommunity(id), options
 );
 
 export default useCommunityDeleteMutation;

@@ -3,7 +3,7 @@ import * as Location from "expo-location";
 import MapboxService from "../api/mapbox.service";
 import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {AxiosError} from "axios";
-import {QueryKey} from "../types/queryKey.types";
+import {QueryKey} from "../types/keys.types";
 import {mapboxToUserLocation} from "../utils/mapbox-to-user-location";
 
 interface UserLocation{
