@@ -8,7 +8,7 @@ import SideMenuLogo from "./SideMenuLogo";
 import NavigationAccordion, {NavigationAccordionItem} from "../components/NavigationAccordion";
 import {PlusCircleIcon, UserPlusIcon} from "react-native-heroicons/mini";
 import {UserGroupIcon} from "react-native-heroicons/solid";
-import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 
 type SideMenuSubItem = Omit<NavigationAccordionItem<Routes>, 'onPressItem'>
 interface SideMenuItem extends SideMenuSubItem {
@@ -87,6 +87,11 @@ const SideMenu = () => {
             transform: [{ translateX: translateX.value }],
         };
     });
+    const animatedOpacity = useAnimatedStyle(() => {
+        return {
+            opacity: interpolate(translateX.value, [0, 200], [0.5, 0]),
+        };
+    })
 
     const onPressItem = (item: SideMenuSubItem) => {
         toggleOpened()
@@ -102,8 +107,10 @@ const SideMenu = () => {
     return (
         <View className='absolute w-full h-full'>
             <View className='relative w-full h-full flex items-end'>
-                {opened && <TouchableOpacity className='w-full h-full absolute opacity-50 bg-black'
-                                   onPress={() => toggleOpened()}/>}
+                {<Animated.View style={animatedOpacity} className='w-full h-full absolute bg-black'>
+                    <TouchableOpacity activeOpacity={1} className='w-full h-full bg-black'
+                                      onPress={() => toggleOpened()}/>
+                </Animated.View>}
                 <Animated.View className='w-[200px] dark:bg-dark-main h-full items-center pt-9' style={animatedStyle}>
                     <SideMenuLogo />
                     <View className='w-full px-7'>
