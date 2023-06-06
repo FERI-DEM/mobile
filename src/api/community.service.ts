@@ -1,5 +1,11 @@
 import {apiInstance} from "./axios";
-import {CommunityReq, CommunityReqJoin, CommunityRes, JoinCommunityRequestProcess} from "../types/community.types";
+import {
+    CommunityMembersPowerShareRes,
+    CommunityReq,
+    CommunityReqJoin,
+    CommunityRes,
+    JoinCommunityRequestProcess
+} from "../types/community.types";
 
 const CommunityService = {
     createCommunity: async (community: CommunityReq) => {
@@ -12,6 +18,10 @@ const CommunityService = {
     },
     getCommunity: async (id: string) => {
         const response = await apiInstance.get<CommunityRes>(`communities/${id}`)
+        return response.data
+    },
+    getCommunityMembersPowerShare: async (id: string) => {
+        const response = await apiInstance.get<CommunityMembersPowerShareRes[]>(`communities/${id}/members-power-share`)
         return response.data
     },
     deleteCommunity: async (id: string) => {

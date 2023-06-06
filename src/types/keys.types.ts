@@ -5,6 +5,7 @@ export enum QueryKey {
     'POWER_PLANT_POWER_PREDICTION_BY_DAYS' = 'powerPlantPowerPredictionByDays',
     'COMMUNITIES' = 'communities',
     'COMMUNITY' = 'community',
+    'COMMUNITY_MEMBERS_POWER_SHARE' = 'communityMembersPowerShare',
     'POWER_PLANTS' = 'powerPlants',
     'POWER_PLANT' = 'powerPlant',
 }

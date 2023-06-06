@@ -17,7 +17,7 @@ const DataView = <T,>({isLoading, loadingComponent, data, children, fallback, fa
             {isLoading
                 ? loadingComponent ?? <View className='flex-1 bg-dark-main flex items-center justify-center'><ActivityIndicator size={28} className='py-1.5 px-6' color='white'/></View>
                 : !data
-                    ? fallback ?? <View className='flex-1 bg-dark-main p-5'><Text className='text-white'>{fallbackText || 'Ni podatkov'}</Text></View>
+                    ? fallback ?? <View className='flex-1 bg-dark-main'><Text className='text-white'>{fallbackText || 'Ni podatkov'}</Text></View>
                     : children(data)}
         </>
     );

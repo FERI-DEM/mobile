@@ -1,8 +1,8 @@
 import {create} from "zustand";
 
 export enum CommunityTab {
-    DASHBOARD = 'dashboard',
-    SETTINGS = 'settings',
+    DASHBOARD = 'Nadzorna plošča',
+    SETTINGS = 'Nastavitve',
 }
 interface CommunityTabsState {
     activeTab: CommunityTab

@@ -41,6 +41,10 @@ export interface CommunityRes {
     updatedAt: string;
     community: Community;
 }
+export interface CommunityMembersPowerShareRes {
+    user: string;
+    share: number
+}
 export interface JoinCommunityNotification {
     id: string;
     receiverId: string;
