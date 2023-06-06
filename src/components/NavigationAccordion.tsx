@@ -1,36 +1,47 @@
-import {Text, TouchableOpacity, View} from "react-native";
+import {ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {ReactNode, useEffect, useState} from "react";
 import {ChevronDownIcon} from "react-native-heroicons/solid";
 import {Routes} from "../navigation/routes";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 
-export interface NavigationAccordionItem<T> {
+interface SideMenuSubRoute {
     title: string
-    route?: Routes
-    onPressItem: (item: NavigationAccordionItem<T>) => void
     icon: ReactNode
+    route: Routes
+    onPress: (item: SideMenuSubRoute) => void
 }
-export interface NavigationAccordionProps<T> {
-    item: NavigationAccordionItem<T> & {
-        onPressItem?: (item: NavigationAccordionItem<T>) => void
-        subItems?: NavigationAccordionItem<T>[]
-    }
+interface SideMenuItem {
+    title: string
+    icon: ReactNode
+    route: Routes
+    onPress: () => void
 }
-const NavigationAccordion = <T extends string> ({item}: NavigationAccordionProps<T>) => {
+interface SideMenuGroup {
+    title: string
+    icon: ReactNode
+    route?: Routes
+    subRoutes?: SideMenuSubRoute[]
+    items?: SideMenuItem[]
+    onPress: (group: SideMenuGroup) => void
+
+}
+interface NavigationAccordionProps {
+    group: SideMenuGroup
+}
+const NavigationAccordion = ({group}: NavigationAccordionProps) => {
     const [isOpened, setIsOpened] = useState(false)
     const height = useSharedValue(0)
     const rotate = useSharedValue(90)
 
-    const onPressItem = () => {
-        console.log(item.onPressItem)
+    const onPressGroup = () => {
         setIsOpened(prevState => !prevState)
-        !item.subItems && item.onPressItem?.(item)
+        group.onPress?.(group)
     }
 
     useEffect(() => {
         rotate.value = withTiming(isOpened ? 0 : 90, { duration: 200 })
-        height.value = withTiming(isOpened ? (item.subItems?.length || 0) * 35 : 0, { duration: 200 })
-    }, [isOpened])
+        height.value = withTiming(isOpened ? ((group.subRoutes?.length || 0) + (Math.min(group.items?.length || 0, 4))) * 35 : 0, { duration: 200 })
+    }, [isOpened, group])
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
@@ -44,23 +55,30 @@ const NavigationAccordion = <T extends string> ({item}: NavigationAccordionProps
     })
     return <View>
         <TouchableOpacity className='my-2 flex flex-row items-center'
-                          onPress={() => onPressItem()}>
-            <View className='w-4 h-4'>
-                {item.icon}
+                          onPress={() => onPressGroup()}>
+            <><View className='w-4 h-4'>
+                {group.icon}
             </View>
-            <Text className='ml-3 mb-0.5 text-white text-md font-bold mr-3'>{item.title}</Text>
-            {item.subItems && <Animated.View className='mt-0.5' style={arrowDownAnimatedStyle}><ChevronDownIcon  size={16} color='white'/></Animated.View>}
-        </TouchableOpacity>
+            <Text className='ml-3 text-white text-md font-bold mr-3'>{group.title}</Text>
+            {(group.subRoutes || group.items) && <Animated.View className='mt-1' style={arrowDownAnimatedStyle}><ChevronDownIcon size={16} color='white'/></Animated.View>}
+        </></TouchableOpacity>
         <Animated.View className='flex flex-col overflow-hidden' style={animatedStyle}>
-            {item.subItems?.map((item, index) => <TouchableOpacity key={index} className='h-[35px] ml-3 flex flex-row items-center'
-                                                           onPress={() => {
-                                                               console.log(item.onPressItem)
-                                                               item.onPressItem?.(item)}
-                                                           }>
+            <ScrollView className='max-h-[140px]' indicatorStyle='white' >
+                {group.items?.map((item, index) => <TouchableOpacity key={index} className='h-[35px] ml-3 flex flex-row items-center'
+                                                                     onPress={() => item.onPress()}>
+                    <View className='w-4 h-4'>
+                        {item.icon}
+                    </View>
+                    <Text className='ml-2  text-white text-xs'>{item.title}</Text>
+                </TouchableOpacity>)}
+            </ScrollView>
+            {group.items?.length !== 0 && <View className='w-full h-[1px] bg-white'/>}
+            {group.subRoutes?.map((subRoute, index) => <TouchableOpacity key={index} className='h-[35px] ml-3 flex flex-row items-center'
+                                                                 onPress={() => subRoute.onPress(subRoute)}>
                 <View className='w-4 h-4'>
-                    {item.icon}
+                    {subRoute.icon}
                 </View>
-                <Text className='ml-2 mb-0.5 text-white text-xs'>{item.title}</Text>
+                <Text className='ml-2 mb-0.5 text-white text-xs'>{subRoute.title}</Text>
             </TouchableOpacity>)}
         </Animated.View>
     </View>

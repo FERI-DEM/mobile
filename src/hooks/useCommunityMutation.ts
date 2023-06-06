@@ -5,7 +5,7 @@ import {CommunityReq, CommunityRes} from "../types/community.types";
 import CommunityService from "../api/community.service";
 
 const useCommunityMutation = (options?: UseMutationOptions<CommunityRes, AxiosError, CommunityReq>) => useMutation<CommunityRes, AxiosError, CommunityReq>(
-    [MutationKey.CREATE_COMMUNITY], (community) => CommunityService.createCommunity(community),
+    [MutationKey.CREATE_COMMUNITY], (community) => CommunityService.createCommunity(community), options
 );
 
 export default useCommunityMutation;

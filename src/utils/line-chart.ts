@@ -1,10 +1,11 @@
 import {PredictedValue} from "../types/powerPlant.types";
 import {innerOffset, padding, viewBoxSize, xUnit} from "../constants/line-chart";
 import {ChartPoint} from "../types/chart.types";
+import {roundToNearest15Minutes} from "./round-time";
 
 export const prepareData = (data: PredictedValue[]) => {
     const max = Math.max(...data.map(({power}) => power))
-    const currentDateAndTime = new Date(2023, 4, 9, 10, 30, 0).toISOString().slice(0, 16)
+    const currentDateAndTime = roundToNearest15Minutes(new Date()).toISOString().slice(0, 16)
     const currentDateIndex = data.findIndex(({date}) => date.slice(0, 16) === currentDateAndTime)
     return data.map((data, index) => ({date: data.date.slice(0, 16), x: xUnit * (index - currentDateIndex), y: data.power / max * (viewBoxSize.height - innerOffset.y - padding)}))
 }

@@ -11,12 +11,15 @@ import {Routes} from "../navigation/routes";
 import Checkbox from 'expo-checkbox';
 import usePowerPlants from "../hooks/usePowerPlants";
 import {ControlledInput} from "../components/ControlledInput";
+import {useQueryClient} from "@tanstack/react-query";
+import {QueryKey} from "../types/keys.types";
 
 const DefaultCommunityData: CreateCommunityDataType = {
     communityName: '',
     powerPlants: []
 }
 const CreateCommunityScreen: FC = () => {
+    const queryClient = useQueryClient();
     const {data: powerPlants} = usePowerPlants();
     const form = useForm<CreateCommunityDataType>({
         resolver: zodResolver(CreateCommunityDataSchema),
@@ -29,7 +32,10 @@ const CreateCommunityScreen: FC = () => {
 
 
     const {mutate, isLoading: createCommunityLoading} = useCommunityMutation({
-        onSuccess: () => navigate(Routes.ORGANIZATION)
+        onSuccess: () => {
+            queryClient.invalidateQueries([QueryKey.COMMUNITIES])
+            navigate(Routes.ORGANIZATION)
+        },
     });
     const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
