@@ -2,7 +2,18 @@ import {getApp, getApps, initializeApp} from "firebase/app";
 import {getAuth, sendPasswordResetEmail, updatePassword} from 'firebase/auth';
 import {getReactNativePersistence, initializeAuth} from 'firebase/auth/react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_AUTH_DOMAIN, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_PROJECT_ID, FIREBASE_DATABASE_URL, FIREBASE_STORAGE_BUCKET} from "@env";
+import 'firebase/firestore';
+import {getFirestore} from "firebase/firestore";
+
+import {
+    FIREBASE_API_KEY,
+    FIREBASE_APP_ID,
+    FIREBASE_AUTH_DOMAIN,
+    FIREBASE_DATABASE_URL,
+    FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET
+} from "@env";
 import {apiInstance} from "../api/axios";
 
 const firebaseConfig = {
@@ -18,16 +29,19 @@ const firebaseConfig = {
 const getAuthenticationModule = () => {
     if(getApps().length === 0) {
         const app = initializeApp(firebaseConfig);
-        return initializeAuth(app, {
+        const auth = initializeAuth(app, {
             persistence: getReactNativePersistence(AsyncStorage)
         });
+        return {auth, app}
     }
     else {
         const app = getApp();
-        return getAuth(app)
+        const auth = getAuth(app)
+        return {auth, app}
     }
 }
-export const auth = getAuthenticationModule()
+export const auth = getAuthenticationModule().auth
+export const firebaseDatabase = getFirestore(getAuthenticationModule().app);
 
 auth.onAuthStateChanged(async (user) => {
     if(user != null) {
@@ -41,7 +55,7 @@ export const passwordReset = async (email: string) => {
     return await sendPasswordResetEmail(auth, email);
 }
 
-export const updatePasswordFoo = async (newPassword: string):Promise<any> => {
+export const updatePasswordIfUserExists = async (newPassword: string) => {
     const firebaseUser = auth.currentUser;
     if(!firebaseUser) return false;
     return await updatePassword(firebaseUser, newPassword);

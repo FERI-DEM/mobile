@@ -4,7 +4,7 @@ import {FormProvider, SubmitHandler, useForm} from "react-hook-form";
 import {ControlledInput} from "./ControlledInput";
 import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
-import useCalibration from "../hooks/useCalibration";
+import useCalibrationMutation from "../hooks/useCalibrationMutation";
 import {CalibrationDataType} from "../types/powerPlant.types";
 import {CalibrationDataSchema} from "../schemas/calibration.schema";
 import {usePowerPlantStore} from "../store/power-plant-store";
@@ -24,7 +24,7 @@ const DefaultCalibrationData: CalibrationDataType = {
 const CalibrationForm: FC = () => {
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
     const setActiveTab = useDashboardTabsStore(state => state.setActiveTab)
-    const {mutate: calibrate, isLoading: calibrateLoading} = useCalibration();
+    const {mutate: calibrate, isLoading: calibrateLoading} = useCalibrationMutation();
     const [message, setMessage] = useState<FormMessage>({type: FormMessageType.DEFAULT, text: ''});
     const setUserState = useUserStore(state => state.setUserState)
 

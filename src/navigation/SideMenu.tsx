@@ -1,81 +1,176 @@
-import {Text, TouchableOpacity, View} from "react-native";
+import {TouchableOpacity, View} from "react-native";
 import {Routes} from "./routes";
 import {navigate} from "./navigate";
-import {ReactNode} from "react";
-import Svg, {Path} from "react-native-svg";
+import {ReactNode, useEffect, useMemo} from "react";
 import {useSideMenuStore} from "../store/side-menu-store";
 import SideMenuLogo from "./SideMenuLogo";
+import NavigationAccordion from "../components/NavigationAccordion";
+import {UserPlusIcon} from "react-native-heroicons/mini";
+import {UserGroupIcon} from "react-native-heroicons/solid";
+import {
+    Cog6ToothIcon,
+    EnvelopeIcon,
+    PlusCircleIcon,
+    Squares2X2Icon,
+    SquaresPlusIcon
+} from "react-native-heroicons/outline";
+import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
+import usePowerPlants from "../hooks/usePowerPlants";
+import useCommunities from "../hooks/useCommunities";
+import IconWithText from "../components/IconWithText";
+import {useCommunityStore} from "../store/community-store";
+import {usePowerPlantStore} from "../store/power-plant-store";
+import {PowerPlant} from "../types/powerPlant.types";
+import {CommunityRes} from "../types/community.types";
 
-interface SideMenuItemType {
-    route: Routes,
+interface SideMenuSubRoute {
+    title: string
     icon: ReactNode
+    route: Routes
 }
+interface SideMenuItem {
+    title: string
+    icon: ReactNode
+    route: Routes
+}
+interface SideMenuGroup {
+    title: string
+    icon: ReactNode
+    route?: Routes
+    subRoutes?: SideMenuSubRoute[]
+    items?: SideMenuItem[]
 
-export const sideMenuItems: SideMenuItemType[] = [
+}
+export const sideMenuGroups: SideMenuGroup[] = [
     {
-        route: Routes.DASHBOARD,
-        icon: <Svg width="100%" height="100%" viewBox="0 0 14 14" fill="none">
-            <Path
-                d="M1 2.5C1 2.10218 1.15804 1.72064 1.43934 1.43934C1.72064 1.15804 2.10218 1 2.5 1H4C4.39782 1 4.77936 1.15804 5.06066 1.43934C5.34196 1.72064 5.5 2.10218 5.5 2.5V4C5.5 4.39782 5.34196 4.77936 5.06066 5.06066C4.77936 5.34196 4.39782 5.5 4 5.5H2.5C2.10218 5.5 1.72064 5.34196 1.43934 5.06066C1.15804 4.77936 1 4.39782 1 4V2.5ZM8.5 2.5C8.5 2.10218 8.65804 1.72064 8.93934 1.43934C9.22064 1.15804 9.60218 1 10 1H11.5C11.8978 1 12.2794 1.15804 12.5607 1.43934C12.842 1.72064 13 2.10218 13 2.5V4C13 4.39782 12.842 4.77936 12.5607 5.06066C12.2794 5.34196 11.8978 5.5 11.5 5.5H10C9.60218 5.5 9.22064 5.34196 8.93934 5.06066C8.65804 4.77936 8.5 4.39782 8.5 4V2.5ZM1 10C1 9.60218 1.15804 9.22064 1.43934 8.93934C1.72064 8.65804 2.10218 8.5 2.5 8.5H4C4.39782 8.5 4.77936 8.65804 5.06066 8.93934C5.34196 9.22064 5.5 9.60218 5.5 10V11.5C5.5 11.8978 5.34196 12.2794 5.06066 12.5607C4.77936 12.842 4.39782 13 4 13H2.5C2.10218 13 1.72064 12.842 1.43934 12.5607C1.15804 12.2794 1 11.8978 1 11.5V10ZM8.5 10C8.5 9.60218 8.65804 9.22064 8.93934 8.93934C9.22064 8.65804 9.60218 8.5 10 8.5H11.5C11.8978 8.5 12.2794 8.65804 12.5607 8.93934C12.842 9.22064 13 9.60218 13 10V11.5C13 11.8978 12.842 12.2794 12.5607 12.5607C12.2794 12.842 11.8978 13 11.5 13H10C9.60218 13 9.22064 12.842 8.93934 12.5607C8.65804 12.2794 8.5 11.8978 8.5 11.5V10Z"
-                stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-        </Svg>
+        title: 'Elektrarne',
+        icon: <Squares2X2Icon color='white' size={20}/>,
+        subRoutes: [
+                    {
+                        title: 'Dodaj elektrarno',
+                        route: Routes.ADD_POWER_PLANT,
+                        icon: <SquaresPlusIcon color='white' size={15}/>
+                    }
+
+        ],
     },
     {
+        title: 'Sporočila',
         route: Routes.NOTIFICATIONS,
-        icon: <Svg width="100%" height="100%" viewBox="0 0 14 14" fill="none">
-            <Path
-                d="M1 2.5C1 2.10218 1.15804 1.72064 1.43934 1.43934C1.72064 1.15804 2.10218 1 2.5 1H4C4.39782 1 4.77936 1.15804 5.06066 1.43934C5.34196 1.72064 5.5 2.10218 5.5 2.5V4C5.5 4.39782 5.34196 4.77936 5.06066 5.06066C4.77936 5.34196 4.39782 5.5 4 5.5H2.5C2.10218 5.5 1.72064 5.34196 1.43934 5.06066C1.15804 4.77936 1 4.39782 1 4V2.5ZM8.5 2.5C8.5 2.10218 8.65804 1.72064 8.93934 1.43934C9.22064 1.15804 9.60218 1 10 1H11.5C11.8978 1 12.2794 1.15804 12.5607 1.43934C12.842 1.72064 13 2.10218 13 2.5V4C13 4.39782 12.842 4.77936 12.5607 5.06066C12.2794 5.34196 11.8978 5.5 11.5 5.5H10C9.60218 5.5 9.22064 5.34196 8.93934 5.06066C8.65804 4.77936 8.5 4.39782 8.5 4V2.5ZM1 10C1 9.60218 1.15804 9.22064 1.43934 8.93934C1.72064 8.65804 2.10218 8.5 2.5 8.5H4C4.39782 8.5 4.77936 8.65804 5.06066 8.93934C5.34196 9.22064 5.5 9.60218 5.5 10V11.5C5.5 11.8978 5.34196 12.2794 5.06066 12.5607C4.77936 12.842 4.39782 13 4 13H2.5C2.10218 13 1.72064 12.842 1.43934 12.5607C1.15804 12.2794 1 11.8978 1 11.5V10ZM8.5 10C8.5 9.60218 8.65804 9.22064 8.93934 8.93934C9.22064 8.65804 9.60218 8.5 10 8.5H11.5C11.8978 8.5 12.2794 8.65804 12.5607 8.93934C12.842 9.22064 13 9.60218 13 10V11.5C13 11.8978 12.842 12.2794 12.5607 12.5607C12.2794 12.842 11.8978 13 11.5 13H10C9.60218 13 9.22064 12.842 8.93934 12.5607C8.65804 12.2794 8.5 11.8978 8.5 11.5V10Z"
-                stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-        </Svg>
+        icon: <EnvelopeIcon color='white' size={20}/>
     },
     {
-        route: Routes.ORGANIZATION,
-        icon: <Svg width="100%" height="100%" viewBox="0 0 14 14" fill="none">
-            <Path
-                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-                stroke="white" stroke-linecap="round" stroke-linejoin="round" />
-        </Svg>
+        title: 'Skupnosti',
+        icon: <UserGroupIcon size={20} color='white'/>,
+        subRoutes: [
+            {
+                title: 'Ustvari skupnost',
+                route: Routes.ADD_COMMUNITY,
+                icon: <PlusCircleIcon color='white' size={15}/>
+            },
+            {
+                title: 'Pridružitev',
+                route: Routes.JOIN_COMMUNITY,
+                icon: <UserPlusIcon color='white' size={15}/>
+            }
+        ]
 
     },
     {
+        title: 'Nastavitve',
         route: Routes.SETTINGS,
-        icon: <Svg width="100%" height="100%" viewBox="0 0 12 12" fill="none">
-            <Path
-                d="M9.56999 6.47001C9.58999 6.32001 9.59999 6.16501 9.59999 6.00001C9.59999 5.84001 9.58999 5.68001 9.56499 5.53001L10.58 4.74001C10.67 4.67001 10.695 4.53501 10.64 4.43501L9.67999 2.77501C9.61999 2.66501 9.49499 2.63001 9.38499 2.66501L8.18999 3.14501C7.93999 2.95501 7.67499 2.79501 7.37999 2.67501L7.19999 1.40501C7.17999 1.28501 7.07999 1.20001 6.95999 1.20001H5.03999C4.91999 1.20001 4.82499 1.28501 4.80499 1.40501L4.62499 2.67501C4.32999 2.79501 4.05999 2.96001 3.81499 3.14501L2.61999 2.66501C2.50999 2.62501 2.38499 2.66501 2.32499 2.77501L1.36999 4.43501C1.30999 4.54001 1.32999 4.67001 1.42999 4.74001L2.44499 5.53001C2.41999 5.68001 2.39999 5.84501 2.39999 6.00001C2.39999 6.15501 2.40999 6.32001 2.43499 6.47001L1.41999 7.26001C1.32999 7.33001 1.30499 7.46501 1.35999 7.56501L2.31999 9.22501C2.37999 9.33501 2.50499 9.37001 2.61499 9.33501L3.80999 8.85501C4.05999 9.04501 4.32499 9.20501 4.61999 9.32501L4.79999 10.595C4.82499 10.715 4.91999 10.8 5.03999 10.8H6.95999C7.07999 10.8 7.17999 10.715 7.19499 10.595L7.37499 9.32501C7.66999 9.20501 7.93999 9.04501 8.18499 8.85501L9.37999 9.33501C9.48999 9.37501 9.61499 9.33501 9.67499 9.22501L10.635 7.56501C10.695 7.45501 10.67 7.33001 10.575 7.26001L9.56999 6.47001ZM5.99999 7.80001C5.00999 7.80001 4.19999 6.99001 4.19999 6.00001C4.19999 5.01001 5.00999 4.20001 5.99999 4.20001C6.98999 4.20001 7.79999 5.01001 7.79999 6.00001C7.79999 6.99001 6.98999 7.80001 5.99999 7.80001Z"
-                fill="white"/>
-        </Svg>
+        icon: <Cog6ToothIcon color='white' size={20}/>
     },
 
 ];
 
 const SideMenu = () => {
-    const {opened, toggleOpened} = useSideMenuStore()
+    const {opened, toggleOpened, setOpened} = useSideMenuStore()
+    const translateX = useSharedValue(200);
+    const {data: powerPlants} = usePowerPlants()
+    const {data: communities} = useCommunities()
+    const setSelectedCommunity = useCommunityStore(state => state.setSelectedCommunity)
+    const setSelectedPowerPlant = usePowerPlantStore(state => state.setSelectedPowerPlant)
 
-    const onPressOnItem = (item: SideMenuItemType) => {
-        toggleOpened()
-        navigate(item.route)
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ translateX: translateX.value }],
+        };
+    });
+    const animatedOpacity = useAnimatedStyle(() => {
+        return {
+            display: translateX.value === 200 ? 'none' : 'flex',
+            opacity: interpolate(translateX.value, [0, 200], [0.5, 0]),
+        };
+    })
+
+    const onPressGroup = (group: SideMenuGroup) => {
+        if(group.route){
+            toggleOpened()
+            navigate(group.route)
+        }
     }
 
-    if (!opened) return null;
+    const onPressSubRoute = (subRoute: SideMenuSubRoute) => {
+        toggleOpened()
+        navigate(subRoute.route)
+    }
+
+    const onPressPowerPlantItem = (powerPlant: PowerPlant) => {
+        toggleOpened()
+        setSelectedPowerPlant({id: powerPlant._id, name: powerPlant.displayName})
+        navigate(Routes.DASHBOARD)
+    }
+    const onPressCommunityItem = (community: CommunityRes) => {
+        toggleOpened()
+        setSelectedCommunity({id: community._id, name: community.name})
+        navigate(Routes.ORGANIZATION)
+    }
+
+    const createSideMenuGroupItems = (group: SideMenuGroup) => {
+        if(group.title === 'Elektrarne'){
+            return powerPlants?.map((powerPlant, index) => ({
+                title: powerPlant.displayName,
+                route: Routes.DASHBOARD,
+                icon: <IconWithText icon={<Squares2X2Icon color='white' size={15}/>} text={`${index + 1}`}/>,
+                onPress: () => onPressPowerPlantItem(powerPlant)
+            }))
+        }
+        if(group.title === 'Skupnosti'){
+            return communities?.map((community, index) => ({
+                title: community.name,
+                route: Routes.DASHBOARD,
+                icon: <IconWithText icon={<UserGroupIcon size={15} color='white'/>} text={`${index + 1}`}/>,
+                onPress: () => onPressCommunityItem(community)
+            }))
+        }
+    }
+
+    const groups = useMemo(() =>
+        sideMenuGroups.map(group => ({
+            ...group,
+            onPress: () => onPressGroup(group),
+            subRoutes: group.subRoutes?.map(subRoute => ({...subRoute, onPress: () => onPressSubRoute(subRoute)})),
+            items: createSideMenuGroupItems(group)
+        })), [powerPlants, communities])
+
+    useEffect(() => {
+        translateX.value = withTiming(opened ? 0 : 200, { duration: 200 });
+    }, [opened]);
 
     return (
         <View className='absolute w-full h-full'>
             <View className='relative w-full h-full flex items-end'>
-                <TouchableOpacity className='w-full h-full absolute opacity-50 bg-black' onPress={toggleOpened}/>
-                <View className='w-48 dark:bg-dark-main h-full items-center pt-9'>
+                {<Animated.View style={animatedOpacity} className='w-full h-full absolute bg-black'>
+                    <TouchableOpacity activeOpacity={1} className='w-full h-full bg-black'
+                                      onPress={() => setOpened(false)}/>
+                </Animated.View>}
+                <Animated.View className='w-[200px] dark:bg-dark-main h-full items-center pt-9' style={animatedStyle}>
                     <SideMenuLogo />
-                    <View className='w-full px-8'>
-                        {sideMenuItems.map((sideMenuItem, index) => <View key={index}>
-                            <TouchableOpacity className='my-2 flex flex-row items-center'
-                                              onPress={() => onPressOnItem(sideMenuItem)}>
-                                <View className='w-4 h-4'>
-                                    {sideMenuItem.icon}
-                                </View>
-                                <Text className='ml-3 mb-0.5 text-white text-md font-bold'>{sideMenuItem.route}</Text>
-                            </TouchableOpacity>
-                        </View>)}
+                    <View className='w-full px-7'>
+                        {groups.map((group, index) => <NavigationAccordion group={group} key={index}/>)}
                     </View>
-                </View>
+                </Animated.View>
             </View>
         </View>
     )

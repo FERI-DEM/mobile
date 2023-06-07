@@ -6,7 +6,6 @@ import {PowerPlantsTab, useDashboardTabsStore} from "../store/dashboard-tabs-sto
 import Tabs from "../components/Tabs";
 import {usePowerPlantStore} from "../store/power-plant-store";
 import {QueryBoundaries} from "../components/QueryBoundaries";
-import AddPowerPlantForm from "../components/AddPowerPlantForm";
 import CalibrationForm from "../components/CalibrationForm";
 
 const DashboardScreen:FC = () => {
@@ -21,7 +20,6 @@ const DashboardScreen:FC = () => {
                     {activeTab === PowerPlantsTab.DASHBOARD && <PowerPlantDashboardTab />}
                     {activeTab === PowerPlantsTab.SETTINGS && <PowerPlantSettingsTab />}
                     {activeTab === PowerPlantsTab.CALIBRATION && <CalibrationForm />}
-                    {activeTab === PowerPlantsTab.ADD_POWER_PLANT && <AddPowerPlantForm />}
                 </QueryBoundaries>
             </QueryBoundaries>
         </View>

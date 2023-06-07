@@ -16,3 +16,8 @@ export interface FormMessage {
     type: string;
     text: string;
 }
+
+export enum NotificationType {
+    REQUEST_TO_JOIN = 'request_to_join',
+    WARNING = 'warning',
+}

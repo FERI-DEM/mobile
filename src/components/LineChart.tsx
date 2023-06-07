@@ -1,12 +1,15 @@
-import {View, useWindowDimensions} from "react-native";
+import {useWindowDimensions, View} from "react-native";
 import React, {useEffect} from "react";
-import Svg, {Path, G, Rect} from "react-native-svg";
+import Svg, {G, Path, Rect} from "react-native-svg";
 import Animated, {
     cancelAnimation,
-    Extrapolate,
-    interpolate,
-    runOnJS, runOnUI,
-    useAnimatedProps, useAnimatedReaction, useDerivedValue, useSharedValue, withDecay, withTiming
+    runOnJS,
+    runOnUI,
+    useAnimatedProps,
+    useAnimatedReaction,
+    useDerivedValue,
+    useSharedValue,
+    withDecay
 } from "react-native-reanimated";
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import {PredictedValue} from "../types/powerPlant.types";
@@ -195,7 +198,7 @@ const LineChart = ({data: dataFromProps}: LineChartProps) => {
                                 <AnimatedPath animatedProps={areaAnimatedProps} stroke="none"
                                               fill="rgba(245, 133, 43, 0.3)"/>
                                 <AnimatedPath animatedProps={animatedXLegendProps} strokeWidth='0.2' stroke='white'/>
-
+                                {/*<Path stroke='white' strokeWidth={0.1} d='M 0,0 L 0,3 M 0,6 L 0,9 M 0,12 L 0,15 M 0,18 L 0,21'/>*/}
 
                             </AnimatedGroup>
 

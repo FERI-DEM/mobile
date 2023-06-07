@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {FlatList, Text, View} from "react-native";
 import {FormProvider, SubmitErrorHandler, SubmitHandler, useFieldArray, useForm} from "react-hook-form";
-import {ControlledInput} from "./ControlledInput";
 import Button from "../components/Button";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CreateCommunityDataType} from "../types/community.types";
@@ -11,12 +10,16 @@ import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import Checkbox from 'expo-checkbox';
 import usePowerPlants from "../hooks/usePowerPlants";
+import {ControlledInput} from "../components/ControlledInput";
+import {useQueryClient} from "@tanstack/react-query";
+import {QueryKey} from "../types/keys.types";
 
 const DefaultCommunityData: CreateCommunityDataType = {
     communityName: '',
     powerPlants: []
 }
-const CreateCommunityTab: FC = () => {
+const CreateCommunityScreen: FC = () => {
+    const queryClient = useQueryClient();
     const {data: powerPlants} = usePowerPlants();
     const form = useForm<CreateCommunityDataType>({
         resolver: zodResolver(CreateCommunityDataSchema),
@@ -29,7 +32,10 @@ const CreateCommunityTab: FC = () => {
 
 
     const {mutate, isLoading: createCommunityLoading} = useCommunityMutation({
-        onSuccess: () => navigate(Routes.ORGANIZATION)
+        onSuccess: () => {
+            queryClient.invalidateQueries([QueryKey.COMMUNITIES])
+            navigate(Routes.ORGANIZATION)
+        },
     });
     const onSubmit: SubmitHandler<CreateCommunityDataType> = (data) => {
         console.log({data});
@@ -39,7 +45,6 @@ const CreateCommunityTab: FC = () => {
     const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
         return console.log({errors})
     }
-
 
     return (
         <View className='dark:bg-dark-main flex-1 px-2'>
@@ -75,4 +80,4 @@ const CreateCommunityTab: FC = () => {
     );
 };
 
-export default CreateCommunityTab;
+export default CreateCommunityScreen;

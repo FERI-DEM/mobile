@@ -7,7 +7,8 @@ export const apiInstance = axios.create({
     timeout: 8000,
     headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'TimezoneOffset': -new Date().getTimezoneOffset() / 60
     }
 });
 export const mapboxInstance = axios.create({
