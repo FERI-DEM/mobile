@@ -5,9 +5,9 @@ import {roundToNearest15Minutes} from "./round-time";
 
 export const prepareData = (data: PredictedValue[]) => {
     const max = Math.max(...data.map(({power}) => power))
-    const currentDateAndTime = roundToNearest15Minutes(new Date()).toISOString().slice(0, 16)
+    const currentDateAndTime = roundToNearest15Minutes(new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16)
     const currentDateIndex = data.findIndex(({date}) => date.slice(0, 16) === currentDateAndTime)
-    return data.map((data, index) => ({date: data.date.slice(0, 16), x: xUnit * (index - currentDateIndex), y: data.power / max * (viewBoxSize.height - innerOffset.y - padding)}))
+    return data.map((data, index) => ({date: data.date.slice(0, 16), x: xUnit * (index - currentDateIndex) + xUnit * 3, y: data.power / max * (viewBoxSize.height - innerOffset.y - padding)}))
 }
 
 export const createPathForRoundedCorners = (leftBottomCorner: ChartPoint, topRightCorner: ChartPoint, radius: number) => {
