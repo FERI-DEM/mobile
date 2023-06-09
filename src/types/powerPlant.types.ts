@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { CalibrationDataSchema } from '../schemas/calibration.schema';
-import { UpdatePowerPlantDataSchema } from '../schemas/powerPlant.schema';
+import {z} from 'zod';
+import {CalibrationDataSchema} from '../schemas/calibration.schema';
+import {UpdatePowerPlantDataSchema} from '../schemas/powerPlant.schema';
 
 export interface CalibrationReq {
   id: string;
@@ -10,6 +10,19 @@ export interface CalibrationReq {
 export interface PowerPlantRes {
   _id: string;
   powerPlants: PowerPlant[];
+}
+
+export interface PowerPlantPowerHistoryRes {
+  powerPlantId: string;
+  power: number;
+  solar: number;
+  predictedPower: number;
+  timestamp: number;
+}
+export interface PowerPlantPowerHistoryReq {
+  id: string;
+    from: Date;
+    to: Date;
 }
 
 export interface PowerPlant {

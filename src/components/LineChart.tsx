@@ -17,6 +17,8 @@ import {createPathForRoundedCorners, prepareActiveData, prepareData} from "../ut
 import {chars} from "../utils/chart-text";
 import {charWidth, fontSize, innerOffset, padding, viewBoxSize, xUnit} from "../constants/line-chart";
 import {ChartOffset} from "../types/chart.types";
+import usePowerPlantPowerHistory from "../hooks/usePowerPlantPowerHistory";
+import {usePowerPlantStore} from "../store/power-plant-store";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedGroup = Animated.createAnimatedComponent(G);
@@ -26,6 +28,11 @@ interface LineChartProps {
 }
 
 const LineChart = ({data: dataFromProps}: LineChartProps) => {
+    const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
+
+    const {data: history} = usePowerPlantPowerHistory({id: selectedPowerPlant?.id || '', from: new Date(Date.UTC(2023, 5, 7)), to: new Date(Date.UTC(2023, 5, 8))})
+    if(history)
+    console.log(history[0])
     const window = useWindowDimensions()
     const graphWidth = window.width - 30
 
