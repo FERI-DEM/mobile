@@ -18,6 +18,8 @@ import { mapboxToUserLocation } from '../utils/mapbox-to-user-location';
 import useRegisterDetailsMutation from '../hooks/useRegisterDetailsMutation';
 import { usePowerPlantStore } from '../store/power-plant-store';
 import { useUserStore } from '../store/user-store';
+import { useToastStore } from '../store/toast-store';
+import { ToastTypes } from '../types/toast.types';
 
 const AddPowerPlantData: AddPowerPlantType = {
   powerPlantName: 'Moja elektrarna',
@@ -34,6 +36,8 @@ const AddPowerPlantForm = () => {
     defaultValues: AddPowerPlantData,
   });
 
+  const { showToast } = useToastStore();
+
   const queryClient = useQueryClient();
   const { mutate: createPowerPlant, isLoading: createPowerPlantLoading } =
     useRegisterDetailsMutation({
@@ -42,6 +46,10 @@ const AddPowerPlantForm = () => {
         setUserState(UserState.USER);
         navigate(Routes.CALIBRATION);
         queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] });
+        showToast('Elektrarna uspešno ustvarjena!', ToastTypes.SUCCESS);
+      },
+      onError: () => {
+        showToast('Napaka pri ustvarjanju elektrarne!', ToastTypes.ERROR);
       },
     });
   const { data: userLocation } = useUserGeocodedLocation({

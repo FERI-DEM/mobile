@@ -33,7 +33,6 @@ const PowerPlantSettingsTab = () => {
   });
 
   const { data: powerPlants, refetch: refetchPowerPlants } = usePowerPlants();
-  console.log(powerPlants);
 
   const form = useForm<UpdatePowerPlantDataType>({
     resolver: zodResolver(UpdatePowerPlantDataSchema),
@@ -42,9 +41,8 @@ const PowerPlantSettingsTab = () => {
 
   const { showToast } = useToastStore();
 
-  const { mutate: deletePowerPlant } = usePowerPlantDeleteMutation(
-    selectedPowerPlant?.id || '',
-    {
+  const { mutate: deletePowerPlant, isLoading: deletePowerPlantLoading } =
+    usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
       onSuccess: async () => {
         showToast('Elektrarna uspešno izbrisana!', ToastTypes.SUCCESS);
         const powerPlants = await refetchPowerPlants();
@@ -58,15 +56,13 @@ const PowerPlantSettingsTab = () => {
         }
         setActiveTab(PowerPlantsTab.DASHBOARD);
       },
-      onError: (err) => {
+      onError: () => {
         showToast('Napaka pri brisanju elektrarne!', ToastTypes.ERROR);
       },
-    }
-  );
+    });
 
-  const { mutate: updatePowerPlant } = usePowerPlantUpdateMutation(
-    selectedPowerPlant?.id || '',
-    {
+  const { mutate: updatePowerPlant, isLoading: updatePowerPlantLoading } =
+    usePowerPlantUpdateMutation(selectedPowerPlant?.id || '', {
       onSuccess: () => {
         showToast('Elektrarna uspešno posodobljena!', ToastTypes.SUCCESS);
         queryClient.invalidateQueries(
@@ -78,11 +74,10 @@ const PowerPlantSettingsTab = () => {
           name: form.getValues()?.name || '',
         });
       },
-      onError: (err) => {
+      onError: () => {
         showToast('Napaka pri posodabljanju elektrarne!', ToastTypes.ERROR);
       },
-    }
-  );
+    });
 
   const onSubmit: SubmitHandler<UpdatePowerPlantDataType> = (data) => {
     updatePowerPlant({
@@ -106,6 +101,7 @@ const PowerPlantSettingsTab = () => {
             <Button
               text="Posodobi"
               classname="mt-4"
+              loading={updatePowerPlantLoading}
               onPress={form.handleSubmit(onSubmit)}
             />
           </FormProvider>
@@ -114,6 +110,7 @@ const PowerPlantSettingsTab = () => {
       <Button
         text="Izbriši elektrarno"
         onPress={deletePowerPlant}
+        loading={deletePowerPlantLoading}
         classname="bg-danger m-auto my-4"
       />
     </View>

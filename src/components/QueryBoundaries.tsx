@@ -1,6 +1,6 @@
-import {ReactNode} from 'react';
-import {ActivityIndicator, View} from 'react-native';
-import {twMerge} from 'tailwind-merge';
+import { ReactNode } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { twMerge } from 'tailwind-merge';
 
 interface LoadingViewProps {
   loadingClassName?: string;
@@ -14,12 +14,9 @@ export const QueryBoundaries = ({
   loadingClassName,
   isLoading = true,
 }: QueryBoundariesProps) => {
-  console.log('alllll', isLoading, children);
   if (isLoading) return <LoadingView loadingClassName={loadingClassName} />;
 
-  return (
-<>{children}</>
-  );
+  return <>{children}</>;
 };
 
 const LoadingView = ({ loadingClassName }: LoadingViewProps) => (
