@@ -84,7 +84,7 @@ const AddPowerPlantForm = () => {
         <FormProvider {...form}>
           <ControlledInput
             name="powerPlantName"
-            label="Ime elektrarne"
+            label="Ime elektrarne *"
             placeholder="Moja elektrarna"
           />
 

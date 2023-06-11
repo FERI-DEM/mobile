@@ -70,7 +70,7 @@ const CalibrationForm: FC = () => {
           <FormProvider {...form}>
             <ControlledInput
               name="production"
-              label="Trenutna proizvodnja elektrarne"
+              label="Trenutna proizvodnja elektrarne *"
               placeholder="Proizvodnja [kW]"
               keyboardType="numeric"
             />

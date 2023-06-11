@@ -94,7 +94,7 @@ const PowerPlantSettingsTab = () => {
           <FormProvider {...form}>
             <ControlledInput
               name="name"
-              label="Ime elektrarne"
+              label="Ime elektrarne *"
               placeholder="Ime"
               defaultValue={powerPlantData?.powerPlants[0].displayName}
             />
