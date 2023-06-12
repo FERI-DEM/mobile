@@ -11,10 +11,16 @@ import {
 } from '../utils/power';
 import AlertCard from './AlertCard';
 import DateView from './DataView';
-import { navigate } from '../navigation/navigate';
+import { navigationRef } from '../navigation/navigate';
 import { Routes } from '../navigation/routes';
+import { StackActions, useIsFocused } from '@react-navigation/native';
+import { useToastStore } from '../store/toast-store';
+import { ToastTypes } from '../types/toast.types';
 
 const PowerPlantDashboardTab = () => {
+    const {showToast} = useToastStore();
+    const focused = useIsFocused()
+    console.log(focused)
   const selectedPowerPlant = usePowerPlantStore(
     (state) => state.selectedPowerPlant
   );
@@ -24,7 +30,8 @@ const PowerPlantDashboardTab = () => {
       enabled: !!selectedPowerPlant,
       retry: false,
       onError: () => {
-        navigate(Routes.CALIBRATION);
+          navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
+          showToast('Te elektrarne še niste kalibrirali', ToastTypes.ERROR);
       },
     }
   );
@@ -32,6 +39,10 @@ const PowerPlantDashboardTab = () => {
     usePredictionByDays(selectedPowerPlant?.id || '', {
       enabled: !!selectedPowerPlant,
       retry: false,
+      onError: () => {
+          navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
+          showToast('Te elektrarne še niste kalibrirali', ToastTypes.ERROR);
+      },
     });
 
   const data = useMemo(() => {

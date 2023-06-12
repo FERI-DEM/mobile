@@ -1,6 +1,6 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Routes, RoutesParams, userStackInitialRoute} from './routes';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Routes, RoutesParams, userStackInitialRoute } from './routes';
 import HeaderBar from './HeaderBar';
 import DashboardScreen from '../screens/DashboardScreen';
 import NotificationScreen from '../screens/NotificationScreen';
@@ -14,16 +14,15 @@ import CreateCommunityScreen from '../screens/CreateCommunityScreen';
 import JoinCommunityScreen from '../screens/JoinCommunityScreen';
 import StoresInitializer from '../components/StoresInitializer';
 import CalibrationScreen from '../screens/CalibrationScreen';
-import SideMenu from "./SideMenu";
+import SideMenu from './SideMenu';
 
 const Stack = createNativeStackNavigator<RoutesParams>();
 
 const UserStack = () => {
   return (
-      <>
+      <StoresInitializer>
           <SideMenu/>
           <SafeAreaView className="flex-1">
-
               <Stack.Navigator
                   initialRouteName={userStackInitialRoute}
                   screenOptions={{
@@ -35,14 +34,9 @@ const UserStack = () => {
                   }}
               >
                   <Stack.Screen
-                      name={Routes.STORES_INITIALIZER}
-                      component={StoresInitializer}
-                      options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
                       name={Routes.DASHBOARD}
                       component={DashboardScreen}
-                      options={{ header: () => <HeaderBarPowerPlants /> }}
+                      options={{ header: () => <HeaderBarPowerPlants />, freezeOnBlur: true }}
                   />
                   <Stack.Screen
                       name={Routes.NOTIFICATIONS}
@@ -72,7 +66,7 @@ const UserStack = () => {
                   />
               </Stack.Navigator>
           </SafeAreaView>
-      </>
+      </StoresInitializer>
   );
 };
 

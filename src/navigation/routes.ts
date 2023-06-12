@@ -14,7 +14,7 @@ export enum Routes {
   STORES_INITIALIZER = 'Stores initializer',
 }
 export const noUserStackInitialRoute = Routes.LANDING;
-export const userStackInitialRoute = Routes.STORES_INITIALIZER;
+export const userStackInitialRoute = Routes.DASHBOARD;
 
 export type RoutesParams = {
   [Routes.LANDING]: undefined;
@@ -26,9 +26,7 @@ export type RoutesParams = {
   [Routes.LOGIN]: undefined;
   [Routes.SETTINGS]: undefined;
   [Routes.FORGOT_PASSWORD]: undefined;
-  [Routes.CALIBRATION]: {
-    id: string;
-  };
+  [Routes.CALIBRATION]: undefined;
   [Routes.ADD_COMMUNITY]: undefined;
   [Routes.JOIN_COMMUNITY]: undefined;
     [Routes.STORES_INITIALIZER]: undefined;
