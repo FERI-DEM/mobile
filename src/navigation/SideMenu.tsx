@@ -92,17 +92,16 @@ const SideMenu = () => {
     const setSelectedCommunity = useCommunityStore(state => state.setSelectedCommunity)
     const setSelectedPowerPlant = usePowerPlantStore(state => state.setSelectedPowerPlant)
 
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateX: translateX.value }],
-        };
-    });
-    const animatedOpacity = useAnimatedStyle(() => {
-        return {
-            display: translateX.value === 200 ? 'none' : 'flex',
-            opacity: interpolate(translateX.value, [0, 200], [0.5, 0]),
-        };
-    })
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: translateX.value }],
+    }));
+    const animatedOpacity = useAnimatedStyle(() => ({
+        display: translateX.value === 200 ? 'none' : 'flex',
+        opacity: interpolate(translateX.value, [0, 200], [0.5, 0]),
+    }))
+    const animatedRootViewStyle = useAnimatedStyle(() => ({
+        zIndex: translateX.value === 200 ? -10 : 10,
+    }))
 
     const onPressGroup = (group: SideMenuGroup) => {
         if(group.route){
@@ -159,7 +158,7 @@ const SideMenu = () => {
     }, [opened]);
 
     return (
-        <View className='absolute w-full h-full'>
+        <Animated.View style={animatedRootViewStyle} className='absolute w-full h-full'>
             <View className='relative w-full h-full flex items-end'>
                 {<Animated.View style={animatedOpacity} className='w-full h-full absolute bg-black'>
                     <TouchableOpacity activeOpacity={1} className='w-full h-full bg-black'
@@ -172,7 +171,7 @@ const SideMenu = () => {
                     </View>
                 </Animated.View>
             </View>
-        </View>
+        </Animated.View>
     )
 }
 export default SideMenu;

@@ -1,33 +1,42 @@
-import { ReactNode, useEffect } from 'react';
-import { usePowerPlantStore } from '../store/power-plant-store';
-import { useCommunityStore } from '../store/community-store';
+import {useEffect} from 'react';
+import {usePowerPlantStore} from '../store/power-plant-store';
+import {useCommunityStore} from '../store/community-store';
 import usePowerPlants from '../hooks/usePowerPlants';
 import useCommunities from '../hooks/useCommunities';
+import {navigate} from "../navigation/navigate";
+import {Routes} from "../navigation/routes";
+import {ActivityIndicator, View} from "react-native";
 
-interface StoresInitializerProps {
-  children: ReactNode | ReactNode[];
-}
-const StoresInitializer = ({ children }: StoresInitializerProps) => {
+const StoresInitializer = () => {
   const { setSelectedPowerPlant, selectedPowerPlant } = usePowerPlantStore();
   const { setSelectedCommunity, selectedCommunity } = useCommunityStore();
-  const { data: powerPlants } = usePowerPlants();
-  const { data: communities } = useCommunities();
+  const { data: powerPlants, isLoading: arePowerPlantsLoading } = usePowerPlants();
+  const { data: communities, isLoading: areCommunitiesLoading } = useCommunities();
 
   useEffect(() => {
-    if (powerPlants && powerPlants.length > 0 && !selectedPowerPlant) {
-      setSelectedPowerPlant({
-        id: powerPlants[0]._id,
-        name: powerPlants[0].displayName,
-      });
-    }
+    if(arePowerPlantsLoading || areCommunitiesLoading) return;
+
     if (communities && communities.length > 0 && !selectedCommunity) {
       setSelectedCommunity({
         id: communities[0]._id,
         name: communities[0].name,
       });
     }
-  }, [powerPlants, communities, setSelectedPowerPlant, setSelectedCommunity]);
+    console.log(powerPlants)
+    if (powerPlants && powerPlants.length > 0 && !selectedPowerPlant) {
+      setSelectedPowerPlant({
+        id: powerPlants[0]._id,
+        name: powerPlants[0].displayName,
+      });
+      navigate(Routes.DASHBOARD)
+    }
+    else if(!powerPlants || powerPlants.length === 0) {
+      navigate(Routes.ADD_POWER_PLANT)
+    }
+  }, [powerPlants, communities, setSelectedPowerPlant, setSelectedCommunity, areCommunitiesLoading, arePowerPlantsLoading]);
 
-  return <>{children}</>;
+  return <View className='flex-1 bg-dark-main items-center justify-center'>
+    <ActivityIndicator size={35} color="white" />
+  </View>;
 };
 export default StoresInitializer;
