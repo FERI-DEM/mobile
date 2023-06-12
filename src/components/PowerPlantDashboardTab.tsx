@@ -19,6 +19,7 @@ import {
   ArrowDownCircleIcon,
 } from 'react-native-heroicons/outline';
 import { CountUp } from 'use-count-up';
+import { getTimeString } from '../utils/date';
 
 const PowerPlantDashboardTab = () => {
   const selectedPowerPlant = usePowerPlantStore(
@@ -59,16 +60,19 @@ const PowerPlantDashboardTab = () => {
               <PowerDisplay
                 power={roundToTwoDecimalPlaces(data.predictionByDays[0])}
                 text="Danes"
+                unit="kWh"
                 classNameContainer="w-1/3 pr-2"
               />
               <PowerDisplay
                 power={roundToTwoDecimalPlaces(data.predictionByDays[1])}
                 text="Jutri"
+                unit="kWh"
                 classNameContainer="w-1/3 px-1"
               />
               <PowerDisplay
                 power={roundToTwoDecimalPlaces(data.predictionByDays[2])}
                 text="Pojutrišnjem"
+                unit="kWh"
                 classNameContainer="w-1/3 pl-2"
               />
             </View>
@@ -97,7 +101,8 @@ const PowerPlantDashboardTab = () => {
                 {prediction && (
                   <PowerDisplay
                     power={roundToTwoDecimalPlaces(prediction[0].power)}
-                    text={`Čez ${15 - (new Date().getMinutes() % 15)} min`}
+                    text={`Ob ${getTimeString(prediction[0].date)}`}
+                    unit="kW"
                     classNameContainer="w-1/3"
                   />
                 )}
@@ -113,7 +118,7 @@ const PowerPlantDashboardTab = () => {
                     )}
                     <View className="flex flex-2 ml-5">
                       <Text className="text-white opacity-40 text-center text-xs">
-                        {`Čez ${30 - (new Date().getMinutes() % 15)} minut`}
+                        {`Ob ${getTimeString(prediction[1].date)}`}
                       </Text>
                       <Text className="text-lg pt-2 text-white  text-center font-semibold">
                         {calculatePowerDifference(
@@ -124,9 +129,11 @@ const PowerPlantDashboardTab = () => {
                           : '-'}
                         <CountUp
                           isCounting
-                          end={calculatePowerDifference(
-                            prediction![0].power,
-                            prediction![1].power
+                          end={Math.abs(
+                            calculatePowerDifference(
+                              prediction![0].power,
+                              prediction![1].power
+                            )
                           )}
                           duration={1}
                         />

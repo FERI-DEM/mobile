@@ -1,6 +1,6 @@
 export const getTimeString = (dateString: string) => {
-  const date = new Date(dateString);
-  const hours = date.getHours().toString();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
+  const date = new Date(
+    new Date(dateString).getTime() + new Date().getTimezoneOffset() * 60000
+  );
+  return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
 };

@@ -17,5 +17,5 @@ export const calculatePowerDifference = (
   firstNumber: number,
   secondNumber: number
 ) => {
-  return roundToTwoDecimalPlaces(firstNumber - secondNumber);
+  return roundToTwoDecimalPlaces(secondNumber - firstNumber);
 };

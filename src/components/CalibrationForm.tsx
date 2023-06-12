@@ -56,7 +56,10 @@ const CalibrationForm: FC = () => {
             showToast('Uspešno kalibrirano!', ToastTypes.SUCCESS);
           },
           onError: () => {
-            showToast('Napaka pri kalibriranju!', ToastTypes.ERROR);
+            showToast(
+              'Napaka pri kalibriranju. Prosim poskusite kasneje.',
+              ToastTypes.ERROR
+            );
           },
         }
       );
