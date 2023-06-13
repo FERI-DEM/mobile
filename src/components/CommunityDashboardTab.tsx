@@ -1,6 +1,6 @@
 import PowerDisplay from './PowerDisplay';
 import { ScrollView, Text, View } from 'react-native';
-import React, { useMemo, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import MemberProductionListItem from './MemberProductionListItem';
 import { useCommunityStore } from '../store/community-store';
 import useCommunity from '../hooks/useCommunity';
@@ -17,9 +17,12 @@ const CommunityDashboardTab = () => {
   const selectedCommunity = useCommunityStore(
     (state) => state.selectedCommunity
   );
+
+  console.log(selectedCommunity);
   const { data: communityData } = useCommunity(selectedCommunity?.id || '', {
     enabled: !!selectedCommunity,
   });
+  console.log(communityData);
   const { data: membersPowerShare } = useCommunityMembersPowerShare(
     selectedCommunity?.id || '',
     { enabled: !!selectedCommunity }
@@ -84,7 +87,7 @@ const CommunityDashboardTab = () => {
         style={{ height: 300, backgroundColor: '#1C1B2D' }}
       >
         {pieChartData?.map((data, index) => (
-          <>
+          <Fragment key={index}>
             <Path
               key={index}
               d={getPieChartPiecePath(100, data.from, data.to)}
@@ -103,7 +106,7 @@ const CommunityDashboardTab = () => {
             >
               {data.user}
             </SvgText>
-          </>
+          </Fragment>
         ))}
       </Svg>
     </ScrollView>

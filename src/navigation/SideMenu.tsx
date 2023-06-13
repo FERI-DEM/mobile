@@ -133,6 +133,7 @@ const SideMenu = () => {
   };
 
   const createSideMenuGroupItems = (group: SideMenuGroup) => {
+    console.log('group', group.title);
     if (group.title === 'Elektrarne') {
       return powerPlants?.map((powerPlant, index) => ({
         title: powerPlant.displayName,
@@ -149,7 +150,7 @@ const SideMenu = () => {
     if (group.title === 'Skupnosti') {
       return communities?.map((community, index) => ({
         title: community.name,
-        route: Routes.DASHBOARD,
+        route: Routes.ORGANIZATION,
         icon: (
           <IconWithText
             icon={<UserGroupIcon size={15} color="#D2C184" />}
