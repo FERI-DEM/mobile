@@ -48,40 +48,40 @@ interface SideMenuGroup {
 export const sideMenuGroups: SideMenuGroup[] = [
   {
     title: 'Elektrarne',
-    icon: <Squares2X2Icon color="white" size={20} />,
+    icon: <Squares2X2Icon color="orange" size={20} />,
     subRoutes: [
       {
         title: 'Ustvari elektrarno',
         route: Routes.ADD_POWER_PLANT,
-        icon: <SquaresPlusIcon color="white" size={15} />,
+        icon: <SquaresPlusIcon color="#236BFE" size={15} />,
       },
     ],
   },
   {
     title: 'Sporočila',
     route: Routes.NOTIFICATIONS,
-    icon: <EnvelopeIcon color="white" size={20} />,
+    icon: <EnvelopeIcon color="#63B38A" size={20} />,
   },
   {
     title: 'Skupnosti',
-    icon: <UserGroupIcon size={20} color="white" />,
+    icon: <UserGroupIcon size={20} color="#FBDD73" />,
     subRoutes: [
       {
         title: 'Ustvari skupnost',
         route: Routes.ADD_COMMUNITY,
-        icon: <PlusCircleIcon color="white" size={15} />,
+        icon: <PlusCircleIcon color="#236BFE" size={15} />,
       },
       {
         title: 'Pridružitev',
         route: Routes.JOIN_COMMUNITY,
-        icon: <UserPlusIcon color="white" size={15} />,
+        icon: <UserPlusIcon color="#FBDD73" size={15} />,
       },
     ],
   },
   {
     title: 'Nastavitve',
     route: Routes.SETTINGS,
-    icon: <Cog6ToothIcon color="white" size={20} />,
+    icon: <Cog6ToothIcon color="#CF4C6C" size={20} />,
   },
 ];
 
@@ -138,7 +138,7 @@ const SideMenu = () => {
         route: Routes.DASHBOARD,
         icon: (
           <IconWithText
-            icon={<Squares2X2Icon color="white" size={15} />}
+            icon={<Squares2X2Icon color="#EDBE44" size={15} />}
             text={`${index + 1}`}
           />
         ),
@@ -151,7 +151,7 @@ const SideMenu = () => {
         route: Routes.DASHBOARD,
         icon: (
           <IconWithText
-            icon={<UserGroupIcon size={15} color="white" />}
+            icon={<UserGroupIcon size={15} color="#D2C184" />}
             text={`${index + 1}`}
           />
         ),
