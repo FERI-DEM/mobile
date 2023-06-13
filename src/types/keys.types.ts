@@ -8,6 +8,7 @@ export enum QueryKey {
     'COMMUNITY_MEMBERS_POWER_SHARE' = 'communityMembersPowerShare',
     'POWER_PLANTS' = 'powerPlants',
     'POWER_PLANT' = 'powerPlant',
+    'APP_INITIALIZE' = 'appInitialize',
 }
 
 export enum MutationKey {

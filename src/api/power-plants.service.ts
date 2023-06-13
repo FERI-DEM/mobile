@@ -1,15 +1,16 @@
-import {apiInstance} from "./axios";
+import { apiInstance } from './axios';
 import {
-    CalibrationReq,
-    PredictedValue,
-    PowerPlantCreateReq,
-    PowerPlantRes,
-} from "../types/powerPlant.types";
+  CalibrationReq,
+  PowerPlant,
+  PowerPlantCreateReq,
+  PowerPlantRes,
+  PredictedValue,
+} from '../types/powerPlant.types';
 
 const PowerPlantsService = {
     getPowerPlants: async () => {
         const response = await apiInstance.get<PowerPlantRes>('power-plants')
-        return response.data.powerPlants
+        return response.data.powerPlants as PowerPlant[]
     },
     getPowerPlant: async (id: string) => {
         const response = await apiInstance.get<PowerPlantRes>(`power-plants/${id}`)

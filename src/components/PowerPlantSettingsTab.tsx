@@ -2,7 +2,10 @@ import { ScrollView, View } from 'react-native';
 import Button from './Button';
 import React from 'react';
 import { usePowerPlantStore } from '../store/power-plant-store';
-import { UpdatePowerPlantDataType } from '../types/powerPlant.types';
+import {
+  PowerPlant,
+  UpdatePowerPlantDataType,
+} from '../types/powerPlant.types';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { UpdatePowerPlantDataSchema } from '../schemas/powerPlant.schema';
 import { FormProvider, SubmitHandler } from 'react-hook-form';
@@ -19,9 +22,9 @@ import {
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
 import usePowerPlantUpdateMutation from '../hooks/usePowerPlantUpdateMutation';
-import usePowerPlants from '../hooks/usePowerPlants';
 import { navigate } from '../navigation/navigate';
 import { Routes } from '../navigation/routes';
+import PowerPlantsService from '../api/power-plants.service';
 
 const PowerPlantSettingsTab = () => {
   const queryClient = useQueryClient();
@@ -31,8 +34,6 @@ const PowerPlantSettingsTab = () => {
   const { data: powerPlantData } = usePowerPlant(selectedPowerPlant?.id || '', {
     enabled: !!selectedPowerPlant,
   });
-
-  const { data: powerPlants, refetch: refetchPowerPlants } = usePowerPlants();
 
   const form = useForm<UpdatePowerPlantDataType>({
     resolver: zodResolver(UpdatePowerPlantDataSchema),
@@ -45,16 +46,23 @@ const PowerPlantSettingsTab = () => {
     usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
       onSuccess: async () => {
         showToast('Elektrarna uspešno izbrisana!', ToastTypes.SUCCESS);
-        const powerPlants = await refetchPowerPlants();
-        if (powerPlants?.data?.length === 0) {
-          navigate(Routes.ADD_POWER_PLANT);
-        } else if (powerPlants?.data) {
-          setSelectedPowerPlant({
-            id: powerPlants?.data[0]._id,
-            name: powerPlants?.data[0].displayName,
-          });
+        let powerPlants: PowerPlant[] = []
+          try{
+            powerPlants = await PowerPlantsService.getPowerPlants()
+          }
+          catch (e) {}
+          queryClient.removeQueries([QueryKey.POWER_PLANTS]);
+        queryClient.invalidateQueries([QueryKey.POWER_PLANTS])
+        if (powerPlants?.length === 0) {
+            navigate(Routes.ADD_POWER_PLANT);
         }
-        setActiveTab(PowerPlantsTab.DASHBOARD);
+        else {
+            setSelectedPowerPlant({
+                id: powerPlants![0]._id,
+                name: powerPlants![0].displayName,
+            });
+            setActiveTab(PowerPlantsTab.DASHBOARD);
+        }
       },
       onError: () => {
         showToast('Napaka pri brisanju elektrarne!', ToastTypes.ERROR);
@@ -111,7 +119,7 @@ const PowerPlantSettingsTab = () => {
         text="Izbriši elektrarno"
         onPress={deletePowerPlant}
         loading={deletePowerPlantLoading}
-        classname="bg-danger m-auto my-4"
+        classname="bg-danger m-auto w-44 h-11 mb-4"
       />
     </View>
   );

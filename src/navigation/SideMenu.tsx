@@ -1,27 +1,32 @@
-import {TouchableOpacity, View} from "react-native";
-import {Routes} from "./routes";
-import {navigate} from "./navigate";
-import {ReactNode, useEffect, useMemo} from "react";
-import {useSideMenuStore} from "../store/side-menu-store";
-import SideMenuLogo from "./SideMenuLogo";
-import NavigationAccordion from "../components/NavigationAccordion";
-import {UserPlusIcon} from "react-native-heroicons/mini";
-import {UserGroupIcon} from "react-native-heroicons/solid";
+import { TouchableOpacity, View } from 'react-native';
+import { Routes } from './routes';
+import { navigate } from './navigate';
+import { ReactNode, useEffect, useMemo } from 'react';
+import { useSideMenuStore } from '../store/side-menu-store';
+import SideMenuLogo from './SideMenuLogo';
+import NavigationAccordion from '../components/NavigationAccordion';
+import { UserPlusIcon } from 'react-native-heroicons/mini';
+import { UserGroupIcon } from 'react-native-heroicons/solid';
 import {
-    Cog6ToothIcon,
-    EnvelopeIcon,
-    PlusCircleIcon,
-    Squares2X2Icon,
-    SquaresPlusIcon
-} from "react-native-heroicons/outline";
-import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
-import usePowerPlants from "../hooks/usePowerPlants";
-import useCommunities from "../hooks/useCommunities";
-import IconWithText from "../components/IconWithText";
-import {useCommunityStore} from "../store/community-store";
-import {usePowerPlantStore} from "../store/power-plant-store";
-import {PowerPlant} from "../types/powerPlant.types";
-import {CommunityRes} from "../types/community.types";
+  Cog6ToothIcon,
+  EnvelopeIcon,
+  PlusCircleIcon,
+  Squares2X2Icon,
+  SquaresPlusIcon,
+} from 'react-native-heroicons/outline';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import usePowerPlants from '../hooks/usePowerPlants';
+import useCommunities from '../hooks/useCommunities';
+import IconWithText from '../components/IconWithText';
+import { useCommunityStore } from '../store/community-store';
+import { usePowerPlantStore } from '../store/power-plant-store';
+import { PowerPlant } from '../types/powerPlant.types';
+import { CommunityRes } from '../types/community.types';
 
 interface SideMenuSubRoute {
     title: string
@@ -87,7 +92,7 @@ export const sideMenuGroups: SideMenuGroup[] = [
 const SideMenu = () => {
     const {opened, toggleOpened, setOpened} = useSideMenuStore()
     const translateX = useSharedValue(200);
-    const {data: powerPlants} = usePowerPlants()
+    const {data: powerPlants, error} = usePowerPlants()
     const {data: communities} = useCommunities()
     const setSelectedCommunity = useCommunityStore(state => state.setSelectedCommunity)
     const setSelectedPowerPlant = usePowerPlantStore(state => state.setSelectedPowerPlant)

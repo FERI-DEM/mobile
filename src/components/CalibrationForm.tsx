@@ -15,8 +15,6 @@ import {
 } from '../store/dashboard-tabs-store';
 import { navigate } from '../navigation/navigate';
 import { Routes } from '../navigation/routes';
-import { useUserStore } from '../store/user-store';
-import { UserState } from '../types/user.types';
 import { ToastTypes } from '../types/toast.types';
 import { QueryKey } from '../types/keys.types';
 import { useQueryClient } from '@tanstack/react-query';
@@ -29,8 +27,21 @@ const CalibrationForm: FC = () => {
   const { selectedPowerPlant, setSelectedPowerPlant } = usePowerPlantStore();
   const setActiveTab = useDashboardTabsStore((state) => state.setActiveTab);
   const { mutate: calibrate, isLoading: calibrateLoading } =
-    useCalibrationMutation();
-  const setUserState = useUserStore((state) => state.setUserState);
+    useCalibrationMutation({
+      onSuccess: () => {
+        form.reset();
+        setActiveTab(PowerPlantsTab.DASHBOARD);
+        navigate(Routes.DASHBOARD);
+        queryClient.invalidateQueries([
+          QueryKey.POWER_PLANT_POWER_PREDICTION,
+          QueryKey.POWER_PLANT_POWER_PREDICTION_BY_DAYS,
+        ]);
+        showToast('Uspešno kalibrirano!', ToastTypes.SUCCESS);
+      },
+      onError: () => {
+        showToast('Napaka pri kalibriranju!', ToastTypes.ERROR);
+      },
+    });
 
   const { showToast } = useToastStore();
   const queryClient = useQueryClient();
@@ -42,24 +53,7 @@ const CalibrationForm: FC = () => {
   const onSubmit: SubmitHandler<CalibrationDataType> = (data) => {
     if (selectedPowerPlant) {
       calibrate(
-        { id: selectedPowerPlant.id, power: data.production },
-        {
-          onSuccess: () => {
-            form.reset();
-            setUserState(UserState.USER);
-            setActiveTab(PowerPlantsTab.DASHBOARD);
-            navigate(Routes.DASHBOARD);
-            queryClient.invalidateQueries([
-              QueryKey.POWER_PLANT_POWER_PREDICTION,
-              QueryKey.POWER_PLANT_POWER_PREDICTION_BY_DAYS,
-            ]);
-            showToast('Uspešno kalibrirano!', ToastTypes.SUCCESS);
-          },
-          onError: () => {
-            showToast('Napaka pri kalibriranju!', ToastTypes.ERROR);
-          },
-        }
-      );
+        { id: selectedPowerPlant.id, power: data.production });
     }
   };
 
