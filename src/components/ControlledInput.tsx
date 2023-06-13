@@ -1,14 +1,14 @@
 import React, { FC, useState } from 'react';
 import {
-  View,
+  Text,
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
-  Text,
+  View,
 } from 'react-native';
 import {
   useController,
-  useFormContext,
   UseControllerProps,
+  useFormContext,
 } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
@@ -29,6 +29,7 @@ const ControlledInputInner: FC<TextInputProps> = ({
   classNameContainer,
   classNameLabel,
   classNameInput,
+  editable = true,
   ...inputProps
 }) => {
   const formContext = useFormContext();
@@ -56,7 +57,8 @@ const ControlledInputInner: FC<TextInputProps> = ({
           className={twMerge(
             'shadow-lg shadow-black rounded-md dark:bg-dark-element dark:text-white py-3 px-4',
             classNameInput,
-            isFocused ? 'border-tint border' : 'border-0'
+            isFocused ? 'border-tint border' : 'border border-dark-element',
+            editable ? 'opacity-100' : 'opacity-60'
           )}
           onChangeText={field.onChange}
           onFocus={() => setIsFocused(true)}
