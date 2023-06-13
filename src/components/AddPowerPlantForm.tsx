@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { navigate } from '../navigation/navigate';
 import { Routes } from '../navigation/routes';
 import Map from '../components/Map';
-import { AddPowerPlantType, UserState } from '../types/user.types';
+import { AddPowerPlantType } from '../types/user.types';
 import { AddPowerPlantSchema } from '../schemas/user.schema';
 import LocationAutoCompleteInput from '../components/LocationAutoCompleteInput';
 import { MapboxResponse } from '../types/mapbox.types';
@@ -42,8 +42,7 @@ const AddPowerPlantForm = () => {
   const { mutate: createPowerPlant, isLoading: createPowerPlantLoading } =
     useRegisterDetailsMutation({
       onSuccess: (data) => {
-        setSelectedPowerPlant({ id: data._id, name: data.displayName });
-        setUserState(UserState.USER);
+        setSelectedPowerPlant({id: data._id, name: data.displayName});
         navigate(Routes.CALIBRATION);
         queryClient.invalidateQueries({ queryKey: [QueryKey.POWER_PLANTS] });
         showToast('Elektrarna uspešno ustvarjena!', ToastTypes.SUCCESS);

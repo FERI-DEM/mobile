@@ -14,7 +14,6 @@ import {
     FIREBASE_PROJECT_ID,
     FIREBASE_STORAGE_BUCKET
 } from "@env";
-import {apiInstance} from "../api/axios";
 
 const firebaseConfig = {
     apiKey: FIREBASE_API_KEY,
@@ -42,14 +41,6 @@ const getAuthenticationModule = () => {
 }
 export const auth = getAuthenticationModule().auth
 export const firebaseDatabase = getFirestore(getAuthenticationModule().app);
-
-auth.onAuthStateChanged(async (user) => {
-    if(user != null) {
-        const token = await user.getIdToken(true)
-        console.log(token)
-        apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
-})
 
 export const passwordReset = async (email: string) => {
     return await sendPasswordResetEmail(auth, email);
