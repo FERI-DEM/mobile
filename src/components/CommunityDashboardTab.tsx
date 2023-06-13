@@ -5,7 +5,7 @@ import MemberProductionListItem from './MemberProductionListItem';
 import { useCommunityStore } from '../store/community-store';
 import useCommunity from '../hooks/useCommunity';
 import useCommunityMembersPowerShare from '../hooks/useCommunityMembersPowerShare';
-import Svg, { Path, Text as SvgText } from 'react-native-svg';
+import Svg, { G, Path, Text as SvgText } from 'react-native-svg';
 import {
   calculatePointOnCircle,
   getPieChartPiecePath,
@@ -17,22 +17,20 @@ const CommunityDashboardTab = () => {
   const selectedCommunity = useCommunityStore(
     (state) => state.selectedCommunity
   );
-
-  console.log(selectedCommunity);
   const { data: communityData } = useCommunity(selectedCommunity?.id || '', {
     enabled: !!selectedCommunity,
   });
-  console.log(communityData);
   const { data: membersPowerShare } = useCommunityMembersPowerShare(
     selectedCommunity?.id || '',
     { enabled: !!selectedCommunity }
   );
-
+  console.log(membersPowerShare);
   const pieChartData = useMemo(() => {
     if (!membersPowerShare) return [];
     return membersPowerShare.map((member, index, array) => {
       if (index === 0)
         return {
+          share: (member.share * 100).toFixed(0),
           user: member.user,
           from: 0,
           to: member.share * 360,
@@ -43,12 +41,15 @@ const CommunityDashboardTab = () => {
         };
       else
         return {
+          share: (member.share * 100).toFixed(0),
           user: member.user,
           from: array[index - 1].share * 360,
           to: array[index - 1].share * 360 + member.share * 360,
           textPosition: calculatePointOnCircle(
             70,
-            array[index - 1].share * 360 + (member.share * 360) / 2,
+            (array[index - 1].share * 360 +
+              (array[index - 1].share * 360 + member.share * 360)) /
+              2,
             { x: 100, y: 100 }
           ),
         };
@@ -95,17 +96,30 @@ const CommunityDashboardTab = () => {
               stroke={'#1C1B2D'}
               strokeWidth={2}
             />
-            <SvgText
-              stroke="white"
-              textAnchor="middle"
+            <G
               transform={`rotate(0, ${data.textPosition.x}, ${data.textPosition.y})`}
               x={data.textPosition.x}
               y={data.textPosition.y}
-              fontSize={10}
-              fontWeight={1}
             >
-              {data.user}
-            </SvgText>
+              <SvgText
+                stroke="white"
+                textAnchor="middle"
+                fontSize={10}
+                fontWeight={1}
+                y={-6}
+              >
+                {data.user}
+              </SvgText>
+              <SvgText
+                stroke="white"
+                textAnchor="middle"
+                fontSize={10}
+                fontWeight={1}
+                y={6}
+              >
+                {data.share + '%'}
+              </SvgText>
+            </G>
           </Fragment>
         ))}
       </Svg>
