@@ -1,6 +1,6 @@
 import PowerDisplay from './PowerDisplay';
 import { ScrollView, Text, View } from 'react-native';
-import React, { Fragment, useMemo, useState } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import MemberProductionListItem from './MemberProductionListItem';
 import { useCommunityStore } from '../store/community-store';
 import useCommunity from '../hooks/useCommunity';
@@ -63,12 +63,23 @@ const CommunityDashboardTab = () => {
   return (
     <ScrollView className="my-5 mx-4 flex">
       <View className="flex flex-row justify-around pb-5">
-        <PowerDisplay power={15} text="Danes" classNameContainer="w-1/3 pr-2" />
-        <PowerDisplay power={22} text="Jutri" classNameContainer="w-1/3 px-1" />
+        <PowerDisplay
+          power={15}
+          text="Danes"
+          classNameContainer="w-1/3 pr-2"
+          unit="kWh"
+        />
+        <PowerDisplay
+          power={22}
+          text="Jutri"
+          classNameContainer="w-1/3 px-1"
+          unit="kWh"
+        />
         <PowerDisplay
           power={10}
           text="Pojutrišnjem"
           classNameContainer="w-1/3 pl-2"
+          unit="kWh"
         />
       </View>
       <Text className="text-white mb-2">Proizvodnja članov</Text>
