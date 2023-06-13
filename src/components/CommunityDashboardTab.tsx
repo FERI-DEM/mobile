@@ -1,6 +1,6 @@
 import PowerDisplay from './PowerDisplay';
 import { ScrollView, Text, View } from 'react-native';
-import React, { Fragment, useMemo, useState } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import MemberProductionListItem from './MemberProductionListItem';
 import { useCommunityStore } from '../store/community-store';
 import useCommunity from '../hooks/useCommunity';
@@ -11,18 +11,17 @@ import {
   getPieChartPiecePath,
 } from '../utils/pie-chart';
 import { colors } from '../utils/random-color';
+import useUser from '../hooks/useUser';
 
 const CommunityDashboardTab = () => {
-  const [active, setActive] = useState<number>(0);
   const selectedCommunity = useCommunityStore(
     (state) => state.selectedCommunity
   );
+  const { data: user } = useUser();
 
-  console.log(selectedCommunity);
   const { data: communityData } = useCommunity(selectedCommunity?.id || '', {
     enabled: !!selectedCommunity,
   });
-  console.log(communityData);
   const { data: membersPowerShare } = useCommunityMembersPowerShare(
     selectedCommunity?.id || '',
     { enabled: !!selectedCommunity }
@@ -72,10 +71,9 @@ const CommunityDashboardTab = () => {
       {communityData?.members.map((member, index) => {
         return (
           <MemberProductionListItem
-            member={member.userName}
+            member={member.userName + ' ~ ' + member.powerPlantName}
             power={100}
-            onPress={() => setActive(index)}
-            active={active === index}
+            active={user?.id === member.userId}
             key={index}
           />
         );
