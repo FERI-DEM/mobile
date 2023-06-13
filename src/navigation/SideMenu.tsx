@@ -87,7 +87,8 @@ export const sideMenuGroups: SideMenuGroup[] = [
 
 const SideMenu = () => {
   const { opened, toggleOpened, setOpened } = useSideMenuStore();
-  const translateX = useSharedValue(200);
+  const targetSize = 220;
+  const translateX = useSharedValue(targetSize);
   const { data: powerPlants } = usePowerPlants();
   const { data: communities } = useCommunities();
   const setSelectedCommunity = useCommunityStore(
@@ -101,11 +102,11 @@ const SideMenu = () => {
     transform: [{ translateX: translateX.value }],
   }));
   const animatedOpacity = useAnimatedStyle(() => ({
-    display: translateX.value === 200 ? 'none' : 'flex',
-    opacity: interpolate(translateX.value, [0, 200], [0.5, 0]),
+    display: translateX.value === targetSize ? 'none' : 'flex',
+    opacity: interpolate(translateX.value, [0, targetSize], [0.5, 0]),
   }));
   const animatedRootViewStyle = useAnimatedStyle(() => ({
-    zIndex: translateX.value === 200 ? -10 : 10,
+    zIndex: translateX.value === targetSize ? -10 : 10,
   }));
 
   const onPressGroup = (group: SideMenuGroup) => {
@@ -175,7 +176,7 @@ const SideMenu = () => {
   );
 
   useEffect(() => {
-    translateX.value = withTiming(opened ? 0 : 200, { duration: 200 });
+    translateX.value = withTiming(opened ? 0 : targetSize, { duration: 200 });
   }, [opened]);
 
   return (
@@ -197,11 +198,11 @@ const SideMenu = () => {
           </Animated.View>
         }
         <Animated.View
-          className="w-[200px] dark:bg-dark-main h-full items-center pt-9"
+          className={`w-[220px] dark:bg-dark-main h-full items-center pt-9`}
           style={animatedStyle}
         >
           <SideMenuLogo />
-          <View className="w-full px-7">
+          <View className="w-full px-5">
             {groups.map((group, index) => (
               <NavigationAccordion group={group} key={index} />
             ))}

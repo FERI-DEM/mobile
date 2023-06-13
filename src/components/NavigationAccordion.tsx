@@ -69,17 +69,19 @@ const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
         className="my-2 flex flex-row items-center"
         onPress={() => onPressGroup()}
       >
-        <>
-          <View className="w-4 h-4">{group.icon}</View>
-          <Text className="ml-3 text-white text-md font-bold mr-3">
-            {group.title}
-          </Text>
+        <View className="flex flex-row justify-between w-full">
+          <View className="flex flex-row items-center">
+            <View className="w-4 h-4">{group.icon}</View>
+            <Text className="ml-3 text-white text-md font-bold mr-3">
+              {group.title}
+            </Text>
+          </View>
           {(group.subRoutes || group.items) && (
-            <Animated.View className="mt-1" style={arrowDownAnimatedStyle}>
+            <Animated.View className="mt-1 mr-5" style={arrowDownAnimatedStyle}>
               <ChevronDownIcon size={16} color="white" />
             </Animated.View>
           )}
-        </>
+        </View>
       </TouchableOpacity>
       <Animated.View
         className="flex flex-col overflow-hidden"
