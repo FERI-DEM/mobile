@@ -9,38 +9,46 @@ import useCommunity from '../hooks/useCommunity';
 import MemberListItem from './MemberListItem';
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
-import useCommunities from '../hooks/useCommunities';
 import {
   useCommunityTabsStore,
   CommunityTab,
 } from '../store/community-tabs-store';
-import { useUserStore } from '../store/user-store';
+import { Community } from '../types/community.types';
+import { QueryKey } from '../types/keys.types';
+import CommunityService from '../api/community.service';
+import { useQueryClient } from '@tanstack/react-query';
+import useUser from '../hooks/useUser';
 
 const CommunitySettingsTab = () => {
+  const queryClient = useQueryClient();
   const { selectedCommunity, setSelectedCommunity } = useCommunityStore();
   const setActiveTab = useCommunityTabsStore((state) => state.setActiveTab);
 
   const { showToast } = useToastStore();
-  const { data: communites, refetch: refetchCommunities } = useCommunities();
-
+  const { data: user } = useUser();
   const { data: communityData } = useCommunity(selectedCommunity?.id || '', {
     enabled: !!selectedCommunity,
   });
   const { mutate: deleteCommunity } = useCommunityDeleteMutation(
     selectedCommunity?.id || '',
     {
-      onSuccess: () => {
+      onSuccess: async () => {
         showToast('Skupnost uspešno izbrisana!', ToastTypes.SUCCESS);
-        navigate(Routes.ORGANIZATION);
-        if (communites?.length === 0) {
+        let communities: Community[] = [];
+        try {
+          communities = await CommunityService.getCommunities();
+        } catch (e) {}
+        queryClient.removeQueries([QueryKey.COMMUNITIES]);
+        queryClient.invalidateQueries([QueryKey.COMMUNITIES]);
+        if (communities?.length === 0) {
           navigate(Routes.ADD_COMMUNITY);
-        } else if (communites) {
+        } else {
           setSelectedCommunity({
-            id: communites[0]._id,
-            name: communites[0].name,
+            id: communities![0]._id,
+            name: communities![0].name,
           });
+          setActiveTab(CommunityTab.DASHBOARD);
         }
-        setActiveTab(CommunityTab.DASHBOARD);
       },
       onError: () => {
         showToast('Napaka pri brisanju skupnosti!', ToastTypes.ERROR);
@@ -60,15 +68,18 @@ const CommunitySettingsTab = () => {
               member={member}
               communityId={communityData._id}
               key={index}
+              adminId={communityData.adminId}
             />
           ))
         )}
       </ScrollView>
-      <Button
-        text="Izbriši skupnost"
-        onPress={deleteCommunity}
-        classname="bg-danger m-auto my-4"
-      />
+      {user?.id === communityData?.adminId && (
+        <Button
+          text="Izbriši skupnost"
+          onPress={deleteCommunity}
+          classname="bg-danger m-auto my-4"
+        />
+      )}
     </View>
   );
 };

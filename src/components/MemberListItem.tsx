@@ -6,23 +6,32 @@ import useCommunityRemoveMemberMutation from '../hooks/useCommunityRemoveMemberM
 import { CommunityMember } from '../types/community.types';
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
+import useUser from '../hooks/useUser';
+import { QueryKey } from '../types/keys.types';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface TestMemberListItemProps {
   communityId: string;
   member: CommunityMember;
+  adminId: string;
 }
 const MemberListItem: FC<TestMemberListItemProps> = ({
   member,
   communityId,
+  adminId,
 }) => {
   const { showToast } = useToastStore();
+  const { data: user } = useUser();
+  const queryClient = useQueryClient();
 
   const { mutate: removeMember } = useCommunityRemoveMemberMutation(
     communityId,
     member.userId,
+    member.powerPlantId,
     {
       onSuccess: () => {
         showToast('Član uspešno odstranjen!', ToastTypes.SUCCESS);
+        queryClient.invalidateQueries({ queryKey: [QueryKey.COMMUNITY] });
       },
       onError: () => {
         showToast('Napaka pri odstranjevanju člana!', ToastTypes.ERROR);
@@ -31,15 +40,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
   );
 
   const onRemoveMember = () => {
-    if (member.isAdmin) {
-      showToast(
-        'Ne morete zapustiti skupnosti, saj ste administrator!',
-        ToastTypes.INFORMATION
-      );
-      return;
-    } else {
-      removeMember();
-    }
+    removeMember();
   };
 
   return (
@@ -47,7 +48,13 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
       <View className="flex gap-2">
         <View className="flex flex-row items-center">
           <UserCircleIcon color="white" />
-          <Text className="text-white ml-2">{member.userName}</Text>
+          <Text
+            className={`${
+              user?.id === member.userId ? 'text-tint' : 'text-white'
+            } ml-2`}
+          >
+            {member.userName}
+          </Text>
         </View>
         <View className="flex flex-row items-center">
           <BoltIcon color="orange" />
@@ -55,7 +62,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
         </View>
       </View>
       <View>
-        {member.isAdmin && (
+        {user?.id === adminId && user?.id != member.userId && (
           <Button
             classname="bg-gray-500"
             text={'Odstrani'}

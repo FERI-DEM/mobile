@@ -20,13 +20,12 @@ import {
 } from 'react-native-heroicons/outline';
 import { CountUp } from 'use-count-up';
 import { getTimeString } from '../utils/date';
-import { StackActions, useIsFocused } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
 
 const PowerPlantDashboardTab = () => {
-    const {showToast} = useToastStore();
-    const focused = useIsFocused()
+  const { showToast } = useToastStore();
   const selectedPowerPlant = usePowerPlantStore(
     (state) => state.selectedPowerPlant
   );
@@ -36,8 +35,8 @@ const PowerPlantDashboardTab = () => {
       enabled: !!selectedPowerPlant,
       retry: false,
       onError: () => {
-          navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
-          showToast('Te elektrarne še niste kalibrirali', ToastTypes.ERROR);
+        navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
+        showToast('Te elektrarne še niste kalibrirali!', ToastTypes.ERROR);
       },
     }
   );
@@ -46,8 +45,8 @@ const PowerPlantDashboardTab = () => {
       enabled: !!selectedPowerPlant,
       retry: false,
       onError: () => {
-          navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
-          showToast('Te elektrarne še niste kalibrirali', ToastTypes.ERROR);
+        navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
+        showToast('Te elektrarne še niste kalibrirali', ToastTypes.ERROR);
       },
     });
 
