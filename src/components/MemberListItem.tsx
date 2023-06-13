@@ -58,7 +58,13 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
         </View>
         <View className="flex flex-row items-center">
           <BoltIcon color="orange" />
-          <Text className="text-white ml-2">{member.powerPlantName}</Text>
+          <Text
+            className={`${
+              user?.id === member.userId ? 'text-tint' : 'text-white'
+            } ml-2`}
+          >
+            {member.powerPlantName}
+          </Text>
         </View>
       </View>
       <View>

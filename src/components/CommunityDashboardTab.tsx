@@ -11,12 +11,14 @@ import {
   getPieChartPiecePath,
 } from '../utils/pie-chart';
 import { colors } from '../utils/random-color';
+import useUser from '../hooks/useUser';
 
 const CommunityDashboardTab = () => {
-  const [active, setActive] = useState<number>(0);
   const selectedCommunity = useCommunityStore(
     (state) => state.selectedCommunity
   );
+  const { data: user } = useUser();
+
   const { data: communityData } = useCommunity(selectedCommunity?.id || '', {
     enabled: !!selectedCommunity,
   });
@@ -24,7 +26,7 @@ const CommunityDashboardTab = () => {
     selectedCommunity?.id || '',
     { enabled: !!selectedCommunity }
   );
-  console.log(membersPowerShare);
+
   const pieChartData = useMemo(() => {
     if (!membersPowerShare) return [];
     return membersPowerShare.map((member, index, array) => {
@@ -73,10 +75,9 @@ const CommunityDashboardTab = () => {
       {communityData?.members.map((member, index) => {
         return (
           <MemberProductionListItem
-            member={member.userName}
+            member={member.userName + ' ~ ' + member.powerPlantName}
             power={100}
-            onPress={() => setActive(index)}
-            active={active === index}
+            active={user?.id === member.userId}
             key={index}
           />
         );
