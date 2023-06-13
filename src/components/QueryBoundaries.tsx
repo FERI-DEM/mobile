@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from 'react';
+import { ReactNode } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { twMerge } from 'tailwind-merge';
 
@@ -12,16 +12,11 @@ interface QueryBoundariesProps extends LoadingViewProps {
 export const QueryBoundaries = ({
   children,
   loadingClassName,
-  isLoading = false,
+  isLoading = true,
 }: QueryBoundariesProps) => {
-  console.log(isLoading);
   if (isLoading) return <LoadingView loadingClassName={loadingClassName} />;
 
-  return (
-    <Suspense fallback={<LoadingView loadingClassName={loadingClassName} />}>
-      {children}
-    </Suspense>
-  );
+  return <>{children}</>;
 };
 
 const LoadingView = ({ loadingClassName }: LoadingViewProps) => (

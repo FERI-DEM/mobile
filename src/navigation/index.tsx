@@ -5,13 +5,12 @@ import {ColorSchemeName, Text, View} from 'react-native';
 import {navigationRef} from "./navigate";
 import UserStack from "./UserStack";
 import NoUserStack from "./NoUserStack";
-import SideMenu from "./SideMenu";
 import Toast from "../components/Toast";
-import IncompleteUserStack from "./IncompleteUserStack";
 import {UserState} from "../types/user.types";
 import {User} from "firebase/auth";
 import {auth} from "../config/firebase";
 import {useUserStore} from "../store/user-store";
+import {apiInstance} from "../api/axios";
 
 export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
     return (
@@ -21,7 +20,6 @@ export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName
                 theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                 <RootNavigator/>
             </NavigationContainer>
-            <SideMenu/>
             <Toast/>
         </View>
     );
@@ -35,13 +33,10 @@ function RootNavigator() {
         setUserState(UserState.LOADING)
         if (user) {
             const tokenResponse = await user.getIdTokenResult();
-            console.log(tokenResponse.claims.valid)
-            if (tokenResponse.claims.valid != null && tokenResponse.claims.valid === true) {
-                setUserState(UserState.USER)
-            }
-            else{
-                setUserState(UserState.INCOMPLETE_USER)
-            }
+            apiInstance.defaults.headers.common['Authorization'] = `Bearer ${tokenResponse.token}`;
+            console.log(tokenResponse.token)
+
+            setUserState(UserState.USER)
             setUser(user);
         } else {
             setUserState(UserState.NO_USER)
@@ -50,15 +45,12 @@ function RootNavigator() {
     }
 
     useEffect(() => {
-        setUserState(UserState.LOADING)
         return auth.onAuthStateChanged(onUserStateChange);
     }, []);
 
 
     if (userState === UserState.LOADING) return <Text>Loading</Text>
-    if(userState === UserState.INCOMPLETE_USER) return <IncompleteUserStack/>
-    if(userState === UserState.USER) return <UserStack/>
 
-    return <NoUserStack />;
+    return user ? <UserStack /> : <NoUserStack />;
 }
 
