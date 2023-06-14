@@ -3,7 +3,6 @@ import { ScrollView, Text, View } from 'react-native';
 import React, { useMemo } from 'react';
 import usePrediction from '../hooks/usePrediction';
 import { usePowerPlantStore } from '../store/power-plant-store';
-import LineChart from './LineChart';
 import usePredictionByDays from '../hooks/usePredictionByDays';
 import {
   calculatePowerDifference,
@@ -15,14 +14,15 @@ import DateView from './DataView';
 import { navigationRef } from '../navigation/navigate';
 import { Routes } from '../navigation/routes';
 import {
-  ArrowUpCircleIcon,
   ArrowDownCircleIcon,
+  ArrowUpCircleIcon,
 } from 'react-native-heroicons/outline';
 import { CountUp } from 'use-count-up';
 import { getTimeString } from '../utils/date';
 import { StackActions } from '@react-navigation/native';
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
+import PowerPlantProductionLineChart from './PowerPlantProductionLineChart';
 
 const PowerPlantDashboardTab = () => {
   const { showToast } = useToastStore();
@@ -104,7 +104,7 @@ const PowerPlantDashboardTab = () => {
                 />
               )}
               <View className="my-5">
-                {prediction && <LineChart data={prediction} />}
+                {prediction && <PowerPlantProductionLineChart />}
               </View>
 
               <View className="mb-4 flex flex-row px-4">
