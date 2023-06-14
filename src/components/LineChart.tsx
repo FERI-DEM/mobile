@@ -10,6 +10,7 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withDecay,
+  withTiming,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { PredictedValue } from '../types/powerPlant.types';
@@ -58,8 +59,13 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
   const data = useSharedValue(
     prepareActiveData(allData.value, activeTranslate.value)
   );
+  const maxInActiveData = useDerivedValue(() => {
+    const max = Math.max(...data.value.map(({ y }) => y));
+    return withTiming(Math.max(max, 70), { duration: 100 });
+  });
 
   const xLegend = useSharedValue('');
+  const yLegend = useSharedValue('');
 
   useAnimatedReaction(
     () => savedTranslate.value,
@@ -108,7 +114,9 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
     labels.forEach((label, index) => {
       path += generateTextPath(label + 'kW', { y: index * unit }) + ' ';
     });
-    return path;
+    runOnUI(() => {
+      yLegend.value = path;
+    })();
   };
 
   const createXLegend = (data: { date: string; x: number; y: number }[]) => {
@@ -131,23 +139,42 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
     },
     []
   );
+  useAnimatedReaction(
+    () => maxInActiveData.value,
+    (result) => {
+      runOnJS(createYLegend)(result);
+    },
+    []
+  );
+  console.log(dataFromProps);
 
   const line = useDerivedValue(() => {
-    console.log(data.value.length);
     let path = '';
     const unitLength = data.value[1].x - data.value[0].x;
-    data.value.forEach(({ x, y }, index) => {
+    for (let i = 0; i < data.value.length; i++) {
+      let { x, y } = data.value[i];
       x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
-      if (index === 0) path = `M ${x},${y} `;
-      else
-        path += `C ${
-          zoomPoint.value +
-          (data.value[index - 1].x - zoomPoint.value) * activeScale.value +
-          0.5 * unitLength * activeScale.value
-        },${data.value[index - 1].y} ${
-          x - 0.5 * unitLength * activeScale.value
-        },${y} ${x},${y} `;
-    });
+      y =
+        (y / maxInActiveData.value) *
+        (viewBoxSize.height - innerOffset.y - padding);
+      if (i === 0) {
+        path = `M ${x},${y} `;
+        continue;
+      }
+
+      let { x: prevX, y: prevY } = data.value[i - 1];
+      prevX =
+        zoomPoint.value +
+        (prevX - zoomPoint.value) * activeScale.value +
+        0.5 * unitLength * activeScale.value;
+      prevY =
+        (prevY / maxInActiveData.value) *
+        (viewBoxSize.height - innerOffset.y - padding);
+
+      path += `C ${prevX},${prevY} ${
+        x - 0.5 * unitLength * activeScale.value
+      },${y} ${x},${y} `;
+    }
     return path;
   }, []);
 
@@ -156,18 +183,30 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
     let path = `M ${
       zoomPoint.value + (data.value[0].x - zoomPoint.value) * activeScale.value
     },0 `;
-    data.value.forEach(({ x, y }, index) => {
+    for (let i = 0; i < data.value.length; i++) {
+      let { x, y } = data.value[i];
       x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
-      if (index === 0) path += `L ${x},${y} `;
-      else
-        path += `C ${
-          zoomPoint.value +
-          (data.value[index - 1].x - zoomPoint.value) * activeScale.value +
-          0.5 * unitLength * activeScale.value
-        },${data.value[index - 1].y} ${
-          x - 0.5 * unitLength * activeScale.value
-        },${y} ${x},${y} `;
-    });
+      y =
+        (y / maxInActiveData.value) *
+        (viewBoxSize.height - innerOffset.y - padding);
+      if (i === 0) {
+        path += `L ${x},${y} `;
+        continue;
+      }
+
+      let { x: prevX, y: prevY } = data.value[i - 1];
+      prevX =
+        zoomPoint.value +
+        (prevX - zoomPoint.value) * activeScale.value +
+        0.5 * unitLength * activeScale.value;
+      prevY =
+        (prevY / maxInActiveData.value) *
+        (viewBoxSize.height - innerOffset.y - padding);
+
+      path += `C ${prevX},${prevY} ${
+        x - 0.5 * unitLength * activeScale.value
+      },${y} ${x},${y} `;
+    }
     path += `L ${
       zoomPoint.value +
       (data.value[data.value.length - 1].x - zoomPoint.value) *
@@ -228,6 +267,7 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
     x: activeTranslate.value,
   }));
   const animatedXLegendProps = useAnimatedProps(() => ({ d: xLegend.value }));
+  const animatedYLegendProps = useAnimatedProps(() => ({ d: yLegend.value }));
 
   return (
     <>
@@ -282,10 +322,10 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
                 y={-innerOffset.y}
                 fill="#292A3E"
               />
-              <Path
+              <AnimatedPath
                 x={-innerOffset.x / 2}
                 y={-fontSize / 2}
-                d={createYLegend(max)}
+                animatedProps={animatedYLegendProps}
                 strokeWidth="0.2"
                 stroke="white"
               />

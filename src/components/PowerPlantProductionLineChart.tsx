@@ -27,8 +27,6 @@ const PowerPlantProductionLineChart = () => {
       { retry: false }
     );
 
-  console.log(history);
-
   const mergedData = useMemo(() => {
     if (isHistoryLoading || isLoadingPrediction) return undefined;
     const preparedHistory =
