@@ -12,6 +12,8 @@ import {
 } from '../utils/pie-chart';
 import { colors } from '../utils/random-color';
 import useUser from '../hooks/useUser';
+import useCommunitiesPredictionByDays from '../hooks/useCommunitiesPredictionByDays';
+import { roundToTwoDecimalPlaces } from '../utils/power';
 
 const CommunityDashboardTab = () => {
   const selectedCommunity = useCommunityStore(
@@ -26,6 +28,12 @@ const CommunityDashboardTab = () => {
     selectedCommunity?.id || '',
     { enabled: !!selectedCommunity }
   );
+
+  const { data: predictionByDays, isLoading: isLoadingPredictionByDays } =
+    useCommunitiesPredictionByDays(selectedCommunity?.id || '', {
+      enabled: !!selectedCommunity,
+      retry: false,
+    });
 
   const pieChartData = useMemo(() => {
     if (!membersPowerShare) return [];
@@ -58,25 +66,25 @@ const CommunityDashboardTab = () => {
     });
   }, [membersPowerShare]);
 
-  if (!communityData) return <Text>Loading...</Text>;
+  if (!communityData || !predictionByDays) return <Text>Loading...</Text>;
 
   return (
     <ScrollView className="my-5 mx-4 flex">
       <View className="flex flex-row justify-around pb-5">
         <PowerDisplay
-          power={15}
+          power={roundToTwoDecimalPlaces(predictionByDays[0])}
           text="Danes"
           classNameContainer="w-1/3 pr-2"
           unit="kWh"
         />
         <PowerDisplay
-          power={22}
+          power={roundToTwoDecimalPlaces(predictionByDays[1])}
           text="Jutri"
           classNameContainer="w-1/3 px-1"
           unit="kWh"
         />
         <PowerDisplay
-          power={10}
+          power={roundToTwoDecimalPlaces(predictionByDays[2])}
           text="Pojutrišnjem"
           classNameContainer="w-1/3 pl-2"
           unit="kWh"

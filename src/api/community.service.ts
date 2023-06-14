@@ -58,6 +58,12 @@ const CommunityService = {
     );
     return response.data;
   },
+  getPredictionByDays: async (id: string) => {
+    const response = await apiInstance.get<number[]>(
+      `communities/predict-by-days/${id}`
+    );
+    return response.data;
+  },
 };
 
 export default CommunityService;

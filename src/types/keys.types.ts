@@ -10,6 +10,7 @@ export enum QueryKey {
   'POWER_PLANT' = 'powerPlant',
   'APP_INITIALIZE' = 'appInitialize',
   'USER' = 'user',
+  'COMMUNITIES_POWER_PREDICTION_BY_DAYS' = 'communitiesPowerPredictionByDays',
 }
 
 export enum MutationKey {
