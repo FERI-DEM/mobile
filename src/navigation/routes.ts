@@ -11,6 +11,7 @@ export enum Routes {
   FORGOT_PASSWORD = 'Pozabljeno geslo',
   ADD_COMMUNITY = 'Dodaj skupnost',
   JOIN_COMMUNITY = 'Pridruži se skupnosti',
+  STORES_INITIALIZER = 'Stores initializer',
 }
 export const noUserStackInitialRoute = Routes.LANDING;
 export const userStackInitialRoute = Routes.DASHBOARD;
@@ -28,4 +29,5 @@ export type RoutesParams = {
   [Routes.CALIBRATION]: undefined;
   [Routes.ADD_COMMUNITY]: undefined;
   [Routes.JOIN_COMMUNITY]: undefined;
+    [Routes.STORES_INITIALIZER]: undefined;
 };

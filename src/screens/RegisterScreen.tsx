@@ -1,17 +1,15 @@
-import {ScrollView, Text, View} from "react-native";
-import Svg, {Path} from "react-native-svg";
-import Button from "../components/Button";
-import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {ControlledInput} from "../components/ControlledInput";
-import {zodResolver} from '@hookform/resolvers/zod';
-import {navigate} from "../navigation/navigate";
-import {Routes} from "../navigation/routes";
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import {auth} from "../config/firebase";
-import {twMerge} from "tailwind-merge";
-import React from "react";
-import {BaseRegisterType} from "../types/user.types";
-import {BaseRegisterSchema} from "../schemas/user.schema";
+import { ScrollView, Text, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
+import Button from '../components/Button';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { ControlledInput } from '../components/ControlledInput';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebase';
+import { twMerge } from 'tailwind-merge';
+import React from 'react';
+import { BaseRegisterType } from '../types/user.types';
+import { BaseRegisterSchema } from '../schemas/user.schema';
 
 
 const DefaultRegisterData: BaseRegisterType = {
@@ -31,10 +29,7 @@ const RegisterScreen = () => {
         if (data.password !== data.confirmPassword)
             return form.setError('root', {type: 'manual', message: 'Gesli se ne ujemata'})
         try {
-            const userCredentials = await createUserWithEmailAndPassword(auth, data.email, data.password);
-            const token = await userCredentials.user.getIdToken()
-            navigate(Routes.ADD_POWER_PLANT)
-
+            await createUserWithEmailAndPassword(auth, data.email, data.password);
         } catch (e) {
             form.setError('root', {
                 type: 'manual',
@@ -80,8 +75,9 @@ const RegisterScreen = () => {
                         {!!form.formState.errors.root?.message && <Text
                             className={twMerge('pl-0.5 text-warning pt-1.5')}>{form.formState.errors.root?.message}</Text>}
                         <Button
+                            loading={form.formState.isSubmitting}
                             text="Potrdi"
-                            classname='mt-7'
+                            classname='mt-7 w-20 h-11'
                             onPress={form.handleSubmit(createAccount)}
                         />
                     </FormProvider>

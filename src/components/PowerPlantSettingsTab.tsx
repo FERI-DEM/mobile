@@ -2,7 +2,10 @@ import { ScrollView, View } from 'react-native';
 import Button from './Button';
 import React from 'react';
 import { usePowerPlantStore } from '../store/power-plant-store';
-import { UpdatePowerPlantDataType } from '../types/powerPlant.types';
+import {
+  PowerPlant,
+  UpdatePowerPlantDataType,
+} from '../types/powerPlant.types';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { UpdatePowerPlantDataSchema } from '../schemas/powerPlant.schema';
 import { FormProvider, SubmitHandler } from 'react-hook-form';
@@ -19,9 +22,9 @@ import {
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
 import usePowerPlantUpdateMutation from '../hooks/usePowerPlantUpdateMutation';
-import usePowerPlants from '../hooks/usePowerPlants';
 import { navigate } from '../navigation/navigate';
 import { Routes } from '../navigation/routes';
+import PowerPlantsService from '../api/power-plants.service';
 
 const PowerPlantSettingsTab = () => {
   const queryClient = useQueryClient();
@@ -32,9 +35,6 @@ const PowerPlantSettingsTab = () => {
     enabled: !!selectedPowerPlant,
   });
 
-  const { data: powerPlants, refetch: refetchPowerPlants } = usePowerPlants();
-  console.log(powerPlants);
-
   const form = useForm<UpdatePowerPlantDataType>({
     resolver: zodResolver(UpdatePowerPlantDataSchema),
     defaultValues: { name: powerPlantData?.powerPlants[0].displayName || '' },
@@ -42,31 +42,35 @@ const PowerPlantSettingsTab = () => {
 
   const { showToast } = useToastStore();
 
-  const { mutate: deletePowerPlant } = usePowerPlantDeleteMutation(
-    selectedPowerPlant?.id || '',
-    {
+  const { mutate: deletePowerPlant, isLoading: deletePowerPlantLoading } =
+    usePowerPlantDeleteMutation(selectedPowerPlant?.id || '', {
       onSuccess: async () => {
         showToast('Elektrarna uspešno izbrisana!', ToastTypes.SUCCESS);
-        const powerPlants = await refetchPowerPlants();
-        if (powerPlants?.data?.length === 0) {
-          navigate(Routes.ADD_POWER_PLANT);
-        } else if (powerPlants?.data) {
-          setSelectedPowerPlant({
-            id: powerPlants?.data[0]._id,
-            name: powerPlants?.data[0].displayName,
-          });
+        let powerPlants: PowerPlant[] = []
+          try{
+            powerPlants = await PowerPlantsService.getPowerPlants()
+          }
+          catch (e) {}
+          queryClient.removeQueries([QueryKey.POWER_PLANTS]);
+        queryClient.invalidateQueries([QueryKey.POWER_PLANTS])
+        if (powerPlants?.length === 0) {
+            navigate(Routes.ADD_POWER_PLANT);
         }
-        setActiveTab(PowerPlantsTab.DASHBOARD);
+        else {
+            setSelectedPowerPlant({
+                id: powerPlants![0]._id,
+                name: powerPlants![0].displayName,
+            });
+            setActiveTab(PowerPlantsTab.DASHBOARD);
+        }
       },
-      onError: (err) => {
+      onError: () => {
         showToast('Napaka pri brisanju elektrarne!', ToastTypes.ERROR);
       },
-    }
-  );
+    });
 
-  const { mutate: updatePowerPlant } = usePowerPlantUpdateMutation(
-    selectedPowerPlant?.id || '',
-    {
+  const { mutate: updatePowerPlant, isLoading: updatePowerPlantLoading } =
+    usePowerPlantUpdateMutation(selectedPowerPlant?.id || '', {
       onSuccess: () => {
         showToast('Elektrarna uspešno posodobljena!', ToastTypes.SUCCESS);
         queryClient.invalidateQueries(
@@ -78,11 +82,10 @@ const PowerPlantSettingsTab = () => {
           name: form.getValues()?.name || '',
         });
       },
-      onError: (err) => {
+      onError: () => {
         showToast('Napaka pri posodabljanju elektrarne!', ToastTypes.ERROR);
       },
-    }
-  );
+    });
 
   const onSubmit: SubmitHandler<UpdatePowerPlantDataType> = (data) => {
     updatePowerPlant({
@@ -99,13 +102,14 @@ const PowerPlantSettingsTab = () => {
           <FormProvider {...form}>
             <ControlledInput
               name="name"
-              label="Ime elektrarne"
+              label="Ime elektrarne *"
               placeholder="Ime"
               defaultValue={powerPlantData?.powerPlants[0].displayName}
             />
             <Button
               text="Posodobi"
               classname="mt-4"
+              loading={updatePowerPlantLoading}
               onPress={form.handleSubmit(onSubmit)}
             />
           </FormProvider>
@@ -114,7 +118,8 @@ const PowerPlantSettingsTab = () => {
       <Button
         text="Izbriši elektrarno"
         onPress={deletePowerPlant}
-        classname="bg-danger m-auto my-4"
+        loading={deletePowerPlantLoading}
+        classname="bg-danger m-auto w-44 h-11 mb-4"
       />
     </View>
   );
