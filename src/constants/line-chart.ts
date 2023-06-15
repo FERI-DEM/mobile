@@ -8,6 +8,9 @@ const viewBoxSize = {
   width: 75 + innerOffset.x,
   height: 60 + innerOffset.y + padding,
 };
+
+export const graphHeight = 300;
+export const graphHorizontalMargin = 15;
 const fontSize = 1.3;
 const charWidth = 1.5;
 const fontWidth = 0.2;

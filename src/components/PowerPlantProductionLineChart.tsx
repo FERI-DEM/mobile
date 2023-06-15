@@ -1,55 +1,71 @@
 import LineChart from './LineChart';
 import usePowerPlantPowerHistory from '../hooks/usePowerPlantPowerHistory';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import usePrediction from '../hooks/usePrediction';
 import { usePowerPlantStore } from '../store/power-plant-store';
-import { Text } from 'react-native';
+import DataView from './DataView';
+import { graphHeight, graphHorizontalMargin } from '../constants/line-chart';
+import { useDashboardTabsStore } from '../store/dashboard-tabs-store';
+
+function View() {
+  return null;
+}
 
 const PowerPlantProductionLineChart = () => {
   const selectedPowerPlant = usePowerPlantStore(
     (state) => state.selectedPowerPlant
   );
-  const { data: predictions, isLoading: isLoadingPrediction } = usePrediction(
+  const activeTab = useDashboardTabsStore((state) => state.activeTab);
+  const { data: predictions } = usePrediction(selectedPowerPlant?.id || '', {
+    enabled: !!selectedPowerPlant,
+    retry: false,
+  });
+  const { data: history, fetchNextPage } = usePowerPlantPowerHistory(
     selectedPowerPlant?.id || '',
     {
-      enabled: !!selectedPowerPlant,
       retry: false,
+      keepPreviousData: true,
+      enabled: !!selectedPowerPlant,
     }
   );
-  const {
-    data: history,
-    isLoading: isHistoryLoading,
-    fetchNextPage,
-  } = usePowerPlantPowerHistory(selectedPowerPlant?.id || '', {
-    retry: false,
-    keepPreviousData: true,
-    enabled: !!selectedPowerPlant,
-  });
 
-  const preparedHistory = useMemo(() => {
-    if (!history) return undefined;
+  const onStopScrolling = (scrollX: number) => {
+    if (scrollX < 0) fetchNextPage();
+  };
+
+  const data = useMemo(() => {
+    if (!predictions || !history) return undefined;
 
     const reversedHistory = [...history.pages].reverse();
     const preparedHistory = reversedHistory.flat().map((item) => ({
       date: new Date(
         item.timestamp - new Date().getTimezoneOffset() * 60000
       ).toISOString(),
-      power: item.power,
+      power: item.predictedPower,
     }));
-    return preparedHistory.reverse();
-  }, [history]);
-  const onStopScrolling = (scrollX: number) => {
-    if (scrollX < 0) fetchNextPage();
-  };
 
-  if (!predictions || !preparedHistory) return <Text>Loading...</Text>;
+    return { predictions, history: preparedHistory.reverse() };
+  }, [predictions, history]);
 
   return (
-    <LineChart
-      predictions={predictions}
-      history={preparedHistory}
-      onStopScrolling={onStopScrolling}
-    />
+    <DataView
+      data={data}
+      isLoading={!data}
+      classNameLoadingContainer={`rounded-lg bg-dark-element shadow-lg shadow-black`}
+      styleLoadingContainer={{
+        height: graphHeight,
+        marginHorizontal: graphHorizontalMargin,
+      }}
+    >
+      {(data) => (
+        <LineChart
+          key={selectedPowerPlant?.id}
+          predictions={data.predictions}
+          history={data.history}
+          onStopScrolling={onStopScrolling}
+        />
+      )}
+    </DataView>
   );
 };
 export default PowerPlantProductionLineChart;

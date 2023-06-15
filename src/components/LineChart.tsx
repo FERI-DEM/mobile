@@ -23,6 +23,8 @@ import { generateTextPath } from '../utils/chart-text';
 import {
   fallbackForMaxValue,
   fontSize,
+  graphHeight,
+  graphHorizontalMargin,
   innerOffset,
   padding,
   viewBoxSize,
@@ -44,7 +46,7 @@ const LineChart = ({
   onStopScrolling,
 }: LineChartProps) => {
   const window = useWindowDimensions();
-  const graphWidth = window.width - 30;
+  const graphWidth = window.width - graphHorizontalMargin * 2;
 
   const activeScale = useSharedValue(1);
   const savedScale = useSharedValue(1);
@@ -64,18 +66,16 @@ const LineChart = ({
 
   const xLegend = useSharedValue('');
   const yLegend = useSharedValue('');
+  const linePath = useSharedValue('');
+  const areaPath = useSharedValue('');
 
   useEffect(() => {
     data.value = prepareData(predictions, history);
+    activeData.value = prepareActiveData(
+      prepareData(predictions, history),
+      savedTranslate.value
+    );
   }, [predictions, history]);
-
-  useAnimatedReaction(
-    () => savedTranslate.value,
-    (result) => {
-      activeData.value = prepareActiveData(data.value, result);
-    },
-    []
-  );
 
   const createYLegend = (max: number) => {
     const numberOfLabels = 6;
@@ -108,92 +108,84 @@ const LineChart = ({
       xLegend.value = path;
     })();
   };
-  useAnimatedReaction(
-    () => activeData.value,
-    (result) => {
-      runOnJS(createXLegend)(result);
-    },
-    []
-  );
-  useAnimatedReaction(
-    () => maxInActiveData.value,
-    (result) => {
-      runOnJS(createYLegend)(result);
-    },
-    []
-  );
 
-  const line = useDerivedValue(() => {
+  const createLine = () => {
     let path = '';
-    if (activeData.value.length < 2) return path;
+    if (activeData.value.length > 1) {
+      const unitLength = activeData.value[1].x - activeData.value[0].x;
+      for (let i = 0; i < activeData.value.length; i++) {
+        let { x, y } = activeData.value[i];
+        x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
+        y =
+          (y / maxInActiveData.value) *
+          (viewBoxSize.height - innerOffset.y - padding);
+        if (i === 0) {
+          path = `M ${x},${y} `;
+          continue;
+        }
 
-    const unitLength = activeData.value[1].x - activeData.value[0].x;
-    for (let i = 0; i < activeData.value.length; i++) {
-      let { x, y } = activeData.value[i];
-      x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
-      y =
-        (y / maxInActiveData.value) *
-        (viewBoxSize.height - innerOffset.y - padding);
-      if (i === 0) {
-        path = `M ${x},${y} `;
-        continue;
+        let { x: prevX, y: prevY } = activeData.value[i - 1];
+        prevX =
+          zoomPoint.value +
+          (prevX - zoomPoint.value) * activeScale.value +
+          0.5 * unitLength * activeScale.value;
+        prevY =
+          (prevY / maxInActiveData.value) *
+          (viewBoxSize.height - innerOffset.y - padding);
+
+        path += `C ${prevX},${prevY} ${
+          x - 0.5 * unitLength * activeScale.value
+        },${y} ${x},${y} `;
       }
-
-      let { x: prevX, y: prevY } = activeData.value[i - 1];
-      prevX =
-        zoomPoint.value +
-        (prevX - zoomPoint.value) * activeScale.value +
-        0.5 * unitLength * activeScale.value;
-      prevY =
-        (prevY / maxInActiveData.value) *
-        (viewBoxSize.height - innerOffset.y - padding);
-
-      path += `C ${prevX},${prevY} ${
-        x - 0.5 * unitLength * activeScale.value
-      },${y} ${x},${y} `;
     }
-    return path;
-  }, []);
+    runOnUI(() => {
+      linePath.value = path;
+    })();
+  };
 
-  const area = useDerivedValue(() => {
-    if (activeData.value.length < 2) return '';
+  const createArea = () => {
+    let path = '';
 
-    const unitLength = activeData.value[1].x - activeData.value[0].x;
-    let path = `M ${
-      zoomPoint.value +
-      (activeData.value[0].x - zoomPoint.value) * activeScale.value
-    },0 `;
-    for (let i = 0; i < activeData.value.length; i++) {
-      let { x, y } = activeData.value[i];
-      x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
-      y =
-        (y / maxInActiveData.value) *
-        (viewBoxSize.height - innerOffset.y - padding);
-      if (i === 0) {
-        path += `L ${x},${y} `;
-        continue;
+    if (activeData.value.length > 1) {
+      const unitLength = activeData.value[1].x - activeData.value[0].x;
+      path = `M ${
+        zoomPoint.value +
+        (activeData.value[0].x - zoomPoint.value) * activeScale.value
+      },0 `;
+      for (let i = 0; i < activeData.value.length; i++) {
+        let { x, y } = activeData.value[i];
+        x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
+        y =
+          (y / maxInActiveData.value) *
+          (viewBoxSize.height - innerOffset.y - padding);
+        if (i === 0) {
+          path += `L ${x},${y} `;
+          continue;
+        }
+
+        let { x: prevX, y: prevY } = activeData.value[i - 1];
+        prevX =
+          zoomPoint.value +
+          (prevX - zoomPoint.value) * activeScale.value +
+          0.5 * unitLength * activeScale.value;
+        prevY =
+          (prevY / maxInActiveData.value) *
+          (viewBoxSize.height - innerOffset.y - padding);
+
+        path += `C ${prevX},${prevY} ${
+          x - 0.5 * unitLength * activeScale.value
+        },${y} ${x},${y} `;
       }
-
-      let { x: prevX, y: prevY } = activeData.value[i - 1];
-      prevX =
+      path += `L ${
         zoomPoint.value +
-        (prevX - zoomPoint.value) * activeScale.value +
-        0.5 * unitLength * activeScale.value;
-      prevY =
-        (prevY / maxInActiveData.value) *
-        (viewBoxSize.height - innerOffset.y - padding);
-
-      path += `C ${prevX},${prevY} ${
-        x - 0.5 * unitLength * activeScale.value
-      },${y} ${x},${y} `;
+        (activeData.value[activeData.value.length - 1].x - zoomPoint.value) *
+          activeScale.value
+      },0`;
     }
-    path += `L ${
-      zoomPoint.value +
-      (activeData.value[activeData.value.length - 1].x - zoomPoint.value) *
-        activeScale.value
-    },0`;
-    return path;
-  }, []);
+    runOnUI(() => {
+      areaPath.value = path;
+    })();
+  };
 
   const pinchGesture = Gesture.Pinch()
     .onStart((e) => {
@@ -244,8 +236,34 @@ const LineChart = ({
       );
     });
 
-  const animatedProps = useAnimatedProps(() => ({ d: line.value }));
-  const areaAnimatedProps = useAnimatedProps(() => ({ d: area.value }));
+  useAnimatedReaction(
+    () => savedTranslate.value,
+    (result) => {
+      activeData.value = prepareActiveData(data.value, result);
+    },
+    []
+  );
+  useAnimatedReaction(
+    () => activeData.value,
+    (result) => {
+      runOnJS(createXLegend)(result);
+      runOnJS(createLine)();
+      runOnJS(createArea)();
+    },
+    []
+  );
+  useAnimatedReaction(
+    () => maxInActiveData.value,
+    (result) => {
+      runOnJS(createYLegend)(result);
+      runOnJS(createLine)();
+      runOnJS(createArea)();
+    },
+    []
+  );
+
+  const animatedProps = useAnimatedProps(() => ({ d: linePath.value }));
+  const areaAnimatedProps = useAnimatedProps(() => ({ d: areaPath.value }));
   const animatedTranslateProps = useAnimatedProps(() => ({
     x: activeTranslate.value,
   }));
@@ -268,7 +286,7 @@ const LineChart = ({
               } ${viewBoxSize.height}`}
               style={{
                 width: graphWidth,
-                height: 300,
+                height: graphHeight,
                 backgroundColor: '#292A3E',
               }}
             >
