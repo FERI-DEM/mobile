@@ -23,7 +23,6 @@ const UserStack = () => {
     <AppInitializer>
       {(initialRoute) => (
         <>
-          {console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', initialRoute)}
           <SideMenu />
           <SafeAreaView className="flex-1">
             <Stack.Navigator

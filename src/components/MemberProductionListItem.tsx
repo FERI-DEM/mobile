@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Pressable, Text } from 'react-native';
+import { CountUp } from 'use-count-up';
 
 interface MemberListItemProps {
   member: string;
@@ -22,7 +23,8 @@ const MemberProductionListItem: FC<MemberListItemProps> = ({
         {member}
       </Text>
       <Text className={`text-white ${active && 'text-tint font-bold'}`}>
-        {power} kW
+        <CountUp isCounting end={power} duration={1} />
+        kW
       </Text>
     </Pressable>
   );

@@ -1,9 +1,11 @@
 import { apiInstance } from './axios';
 import {
+  CommunityCurrentProductionRes,
   CommunityMembersPowerShareRes,
   CommunityReq,
   CommunityReqJoin,
   CommunityRes,
+  CommunityUpdate,
   JoinCommunityRequestProcess,
 } from '../types/community.types';
 
@@ -55,6 +57,22 @@ const CommunityService = {
     const response = await apiInstance.delete<unknown>(
       `communities/remove/${id}/${memberId}`,
       { data: { powerPlantIds: [powerPlantId] } }
+    );
+    return response.data;
+  },
+  getPredictionByDays: async (id: string) => {
+    const response = await apiInstance.get<number[]>(
+      `communities/predict-by-days/${id}`
+    );
+    return response.data;
+  },
+  update: async (community: CommunityUpdate, id: string) => {
+    const response = await apiInstance.patch(`communities/${id}`, community);
+    return response.data;
+  },
+  getMembersCurrentProduction: async (id: string) => {
+    const response = await apiInstance.get<CommunityCurrentProductionRes>(
+      `communities/current-production/${id}`
     );
     return response.data;
   },

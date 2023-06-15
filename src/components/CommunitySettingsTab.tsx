@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Button from './Button';
 import useCommunityDeleteMutation from '../hooks/useCommunityDeleteMutation';
 import { Routes } from '../navigation/routes';
@@ -6,7 +6,6 @@ import { navigate } from '../navigation/navigate';
 import React from 'react';
 import { useCommunityStore } from '../store/community-store';
 import useCommunity from '../hooks/useCommunity';
-import MemberListItem from './MemberListItem';
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
 import {
@@ -18,6 +17,13 @@ import { QueryKey } from '../types/keys.types';
 import CommunityService from '../api/community.service';
 import { useQueryClient } from '@tanstack/react-query';
 import useUser from '../hooks/useUser';
+import { FormProvider, SubmitHandler } from 'react-hook-form';
+import { ControlledInput } from './ControlledInput';
+import { UpdatePowerPlantDataType } from '../types/powerPlant.types';
+import useForm from '../hooks/useForm';
+import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
+import useCommunityUpdateMutation from '../hooks/useCommunityUpdateMutation';
+import { UpdateCommunitySchema } from '../schemas/updateCommunity.schema';
 
 const CommunitySettingsTab = () => {
   const queryClient = useQueryClient();
@@ -55,23 +61,52 @@ const CommunitySettingsTab = () => {
       },
     }
   );
+
+  const form = useForm<UpdatePowerPlantDataType>({
+    resolver: zodResolver(UpdateCommunitySchema),
+    defaultValues: { name: communityData?.name || '' },
+  });
+
+  const { mutate: updateCommunity, isLoading: updateCommunityLoading } =
+    useCommunityUpdateMutation(selectedCommunity?.id || '', {
+      onSuccess: () => {
+        showToast('Skupnost uspešno posodobljena!', ToastTypes.SUCCESS);
+        queryClient.invalidateQueries({ queryKey: [QueryKey.COMMUNITIES] }, {});
+        setSelectedCommunity({
+          id: selectedCommunity?.id || '',
+          name: form.getValues()?.name || '',
+        });
+      },
+      onError: () => {
+        showToast('Napaka pri posodabljanju skupnosti!', ToastTypes.ERROR);
+      },
+    });
+
+  const onSubmit: SubmitHandler<UpdatePowerPlantDataType> = (data) => {
+    updateCommunity({
+      name: data.name,
+    });
+  };
+
   return (
     <View className="dark:bg-dark-main flex-1 px-3">
       <ScrollView className="dark:bg-dark-main flex-1 px-3">
-        <Text className="dark:text-white mb-3 mt-4 ml-0.5">Člani</Text>
-
-        {!communityData ? (
-          <Text>Loading</Text>
-        ) : (
-          communityData.members.map((member, index) => (
-            <MemberListItem
-              member={member}
-              communityId={communityData._id}
-              key={index}
-              adminId={communityData.adminId}
+        <View className="px-2">
+          <FormProvider {...form}>
+            <ControlledInput
+              name="name"
+              label="Ime elektrarne *"
+              placeholder="Ime"
+              defaultValue={communityData?.name}
             />
-          ))
-        )}
+            <Button
+              text="Posodobi"
+              classname="mt-4"
+              loading={updateCommunityLoading}
+              onPress={form.handleSubmit(onSubmit)}
+            />
+          </FormProvider>
+        </View>
       </ScrollView>
       {user?.id === communityData?.adminId && (
         <Button
