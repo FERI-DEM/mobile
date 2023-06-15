@@ -38,7 +38,6 @@ const PowerPlantsService = {
     return response.data;
   },
   getHistory: async (data: PowerPlantPowerHistoryReq) => {
-    console.log(data.from.toISOString(), data.to.toISOString());
     const response = await apiInstance.get<PowerPlantPowerHistoryRes[]>(
       `power-plants/history`,
       {

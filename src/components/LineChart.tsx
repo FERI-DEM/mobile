@@ -35,9 +35,13 @@ const AnimatedGroup = Animated.createAnimatedComponent(G);
 
 interface LineChartProps {
   data: PredictedValue[];
+  onStopScrolling: (scrollX: number) => void;
 }
 
-const LineChart = ({ data: dataFromProps }: LineChartProps) => {
+const LineChart = ({
+  data: dataFromProps,
+  onStopScrolling,
+}: LineChartProps) => {
   const window = useWindowDimensions();
   const graphWidth = window.width - 30;
 
@@ -45,6 +49,10 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
 
   useEffect(() => {
     allData.value = prepareData(dataFromProps);
+    data.value = prepareActiveData(
+      prepareData(dataFromProps),
+      savedTranslate.value
+    );
   }, [dataFromProps]);
 
   const activeScale = useSharedValue(1);
@@ -146,10 +154,11 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
     },
     []
   );
-  console.log(dataFromProps);
 
   const line = useDerivedValue(() => {
     let path = '';
+    if (data.value.length < 2) return path;
+
     const unitLength = data.value[1].x - data.value[0].x;
     for (let i = 0; i < data.value.length; i++) {
       let { x, y } = data.value[i];
@@ -179,6 +188,8 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
   }, []);
 
   const area = useDerivedValue(() => {
+    if (data.value.length < 2) return '';
+
     const unitLength = data.value[1].x - data.value[0].x;
     let path = `M ${
       zoomPoint.value + (data.value[0].x - zoomPoint.value) * activeScale.value
@@ -256,6 +267,9 @@ const LineChart = ({ data: dataFromProps }: LineChartProps) => {
       activeTranslate.value = withDecay(
         { velocity: e.velocityX / 10 },
         (data) => {
+          runOnJS(onStopScrolling)(
+            savedTranslate.value - activeTranslate.value
+          );
           savedTranslate.value = activeTranslate.value;
         }
       );

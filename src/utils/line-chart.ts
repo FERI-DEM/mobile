@@ -4,7 +4,6 @@ import { ChartPoint } from '../types/chart.types';
 import { roundToNearest15Minutes } from './round-time';
 
 export const prepareData = (data: PredictedValue[]) => {
-  const max = Math.max(...data.map(({ power }) => power));
   const currentDateAndTime = roundToNearest15Minutes(
     new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
   )
@@ -53,9 +52,15 @@ export const prepareActiveData = (
   translate: number
 ) => {
   'worklet';
+  const start = performance.now();
+
   const viewPortWidth = viewBoxSize.width - innerOffset.x;
-  return data.filter(
+  const result = data.filter(
     ({ x }) =>
       x < -translate + 3 * viewPortWidth && x > -translate - 2 * viewPortWidth
   );
+
+  const end = performance.now();
+  console.log('Timeeeeeee', end - start);
+  return result;
 };

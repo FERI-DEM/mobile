@@ -9,7 +9,6 @@ const PowerPlantProductionLineChart = () => {
   const selectedPowerPlant = usePowerPlantStore(
     (state) => state.selectedPowerPlant
   );
-
   const { data: predictions, isLoading: isLoadingPrediction } = usePrediction(
     selectedPowerPlant?.id || '',
     {
@@ -17,20 +16,22 @@ const PowerPlantProductionLineChart = () => {
       retry: false,
     }
   );
-  const { data: history, isLoading: isHistoryLoading } =
-    usePowerPlantPowerHistory(
-      {
-        id: selectedPowerPlant?.id || '',
-        from: new Date(2023, 5, 14, 0, 0, 0, 0),
-        to: new Date(),
-      },
-      { retry: false }
-    );
+  const {
+    data: history,
+    isLoading: isHistoryLoading,
+    fetchNextPage,
+  } = usePowerPlantPowerHistory(selectedPowerPlant?.id || '', {
+    retry: false,
+    keepPreviousData: true,
+    enabled: !!selectedPowerPlant,
+  });
 
   const mergedData = useMemo(() => {
-    if (isHistoryLoading || isLoadingPrediction) return undefined;
+    if (!history || !predictions) return undefined;
+
+    const reversedHistory = [...history.pages].reverse();
     const preparedHistory =
-      history?.map(({ timestamp, power }) => ({
+      reversedHistory.flat().map(({ timestamp, power }, index) => ({
         date: new Date(
           timestamp - new Date().getTimezoneOffset() * 60000
         ).toISOString(),
@@ -39,8 +40,13 @@ const PowerPlantProductionLineChart = () => {
     return [...preparedHistory, ...(predictions || [])];
   }, [predictions, history]);
 
-  if (!mergedData) return <Text>Loading</Text>;
+  const onStopScrolling = (scrollX: number) => {
+    console.log(scrollX);
+    if (scrollX < 0) fetchNextPage();
+  };
 
-  return <LineChart data={mergedData} />;
+  if (!mergedData) return <Text>Loading...</Text>;
+
+  return <LineChart data={mergedData} onStopScrolling={onStopScrolling} />;
 };
 export default PowerPlantProductionLineChart;
