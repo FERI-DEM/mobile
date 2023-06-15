@@ -1,5 +1,6 @@
 import { apiInstance } from './axios';
 import {
+  CommunityCurrentProductionRes,
   CommunityMembersPowerShareRes,
   CommunityReq,
   CommunityReqJoin,
@@ -67,6 +68,12 @@ const CommunityService = {
   },
   update: async (community: CommunityUpdate, id: string) => {
     const response = await apiInstance.patch(`communities/${id}`, community);
+    return response.data;
+  },
+  getMembersCurrentProduction: async (id: string) => {
+    const response = await apiInstance.get<CommunityCurrentProductionRes>(
+      `communities/current-production/${id}`
+    );
     return response.data;
   },
 };

@@ -72,3 +72,19 @@ export interface JoinCommunityRequestProcess {
 export interface CommunityUpdate {
   name: string;
 }
+
+export interface CommunityCurrentProductionRes {
+  powerPlants: CommunityCurrentProduction[];
+  production: number;
+}
+
+export interface CommunityCurrentProduction {
+  username: string;
+  userId: string;
+  powerPlantId: string;
+  displayName: string;
+  production: {
+    date: string;
+    power: number;
+  };
+}

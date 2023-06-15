@@ -11,6 +11,7 @@ export enum QueryKey {
   'APP_INITIALIZE' = 'appInitialize',
   'USER' = 'user',
   'COMMUNITIES_POWER_PREDICTION_BY_DAYS' = 'communitiesPowerPredictionByDays',
+  'COMMUNITIES_MEMBERS_CURRENT_PRODUCTION' = 'communitiesMembersCurrentPoduction',
 }
 
 export enum MutationKey {
