@@ -34,26 +34,24 @@ const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedGroup = Animated.createAnimatedComponent(G);
 
 interface LineChartProps {
-  data: PredictedValue[];
+  predictions: PredictedValue[];
+  history: PredictedValue[];
   onStopScrolling: (scrollX: number) => void;
 }
 
 const LineChart = ({
-  data: dataFromProps,
+  predictions,
+  history,
   onStopScrolling,
 }: LineChartProps) => {
   const window = useWindowDimensions();
   const graphWidth = window.width - 30;
 
-  const max = Math.max(...dataFromProps.map(({ power }) => power));
+  const max = Math.max(...predictions.map(({ power }) => power));
 
   useEffect(() => {
-    allData.value = prepareData(dataFromProps);
-    data.value = prepareActiveData(
-      prepareData(dataFromProps),
-      savedTranslate.value
-    );
-  }, [dataFromProps]);
+    allData.value = prepareData(predictions, history);
+  }, [predictions, history]);
 
   const activeScale = useSharedValue(1);
   const savedScale = useSharedValue(1);
@@ -63,10 +61,8 @@ const LineChart = ({
   const activeTranslate = useSharedValue(0);
   const savedTranslate = useSharedValue(0);
 
-  const allData = useSharedValue(prepareData(dataFromProps));
-  const data = useSharedValue(
-    prepareActiveData(allData.value, activeTranslate.value)
-  );
+  const allData = useSharedValue(prepareData(predictions, history));
+  const data = useSharedValue<{ date: string; x: number; y: number }[]>([]);
   const maxInActiveData = useDerivedValue(() => {
     const max = Math.max(...data.value.map(({ y }) => y));
     return withTiming(Math.max(max, 70), { duration: 100 });
@@ -332,7 +328,7 @@ const LineChart = ({
               <Rect
                 width={innerOffset.x}
                 x={-innerOffset.x}
-                height={max + innerOffset.y + padding}
+                height={viewBoxSize.height}
                 y={-innerOffset.y}
                 fill="#292A3E"
               />

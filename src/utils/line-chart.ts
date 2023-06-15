@@ -1,22 +1,25 @@
 import { PredictedValue } from '../types/powerPlant.types';
 import { innerOffset, viewBoxSize, xUnit } from '../constants/line-chart';
 import { ChartPoint } from '../types/chart.types';
-import { roundToNearest15Minutes } from './round-time';
 
-export const prepareData = (data: PredictedValue[]) => {
-  const currentDateAndTime = roundToNearest15Minutes(
-    new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
-  )
-    .toISOString()
-    .slice(0, 16);
-  const currentDateIndex = data.findIndex(
-    ({ date }) => date.slice(0, 16) === currentDateAndTime
-  );
-  return data.map((data, index) => ({
-    date: data.date.slice(0, 16),
-    x: xUnit * (index - currentDateIndex) + xUnit * 3,
-    y: data.power,
+export const prepareData = (
+  predictions: PredictedValue[],
+  history: PredictedValue[]
+) => {
+  const preparedPredictions = predictions.map((prediction, index) => ({
+    date: prediction.date.slice(0, 16),
+    x: xUnit * index,
+    y: prediction.power,
   }));
+  const preparedHistory = history.map((history, index) => ({
+    date: history.date.slice(0, 16),
+    x: -xUnit * index - xUnit,
+    y: history.power,
+  }));
+  return {
+    predictions: preparedPredictions,
+    history: preparedHistory,
+  };
 };
 
 export const createPathForRoundedCorners = (
@@ -48,19 +51,31 @@ export const createPathForRoundedCorners = (
 };
 
 export const prepareActiveData = (
-  data: { date: string; x: number; y: number }[],
+  data: {
+    predictions: { date: string; x: number; y: number }[];
+    history: { date: string; x: number; y: number }[];
+  },
   translate: number
 ) => {
   'worklet';
-  const start = performance.now();
-
   const viewPortWidth = viewBoxSize.width - innerOffset.x;
-  const result = data.filter(
-    ({ x }) =>
-      x < -translate + 3 * viewPortWidth && x > -translate - 2 * viewPortWidth
-  );
+  const result: typeof data.history = [];
 
-  const end = performance.now();
-  console.log('Timeeeeeee', end - start);
+  const reversedHistory = [...data.history].reverse();
+
+  const mergedData = [...reversedHistory, ...data.predictions];
+
+  const indexOfFirstPrediction = data.history.length;
+  for (
+    let i =
+      indexOfFirstPrediction +
+      Math.round((-translate - 2 * viewPortWidth) / 10);
+    i <
+    indexOfFirstPrediction + Math.round((-translate + 3 * viewPortWidth) / 10);
+    i++
+  ) {
+    result.push(mergedData[i]);
+  }
+
   return result;
 };

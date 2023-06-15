@@ -26,27 +26,30 @@ const PowerPlantProductionLineChart = () => {
     enabled: !!selectedPowerPlant,
   });
 
-  const mergedData = useMemo(() => {
-    if (!history || !predictions) return undefined;
+  const preparedHistory = useMemo(() => {
+    if (!history) return undefined;
 
     const reversedHistory = [...history.pages].reverse();
-    const preparedHistory =
-      reversedHistory.flat().map(({ timestamp, power }, index) => ({
-        date: new Date(
-          timestamp - new Date().getTimezoneOffset() * 60000
-        ).toISOString(),
-        power,
-      })) || [];
-    return [...preparedHistory, ...(predictions || [])];
-  }, [predictions, history]);
-
+    const preparedHistory = reversedHistory.flat().map((item) => ({
+      date: new Date(
+        item.timestamp - new Date().getTimezoneOffset() * 60000
+      ).toISOString(),
+      power: item.power,
+    }));
+    return preparedHistory.reverse();
+  }, [history]);
   const onStopScrolling = (scrollX: number) => {
-    console.log(scrollX);
     if (scrollX < 0) fetchNextPage();
   };
 
-  if (!mergedData) return <Text>Loading...</Text>;
+  if (!predictions || !preparedHistory) return <Text>Loading...</Text>;
 
-  return <LineChart data={mergedData} onStopScrolling={onStopScrolling} />;
+  return (
+    <LineChart
+      predictions={predictions}
+      history={preparedHistory}
+      onStopScrolling={onStopScrolling}
+    />
+  );
 };
 export default PowerPlantProductionLineChart;
