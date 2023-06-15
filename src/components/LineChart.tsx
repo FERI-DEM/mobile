@@ -232,11 +232,11 @@ const LineChart = ({
       activeTranslate.value = withDecay(
         { velocity: e.velocityX / 10 },
         (data) => {
-          isBackToPresentButtonActive.value = true;
-          savedTranslate.value = activeTranslate.value;
           runOnJS(onStopScrolling)(
             savedTranslate.value - activeTranslate.value
           );
+          isBackToPresentButtonActive.value = true;
+          savedTranslate.value = activeTranslate.value;
         }
       );
     });

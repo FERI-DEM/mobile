@@ -74,7 +74,7 @@ export const prepareActiveData = (
     indexOfFirstPrediction + Math.round((-translate + 3 * viewPortWidth) / 10);
     i++
   ) {
-    if (!mergedData[i]) break;
+    if (!mergedData[i]) continue;
     result.push(mergedData[i]);
   }
 
