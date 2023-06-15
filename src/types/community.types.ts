@@ -68,3 +68,7 @@ export interface JoinCommunityRequestProcess {
   notificationId: string;
   accepted: boolean;
 }
+
+export interface CommunityUpdate {
+  name: string;
+}

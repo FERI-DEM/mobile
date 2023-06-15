@@ -4,6 +4,7 @@ import {
   CommunityReq,
   CommunityReqJoin,
   CommunityRes,
+  CommunityUpdate,
   JoinCommunityRequestProcess,
 } from '../types/community.types';
 
@@ -62,6 +63,10 @@ const CommunityService = {
     const response = await apiInstance.get<number[]>(
       `communities/predict-by-days/${id}`
     );
+    return response.data;
+  },
+  update: async (community: CommunityUpdate, id: string) => {
+    const response = await apiInstance.patch(`communities/${id}`, community);
     return response.data;
   },
 };
