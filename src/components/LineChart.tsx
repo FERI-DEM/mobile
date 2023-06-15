@@ -13,29 +13,28 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { PredictedValue } from '../types/powerPlant.types';
+import { LineChartData, LineChartInputData } from '../types/powerPlant.types';
 import {
   createPathForRoundedCorners,
   prepareActiveData,
   prepareData,
 } from '../utils/line-chart';
-import { chars } from '../utils/chart-text';
+import { generateTextPath } from '../utils/chart-text';
 import {
-  charWidth,
+  fallbackForMaxValue,
   fontSize,
   innerOffset,
   padding,
   viewBoxSize,
   xUnit,
 } from '../constants/line-chart';
-import { ChartOffset } from '../types/chart.types';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedGroup = Animated.createAnimatedComponent(G);
 
 interface LineChartProps {
-  predictions: PredictedValue[];
-  history: PredictedValue[];
+  predictions: LineChartInputData[];
+  history: LineChartInputData[];
   onStopScrolling: (scrollX: number) => void;
 }
 
@@ -47,12 +46,6 @@ const LineChart = ({
   const window = useWindowDimensions();
   const graphWidth = window.width - 30;
 
-  const max = Math.max(...predictions.map(({ power }) => power));
-
-  useEffect(() => {
-    allData.value = prepareData(predictions, history);
-  }, [predictions, history]);
-
   const activeScale = useSharedValue(1);
   const savedScale = useSharedValue(1);
   const zoomPoint = useSharedValue(30);
@@ -61,49 +54,28 @@ const LineChart = ({
   const activeTranslate = useSharedValue(0);
   const savedTranslate = useSharedValue(0);
 
-  const allData = useSharedValue(prepareData(predictions, history));
-  const data = useSharedValue<{ date: string; x: number; y: number }[]>([]);
+  const data = useSharedValue(prepareData(predictions, history));
+  const activeData = useSharedValue<LineChartData[]>([]);
+
   const maxInActiveData = useDerivedValue(() => {
-    const max = Math.max(...data.value.map(({ y }) => y));
-    return withTiming(Math.max(max, 70), { duration: 100 });
+    const max = Math.max(...activeData.value.map(({ y }) => y));
+    return withTiming(Math.max(max, fallbackForMaxValue), { duration: 100 });
   });
 
   const xLegend = useSharedValue('');
   const yLegend = useSharedValue('');
 
+  useEffect(() => {
+    data.value = prepareData(predictions, history);
+  }, [predictions, history]);
+
   useAnimatedReaction(
     () => savedTranslate.value,
     (result) => {
-      data.value = prepareActiveData(allData.value, result);
+      activeData.value = prepareActiveData(data.value, result);
     },
     []
   );
-
-  const generateCharPath = (char: string, offset: ChartOffset) => {
-    const points = chars.get(char);
-    if (!points) return '';
-    let path = '';
-
-    for (let i = 0; i < points.length; i += 4) {
-      const x1 = points[i] + (offset.x || 0);
-      const y1 = points[i + 1] + (offset.y || 0);
-      const x2 = points[i + 2] + (offset.x || 0);
-      const y2 = points[i + 3] + (offset.y || 0);
-      path += `M ${x1} ${y1} L ${x2} ${y2} `;
-    }
-    return path;
-  };
-  const generateTextPath = (text: string, offset: ChartOffset) => {
-    const chars = text.split('');
-    return chars
-      .map((char, index) =>
-        generateCharPath(char, {
-          x: (-text.length / 2 + index) * charWidth + (offset.x || 0),
-          y: offset.y,
-        })
-      )
-      .join(' ');
-  };
 
   const createYLegend = (max: number) => {
     const numberOfLabels = 6;
@@ -123,7 +95,7 @@ const LineChart = ({
     })();
   };
 
-  const createXLegend = (data: { date: string; x: number; y: number }[]) => {
+  const createXLegend = (data: LineChartData[]) => {
     let path = '';
     data.forEach(({ x, date: dateAndTime }) => {
       const [date, time] = dateAndTime.split('T');
@@ -137,7 +109,7 @@ const LineChart = ({
     })();
   };
   useAnimatedReaction(
-    () => data.value,
+    () => activeData.value,
     (result) => {
       runOnJS(createXLegend)(result);
     },
@@ -153,11 +125,11 @@ const LineChart = ({
 
   const line = useDerivedValue(() => {
     let path = '';
-    if (data.value.length < 2) return path;
+    if (activeData.value.length < 2) return path;
 
-    const unitLength = data.value[1].x - data.value[0].x;
-    for (let i = 0; i < data.value.length; i++) {
-      let { x, y } = data.value[i];
+    const unitLength = activeData.value[1].x - activeData.value[0].x;
+    for (let i = 0; i < activeData.value.length; i++) {
+      let { x, y } = activeData.value[i];
       x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
       y =
         (y / maxInActiveData.value) *
@@ -167,7 +139,7 @@ const LineChart = ({
         continue;
       }
 
-      let { x: prevX, y: prevY } = data.value[i - 1];
+      let { x: prevX, y: prevY } = activeData.value[i - 1];
       prevX =
         zoomPoint.value +
         (prevX - zoomPoint.value) * activeScale.value +
@@ -184,14 +156,15 @@ const LineChart = ({
   }, []);
 
   const area = useDerivedValue(() => {
-    if (data.value.length < 2) return '';
+    if (activeData.value.length < 2) return '';
 
-    const unitLength = data.value[1].x - data.value[0].x;
+    const unitLength = activeData.value[1].x - activeData.value[0].x;
     let path = `M ${
-      zoomPoint.value + (data.value[0].x - zoomPoint.value) * activeScale.value
+      zoomPoint.value +
+      (activeData.value[0].x - zoomPoint.value) * activeScale.value
     },0 `;
-    for (let i = 0; i < data.value.length; i++) {
-      let { x, y } = data.value[i];
+    for (let i = 0; i < activeData.value.length; i++) {
+      let { x, y } = activeData.value[i];
       x = zoomPoint.value + (x - zoomPoint.value) * activeScale.value;
       y =
         (y / maxInActiveData.value) *
@@ -201,7 +174,7 @@ const LineChart = ({
         continue;
       }
 
-      let { x: prevX, y: prevY } = data.value[i - 1];
+      let { x: prevX, y: prevY } = activeData.value[i - 1];
       prevX =
         zoomPoint.value +
         (prevX - zoomPoint.value) * activeScale.value +
@@ -216,7 +189,7 @@ const LineChart = ({
     }
     path += `L ${
       zoomPoint.value +
-      (data.value[data.value.length - 1].x - zoomPoint.value) *
+      (activeData.value[activeData.value.length - 1].x - zoomPoint.value) *
         activeScale.value
     },0`;
     return path;
@@ -239,7 +212,7 @@ const LineChart = ({
         max: 100,
       };
       savedScale.value *= activeScale.value;
-      data.value = data.value.map(({ x, y, date }) => ({
+      activeData.value = activeData.value.map(({ x, y, date }) => ({
         x: zoomPoint.value + (x - zoomPoint.value) * activeScale.value,
         y,
         date,

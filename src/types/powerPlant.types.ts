@@ -1,6 +1,6 @@
-import {z} from 'zod';
-import {CalibrationDataSchema} from '../schemas/calibration.schema';
-import {UpdatePowerPlantDataSchema} from '../schemas/powerPlant.schema';
+import { z } from 'zod';
+import { CalibrationDataSchema } from '../schemas/calibration.schema';
+import { UpdatePowerPlantDataSchema } from '../schemas/powerPlant.schema';
 
 export interface CalibrationReq {
   id: string;
@@ -21,8 +21,8 @@ export interface PowerPlantPowerHistoryRes {
 }
 export interface PowerPlantPowerHistoryReq {
   id: string;
-    from: Date;
-    to: Date;
+  from: Date;
+  to: Date;
 }
 
 export interface PowerPlant {
@@ -52,7 +52,18 @@ export interface PredictedValue {
   power: number;
 }
 
+export interface LineChartInputData {
+  date: string;
+  power: number;
+}
+
 export type CalibrationDataType = z.infer<typeof CalibrationDataSchema>;
 export type UpdatePowerPlantDataType = z.infer<
   typeof UpdatePowerPlantDataSchema
 >;
+
+export interface LineChartData {
+  date: string;
+  x: number;
+  y: number;
+}

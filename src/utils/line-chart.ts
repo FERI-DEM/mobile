@@ -1,10 +1,10 @@
-import { PredictedValue } from '../types/powerPlant.types';
+import { LineChartData, LineChartInputData } from '../types/powerPlant.types';
 import { innerOffset, viewBoxSize, xUnit } from '../constants/line-chart';
 import { ChartPoint } from '../types/chart.types';
 
 export const prepareData = (
-  predictions: PredictedValue[],
-  history: PredictedValue[]
+  predictions: LineChartInputData[],
+  history: LineChartInputData[]
 ) => {
   const preparedPredictions = predictions.map((prediction, index) => ({
     date: prediction.date.slice(0, 16),
@@ -52,14 +52,14 @@ export const createPathForRoundedCorners = (
 
 export const prepareActiveData = (
   data: {
-    predictions: { date: string; x: number; y: number }[];
-    history: { date: string; x: number; y: number }[];
+    predictions: LineChartData[];
+    history: LineChartData[];
   },
   translate: number
 ) => {
   'worklet';
   const viewPortWidth = viewBoxSize.width - innerOffset.x;
-  const result: typeof data.history = [];
+  const result: LineChartData[] = [];
 
   const reversedHistory = [...data.history].reverse();
 
