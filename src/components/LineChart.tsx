@@ -30,6 +30,7 @@ import {
   viewBoxSize,
   xUnit,
 } from '../constants/line-chart';
+import LineChartBackToPresentButton from './LineChartBackToPresentButton';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedGroup = Animated.createAnimatedComponent(G);
@@ -55,6 +56,7 @@ const LineChart = ({
   const translateLimits = useSharedValue({ min: 0, max: 100 });
   const activeTranslate = useSharedValue(0);
   const savedTranslate = useSharedValue(0);
+  const isBackToPresentButtonActive = useSharedValue(false);
 
   const data = useSharedValue(prepareData(predictions, history));
   const activeData = useSharedValue<LineChartData[]>([]);
@@ -217,6 +219,7 @@ const LineChart = ({
     .onStart(() => {
       savedTranslate.value = activeTranslate.value;
       cancelAnimation(activeTranslate);
+      isBackToPresentButtonActive.value = false;
     })
     .onUpdate((e) => {
       const newTranslate = savedTranslate.value + e.translationX * 0.2;
@@ -228,10 +231,11 @@ const LineChart = ({
       activeTranslate.value = withDecay(
         { velocity: e.velocityX / 10 },
         (data) => {
+          isBackToPresentButtonActive.value = true;
+          savedTranslate.value = activeTranslate.value;
           runOnJS(onStopScrolling)(
             savedTranslate.value - activeTranslate.value
           );
-          savedTranslate.value = activeTranslate.value;
         }
       );
     });
@@ -273,9 +277,14 @@ const LineChart = ({
   return (
     <>
       <View
-        className="rounded-lg bg-red-500 flex items-center bg-dark-element mx-auto"
-        style={{ width: graphWidth }}
+        className="rounded-lg bg-red-500 flex items-center bg-dark-element mx-auto relative"
+        style={{ width: graphWidth, height: graphHeight }}
       >
+        <LineChartBackToPresentButton
+          savedTranslate={savedTranslate}
+          activeTranslate={activeTranslate}
+          isBackToPresentButtonActive={isBackToPresentButtonActive}
+        />
         <GestureDetector gesture={panGesture}>
           <GestureDetector gesture={pinchGesture}>
             <Svg
