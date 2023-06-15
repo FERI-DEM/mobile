@@ -226,6 +226,7 @@ const LineChart = ({
       // //TODO: max limit
       // if(newTranslate + translateLimits.value.min < 0)
       activeTranslate.value = newTranslate;
+      isBackToPresentButtonActive.value = false;
     })
     .onEnd((e) => {
       activeTranslate.value = withDecay(
