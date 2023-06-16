@@ -1,10 +1,12 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 import {Text, View} from 'react-native';
 import Button from './Button';
 
 import Accordion from './Accordion';
-import { JoinCommunityNotification as JoinCommunityNotificationType } from '../types/community.types';
+import {JoinCommunityNotification as JoinCommunityNotificationType} from '../types/community.types';
 import useCommunityJoinRequestProcessMutation from '../hooks/useCommunityJoinRequestProcessMutation';
+import {useToastStore} from "../store/toast-store";
+import {ToastTypes} from "../types/toast.types";
 
 interface NotificationCardProps {
   notification: JoinCommunityNotificationType;
@@ -12,10 +14,17 @@ interface NotificationCardProps {
 const JoinCommunityNotification: FC<NotificationCardProps> = ({
   notification,
 }) => {
+  const {showToast} = useToastStore();
   const { mutate: declineJoinRequest, isLoading: isDeclineJoinRequestLoading } =
-    useCommunityJoinRequestProcessMutation();
+    useCommunityJoinRequestProcessMutation({
+      onSuccess: () => showToast('Prošnja uspešno zavrnjena.', ToastTypes.SUCCESS),
+      onError: () => showToast('Napaka pri zavrnitvi prošnje.', ToastTypes.ERROR),
+    });
   const { mutate: acceptJoinRequest, isLoading: isAcceptJoinRequestLoading } =
-    useCommunityJoinRequestProcessMutation();
+    useCommunityJoinRequestProcessMutation({
+      onSuccess: () => showToast('Prošnja uspešno sprejeta.', ToastTypes.SUCCESS),
+      onError: () => showToast('Napaka pri sprejemanju prošnje.', ToastTypes.ERROR),
+    });
 
   const onPressDeclineButton = () => {
     declineJoinRequest({ accepted: false, notificationId: notification.id });
