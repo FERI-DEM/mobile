@@ -5,6 +5,8 @@ import {
 } from '../schemas/community.schema';
 import { InviteMemberDataSchema } from '../schemas/organizationUser.schema';
 import { NotificationType } from './common.types';
+import firebase from "firebase/compat";
+import Timestamp = firebase.firestore.Timestamp;
 
 export type CreateCommunityDataType = z.infer<typeof CreateCommunityDataSchema>;
 export type JoinCommunityDataType = z.infer<typeof JoinCommunityDataSchema>;
@@ -61,7 +63,7 @@ export interface JoinCommunityNotification {
     message: string;
   };
   processed: boolean;
-  createdAt: string;
+  createdAt: Timestamp;
 }
 
 export interface JoinCommunityRequestProcess {

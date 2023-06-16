@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 import Button from './Button';
 
 import Accordion from './Accordion';
@@ -24,10 +24,12 @@ const JoinCommunityNotification: FC<NotificationCardProps> = ({
     acceptJoinRequest({ accepted: true, notificationId: notification.id });
   };
 
+  const height = Math.ceil(notification.data.message.length / 40) * 20 + 80
+
   return (
     <Accordion
       title="Prošnja za pridružitev"
-      contentHeight={140}
+      contentHeight={height}
       content={
         <>
           <Text className="text-white text-sm">

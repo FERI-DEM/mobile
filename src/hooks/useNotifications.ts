@@ -2,65 +2,47 @@ import { useEffect, useState } from 'react';
 import { useUserStore } from '../store/user-store';
 import {
   collection,
-  getDocs,
   onSnapshot,
   query,
   where,
 } from 'firebase/firestore';
 import { firebaseDatabase } from '../config/firebase';
-import { useToastStore } from '../store/toast-store';
-import { ToastTypes } from '../types/toast.types';
 import { JoinCommunityNotification } from '../types/community.types';
 
 const useNotifications = () => {
   const [notifications, setNotifications] =
     useState<JoinCommunityNotification[]>();
   const [loading, setLoading] = useState<boolean>(false);
-  const { showToast } = useToastStore();
   const user = useUserStore((state) => state.user);
 
-  const getNotifications = async () => {
-    setLoading(true);
-    try {
-      const querySnapshot = await getDocs(
-        query(
-          collection(firebaseDatabase, 'notifications'),
-          where('receiverId', '==', user?.uid),
-          where('processed', '==', false)
-        )
-      );
-      const notifications: JoinCommunityNotification[] = [];
-      querySnapshot.forEach((doc) => {
-        notifications.push(doc.data() as JoinCommunityNotification);
-      });
-      setNotifications(notifications.length === 0 ? undefined : notifications);
-      setLoading(false);
-    } catch (e) {
-      showToast(
-        'Nekaj je šlo narobe pri pridobivanju obvestil',
-        ToastTypes.ERROR
-      );
-      setLoading(false);
-    }
-  };
-
   const subscribeToNotifications = () => {
+    setLoading(true);
+    setNotifications(undefined)
     const q = query(
       collection(firebaseDatabase, 'notifications'),
       where('receiverId', '==', user?.uid),
-      where('processed', '==', false)
+      where('processed', '==', false),
     );
     return onSnapshot(q, (querySnapshot) => {
-      const notifications: JoinCommunityNotification[] = [];
-      querySnapshot.forEach((doc) => {
-        notifications.push(doc.data() as JoinCommunityNotification);
+      querySnapshot.docChanges().forEach((change) => {
+        if(change.type === 'added')
+          setNotifications(prevState => {
+            const notifications = [change.doc.data() as JoinCommunityNotification, ...(prevState || [])]
+            if(notifications.length === 0) return undefined
+            return notifications.sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          })
+        else if(change.type === 'removed')
+            setNotifications(prevState => {
+              const filtered = prevState?.filter(n => n.id !== change.doc.id) || []
+                if(filtered.length === 0) return undefined
+                return filtered
+            })
       });
-      setNotifications(notifications.length === 0 ? undefined : notifications);
+      setLoading(false);
     });
   };
 
   useEffect(() => {
-    getNotifications();
     const unsubscribe = subscribeToNotifications();
     return () => unsubscribe();
   }, []);
