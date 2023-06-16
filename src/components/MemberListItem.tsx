@@ -27,35 +27,34 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
   const { data: user } = useUser();
   const queryClient = useQueryClient();
 
-  const { mutate: removeMember } = useCommunityRemoveMemberMutation(
-    communityId,
-    member.userId,
-    member.powerPlantId,
-    {
-      onSuccess: () => {
-        showToast('Član uspešno odstranjen!', ToastTypes.SUCCESS);
-        queryClient.invalidateQueries({ queryKey: [QueryKey.COMMUNITY] });
-      },
-      onError: () => {
-        showToast('Napaka pri odstranjevanju člana!', ToastTypes.ERROR);
-      },
-    }
-  );
+  const { mutate: removeMember, isLoading: isRemoveMemberLoading } =
+    useCommunityRemoveMemberMutation(
+      communityId,
+      member.userId,
+      member.powerPlantId,
+      {
+        onSuccess: () => {
+          showToast('Član uspešno odstranjen!', ToastTypes.SUCCESS);
+          queryClient.invalidateQueries({ queryKey: [QueryKey.COMMUNITY] });
+        },
+        onError: () => {
+          showToast('Napaka pri odstranjevanju člana!', ToastTypes.ERROR);
+        },
+      }
+    );
 
-  const { mutate: leaveCommunity } = useCommunityLeaveMutation(
-    communityId,
-    member.powerPlantId,
-    {
+  const { mutate: leaveCommunity, isLoading: isLeaveCommunityLoading } =
+    useCommunityLeaveMutation(communityId, member.powerPlantId, {
       onSuccess: () => {
         navigate(Routes.ADD_COMMUNITY);
         showToast('Uspešno ste zapustili skupnost!', ToastTypes.SUCCESS);
+        queryClient.removeQueries([QueryKey.COMMUNITIES]);
         queryClient.invalidateQueries({ queryKey: [QueryKey.COMMUNITIES] });
       },
       onError: () => {
         showToast('Napaka pri zapuščanje skupnosti!', ToastTypes.ERROR);
       },
-    }
-  );
+    });
 
   const onLeaveCommunity = () => {
     leaveCommunity();
@@ -95,6 +94,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
             classname="bg-gray-500"
             text={'Odstrani'}
             onPress={onRemoveMember}
+            loading={isRemoveMemberLoading}
           />
         )}
         {!member.isAdmin && user?.id === member.userId && (
@@ -102,6 +102,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
             classname="bg-gray-500"
             text={'Zapusti'}
             onPress={onLeaveCommunity}
+            loading={isLeaveCommunityLoading}
           />
         )}
       </View>
