@@ -63,7 +63,7 @@ const CommunityDashboardTab = () => {
     return <Text>Loading...</Text>;
 
   return (
-    <ScrollView className="my-5 mx-4 flex">
+    <ScrollView className="mb-5 mx-4 flex">
       <View className="flex flex-row justify-around pb-5">
         <PowerDisplay
           power={roundToTwoDecimalPlaces(predictionByDays[0])}

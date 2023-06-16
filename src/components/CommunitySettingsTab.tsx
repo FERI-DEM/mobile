@@ -89,9 +89,8 @@ const CommunitySettingsTab = () => {
   };
 
   return (
-    <View className="dark:bg-dark-main flex-1 px-3">
+    <View className="dark:bg-dark-main flex-1 px-4">
       <ScrollView className="dark:bg-dark-main flex-1">
-        <View className="px-2 py-3">
           <FormProvider {...form}>
             <ControlledInput
               name="name"
@@ -106,7 +105,6 @@ const CommunitySettingsTab = () => {
               onPress={form.handleSubmit(onSubmit)}
             />
           </FormProvider>
-        </View>
       </ScrollView>
       {user?.id === communityData?.adminId && (
         <Button
