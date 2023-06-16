@@ -13,6 +13,7 @@ export enum QueryKey {
   'POWER_PLANT_POWER_HISTORY' = 'powerPlantPowerHistory',
   'COMMUNITIES_POWER_PREDICTION_BY_DAYS' = 'communitiesPowerPredictionByDays',
   'COMMUNITIES_MEMBERS_CURRENT_PRODUCTION' = 'communitiesMembersCurrentPoduction',
+  'COMMUNITY_MONTHLY_POWER_PRODUCTION' = 'communityMonthlyPowerProduction',
 }
 
 export enum MutationKey {

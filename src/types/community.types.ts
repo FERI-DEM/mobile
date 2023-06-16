@@ -51,6 +51,18 @@ export interface CommunityMembersPowerShareRes {
   user: string;
   share: number;
 }
+export interface CommunityMonthlyPowerProductionRes {
+  from: string;
+  to: string;
+  powerPlants: {
+    from: string;
+    to: string;
+    powerPlantId: string;
+    email: string;
+    production: number;
+  }[];
+  production: number;
+}
 export interface JoinCommunityNotification {
   id: string;
   receiverId: string;

@@ -1,7 +1,7 @@
 import { apiInstance } from './axios';
 import {
   CommunityCurrentProductionRes,
-  CommunityMembersPowerShareRes,
+  CommunityMembersPowerShareRes, CommunityMonthlyPowerProductionRes,
   CommunityReq,
   CommunityReqJoin,
   CommunityRes,
@@ -28,6 +28,12 @@ const CommunityService = {
   getCommunityMembersPowerShare: async (id: string) => {
     const response = await apiInstance.get<CommunityMembersPowerShareRes[]>(
       `communities/${id}/members-power-share`
+    );
+    return response.data;
+  },
+  getCommunityMonthlyPowerProduction: async (id: string) => {
+    const response = await apiInstance.get<CommunityMonthlyPowerProductionRes>(
+        `communities/power-production/${id}`
     );
     return response.data;
   },
