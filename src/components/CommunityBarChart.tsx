@@ -30,9 +30,8 @@ const CommunityBarChart = () => {
         if(!monthlyPowerProduction || monthlyPowerProduction.powerPlants.length === 0) return [];
 
         let max = Math.max(...monthlyPowerProduction.powerPlants.map(item => item.production)) * 1.1;
-
         const barWidth = (viewBoxSize.width - (monthlyPowerProduction.powerPlants.length - 1) * barChartGap) / monthlyPowerProduction.powerPlants.length
-        console.log('barWidth', viewBoxSize.width, (monthlyPowerProduction.powerPlants.length - 1) * barChartGap, barWidth)
+
         return monthlyPowerProduction.powerPlants.map((powerPlant, index) => {
             const height = powerPlant.production * (viewBoxSize.height / max);
             let x = index * barWidth + (index) * barChartGap
@@ -50,7 +49,7 @@ const CommunityBarChart = () => {
             }
         })
     }, [monthlyPowerProduction]);
-    console.log(graphWidth)
+
     return <ViewportAwareView>
         <Svg
             preserveAspectRatio="none"

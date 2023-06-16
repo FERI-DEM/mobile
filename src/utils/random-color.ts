@@ -1,5 +1,4 @@
 export const getColor = (index: number) => {
-    console.log(index % colors.length)
     return colors[index % colors.length];
 }
 

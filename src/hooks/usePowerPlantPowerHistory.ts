@@ -8,7 +8,6 @@ import PowerPlantsService from '../api/power-plants.service';
 import { ApiError } from '../types/common.types';
 
 const createHistoryRequest = (page: number, powerPlantId: string) => {
-  console.log('page', page);
   const dateFrom = new Date();
   dateFrom.setDate(dateFrom.getDate() - page);
   const dateTo = new Date();

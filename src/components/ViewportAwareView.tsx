@@ -37,8 +37,7 @@ const ViewportAwareView = ({children, onInViewport}: ViewportAwareViewProps) => 
             ref.current?.measure((fx, fy, width, height, px, py) => {
                 const parentBottom = parentpy + parentheight
                 const elementBottom = py + height
-                console.log('parentBottom', parentBottom)
-                console.log('elementBottom', elementBottom)
+
                 if(elementBottom - 1 < parentBottom && elementBottom > parentpy) {
                     setIsInViewport(true)
                 }

@@ -32,7 +32,6 @@ const JoinCommunityScreen = () => {
         onSuccess: () => navigate(Routes.ORGANIZATION)
     });
     const onSubmit: SubmitHandler<JoinCommunityDataType> = (data) => {
-        console.log(data);
         mutate({community: data.community, powerPlants: data.powerPlants.map((powerPlant) => powerPlant.powerPlantId)})
     };
 
