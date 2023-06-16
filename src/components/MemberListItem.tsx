@@ -9,6 +9,9 @@ import { ToastTypes } from '../types/toast.types';
 import useUser from '../hooks/useUser';
 import { QueryKey } from '../types/keys.types';
 import { useQueryClient } from '@tanstack/react-query';
+import useCommunityLeaveMutation from '../hooks/useCommunityLeaveMutation';
+import { Routes } from '../navigation/routes';
+import { navigate } from '../navigation/navigate';
 
 interface TestMemberListItemProps {
   communityId: string;
@@ -38,6 +41,25 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
       },
     }
   );
+
+  const { mutate: leaveCommunity } = useCommunityLeaveMutation(
+    communityId,
+    member.powerPlantId,
+    {
+      onSuccess: () => {
+        navigate(Routes.ADD_COMMUNITY);
+        showToast('Uspešno ste zapustili skupnost!', ToastTypes.SUCCESS);
+        queryClient.invalidateQueries({ queryKey: [QueryKey.COMMUNITIES] });
+      },
+      onError: () => {
+        showToast('Napaka pri zapuščanje skupnosti!', ToastTypes.ERROR);
+      },
+    }
+  );
+
+  const onLeaveCommunity = () => {
+    leaveCommunity();
+  };
 
   const onRemoveMember = () => {
     removeMember();
@@ -73,6 +95,13 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
             classname="bg-gray-500"
             text={'Odstrani'}
             onPress={onRemoveMember}
+          />
+        )}
+        {!member.isAdmin && user?.id === member.userId && (
+          <Button
+            classname="bg-gray-500"
+            text={'Zapusti'}
+            onPress={onLeaveCommunity}
           />
         )}
       </View>

@@ -23,6 +23,7 @@ export enum MutationKey {
   'UPDATE_POWER_PLANT' = 'updatePowerPlant',
   'DELETE_POWER_PLANT' = 'deletePowerPlant',
   'REMOVE_MEMBER_FROM_COMMUNITY' = 'removeMemberFromCommunity',
+  'LEAVE_COMMUNITY' = 'leaveCommunity',
   'SIGN_OUT' = 'signOut',
   'SIGN_IN' = 'signIn',
   'UPDATE_PASSWORD' = 'updatePassword',

@@ -76,6 +76,13 @@ const CommunityService = {
     );
     return response.data;
   },
+  leaveCommunity: async (id: string, powerPlantId: string) => {
+    const response = await apiInstance.delete<unknown>(
+      `communities/leave/${id}`,
+      { data: { powerPlantIds: [powerPlantId] } }
+    );
+    return response.data;
+  },
 };
 
 export default CommunityService;
