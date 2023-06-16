@@ -74,7 +74,7 @@ const CreateCommunityScreen: FC = () => {
           <FormProvider {...form}>
             <ControlledInput
               name="communityName"
-              label="Ime organizacije"
+              label="Ime skupnosti"
               placeholder="Ime"
             />
             <Text className="dark:text-white mb-3 ml-0.5 mt-6">
