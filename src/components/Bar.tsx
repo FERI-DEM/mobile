@@ -4,6 +4,7 @@ import {useContext, useEffect} from "react";
 import {ViewportContext} from "./ViewportAwareView";
 import {Text as SvgText} from "react-native-svg";
 import {convertFromBaseUnit} from "../utils/units";
+import {barChartHeight, viewBoxSize} from "../constants/bar-chart";
 
 interface BarProps {
    data: {
@@ -16,11 +17,12 @@ interface BarProps {
            value: number;
            x: number;
        }
-   }
+   },
+    graphWidth: number;
 }
 const AnimatedGroup = Animated.createAnimatedComponent(G);
-const Bar = ({data}: BarProps) => {
-    const barSize = useSharedValue(100)
+const Bar = ({data, graphWidth}: BarProps) => {
+    const barSize = useSharedValue(viewBoxSize.height)
     const {isInViewport} = useContext(ViewportContext)
 
     useEffect(() => {
@@ -33,7 +35,7 @@ const Bar = ({data}: BarProps) => {
 
     return <AnimatedGroup animatedProps={animatedProps}>
             <Rect y={0} x={data.x} width={data.width} height={data.height} fill={data.color}/>
-            <SvgText y={-1} x={data.text.x - 1} fontSize={4} fill="#fff" textAnchor="middle">{convertFromBaseUnit(data.text.value, 'W')}</SvgText>
+            <SvgText transform={{scale: [1, graphWidth / barChartHeight]}} y={-4} x={data.text.x - 1} fontSize={12} fill="#fff" textAnchor="middle">{convertFromBaseUnit(data.text.value, 'W')}</SvgText>
         </AnimatedGroup>
 }
 export default Bar;
