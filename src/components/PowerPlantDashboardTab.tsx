@@ -36,7 +36,10 @@ const PowerPlantDashboardTab = () => {
       retry: false,
       onError: () => {
         navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
-        showToast('Te elektrarne še niste kalibrirali!', ToastTypes.ERROR);
+        showToast(
+          'Te elektrarne še niste kalibrirali!',
+          ToastTypes.INFORMATION
+        );
       },
     }
   );
@@ -46,7 +49,7 @@ const PowerPlantDashboardTab = () => {
       retry: false,
       onError: () => {
         navigationRef.dispatch(StackActions.replace(Routes.CALIBRATION));
-        showToast('Te elektrarne še niste kalibrirali', ToastTypes.ERROR);
+        showToast('Te elektrarne še niste kalibrirali', ToastTypes.INFORMATION);
       },
     });
 

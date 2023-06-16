@@ -1,6 +1,11 @@
 import React, { FC } from 'react';
 import { View, Text } from 'react-native';
-import { UserCircleIcon, BoltIcon } from 'react-native-heroicons/outline';
+import {
+  UserCircleIcon,
+  BoltIcon,
+  XCircleIcon,
+  ArrowRightOnRectangleIcon,
+} from 'react-native-heroicons/outline';
 import Button from './Button';
 import useCommunityRemoveMemberMutation from '../hooks/useCommunityRemoveMemberMutation';
 import { CommunityMember } from '../types/community.types';
@@ -91,8 +96,8 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
       <View>
         {user?.id === adminId && user?.id != member.userId && (
           <Button
-            classname="bg-gray-500"
-            text={'Odstrani'}
+            classname="bg-dark-element"
+            text={<XCircleIcon color="white" />}
             onPress={onRemoveMember}
             loading={isRemoveMemberLoading}
           />
@@ -100,7 +105,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
         {!member.isAdmin && user?.id === member.userId && (
           <Button
             classname="bg-gray-500"
-            text={'Zapusti'}
+            text={<ArrowRightOnRectangleIcon color="white" />}
             onPress={onLeaveCommunity}
             loading={isLeaveCommunityLoading}
           />
