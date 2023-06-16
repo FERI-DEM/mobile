@@ -1,6 +1,6 @@
 import PowerDisplay from './PowerDisplay';
 import { ScrollView, Text, View } from 'react-native';
-import React, { Fragment, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import MemberProductionListItem from './MemberProductionListItem';
 import { useCommunityStore } from '../store/community-store';
 import useCommunityMembersPowerShare from '../hooks/useCommunityMembersPowerShare';
@@ -9,7 +9,7 @@ import {
   calculatePointOnCircle,
   getPieChartPiecePath,
 } from '../utils/pie-chart';
-import { colors } from '../utils/random-color';
+import { getColor} from '../utils/random-color';
 import useUser from '../hooks/useUser';
 import useCommunitiesPredictionByDays from '../hooks/useCommunitiesPredictionByDays';
 import { roundToTwoDecimalPlaces } from '../utils/power';
@@ -43,7 +43,7 @@ const CommunityDashboardTab = () => {
   const pieChartData = useMemo(() => {
     if (!membersPowerShare) return [];
     return membersPowerShare.map((member, index, array) => {
-      const startAngle = array.filter((_, i) => i < index).reduce((acc, curr) => acc += curr.share * 360, 0)
+      const startAngle = array.filter((_, i) => i < index).reduce((acc, curr) => acc + curr.share * 360, 0)
       const endAngle = startAngle + member.share * 360
 
       return {
@@ -105,7 +105,7 @@ const CommunityDashboardTab = () => {
             <Path
               key={index}
               d={getPieChartPiecePath(100, data.from, data.to)}
-              fill={colors[index]}
+              fill={getColor(index)}
               stroke={'#1C1B2D'}
               strokeWidth={2}
             />
