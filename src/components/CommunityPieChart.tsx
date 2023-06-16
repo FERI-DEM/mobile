@@ -10,6 +10,8 @@ import React, {useMemo} from "react";
 import {graphHeight, graphHorizontalMargin} from "../constants/line-chart";
 import LineChart from "./LineChart";
 import DataView from "./DataView";
+import PieChartPiece from "./PieChartPiece";
+import ViewportAwareView from "./ViewportAwareView";
 
 const CommunityPieChart = () => {
     const pieChartHeight = 300;
@@ -47,19 +49,14 @@ const CommunityPieChart = () => {
         }}
     >
         {(data) => (
+            <ViewportAwareView>
             <Svg
                 viewBox="0 0 200 200"
                 className="w-full"
                 style={{ height: pieChartHeight, backgroundColor: '#1C1B2D' }}
             >
                 {data?.map((data, index) => (
-                    <Path
-                        key={index}
-                        d={getPieChartPiecePath(100, data.from, data.to)}
-                        fill={getColor(index)}
-                        stroke={'#1C1B2D'}
-                        strokeWidth={2}
-                    />
+                    <PieChartPiece data={data} key={index} index={index}/>
                 ))}
                 {data?.map((data, index) => (
                     <G
@@ -89,6 +86,7 @@ const CommunityPieChart = () => {
                     </G>
                 ))}
             </Svg>
+                </ViewportAwareView>
         )}
     </DataView>
 }

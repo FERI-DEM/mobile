@@ -21,7 +21,6 @@ export const ViewportContext = createContext<ViewportState>({
     isInViewport: false,
 });
 
-
 interface ParentRefType {
     current?: {
         measure: (callback: (fx: number, fy: number, width: number, height: number, px: number, py: number) => void) => void
@@ -38,7 +37,9 @@ const ViewportAwareView = ({children, onInViewport}: ViewportAwareViewProps) => 
             ref.current?.measure((fx, fy, width, height, px, py) => {
                 const parentBottom = parentpy + parentheight
                 const elementBottom = py + height
-                if(elementBottom < parentBottom && elementBottom > parentpy) {
+                console.log('parentBottom', parentBottom)
+                console.log('elementBottom', elementBottom)
+                if(elementBottom - 1 < parentBottom && elementBottom > parentpy) {
                     setIsInViewport(true)
                 }
                 else {
