@@ -39,35 +39,23 @@ const CommunityDashboardTab = () => {
     enabled: !!selectedCommunity,
     retry: false,
   });
-  console.log(membersCurrentProduction);
+
   const pieChartData = useMemo(() => {
     if (!membersPowerShare) return [];
     return membersPowerShare.map((member, index, array) => {
-      if (index === 0)
-        return {
-          share: (member.share * 100).toFixed(0),
-          user: member.user,
-          from: 0,
-          to: member.share * 360,
-          textPosition: calculatePointOnCircle(70, (member.share * 360) / 2, {
-            x: 100,
-            y: 100,
-          }),
-        };
-      else
-        return {
-          share: (member.share * 100).toFixed(0),
-          user: member.user,
-          from: array[index - 1].share * 360,
-          to: array[index - 1].share * 360 + member.share * 360,
-          textPosition: calculatePointOnCircle(
-            70,
-            (array[index - 1].share * 360 +
-              (array[index - 1].share * 360 + member.share * 360)) /
-              2,
-            { x: 100, y: 100 }
-          ),
-        };
+      const startAngle = array.filter((_, i) => i < index).reduce((acc, curr) => acc += curr.share * 360, 0)
+      const endAngle = startAngle + member.share * 360
+
+      return {
+        ...member,
+        share: (member.share * 100).toFixed(0),
+        from: startAngle,
+        to: endAngle,
+        textPosition: calculatePointOnCircle(70, (startAngle + endAngle) / 2, {
+          x: 100,
+          y: 100,
+        }),
+      }
     });
   }, [membersPowerShare]);
 
