@@ -63,7 +63,7 @@ const LineChart = ({
 
   const maxInActiveData = useDerivedValue(() => {
     const max = Math.max(...activeData.value.map(({ y }) => y));
-    return withTiming(Math.max(max, fallbackForMaxValue), { duration: 100 });
+    return withTiming(Math.max(max, fallbackForMaxValue), { duration: 400 });
   });
 
   const xLegend = useSharedValue('');
