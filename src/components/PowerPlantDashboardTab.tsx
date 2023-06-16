@@ -117,7 +117,7 @@ const PowerPlantDashboardTab = () => {
                   />
                 )}
                 {prediction && (
-                  <View className="shadow-lg shadow-black rounded-xl dark:bg-dark-element dark:text-white py-6 px-6 flex flex-row items-center justify-around mx-4">
+                  <View className="shadow-lg shadow-black rounded-xl dark:bg-dark-element dark:text-white py-6 px-6 flex flex-row items-center justify-around grow ml-4">
                     {calculatePowerDifference(
                       prediction![0].power,
                       prediction![1].power
