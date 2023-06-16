@@ -13,7 +13,7 @@ import React from "react";
 import useCommunityJoinMutation from "../hooks/useCommunityJoinMutation";
 
 const DefaultCommunityData: JoinCommunityDataType = {
-    communityId: '',
+    community: '',
     powerPlants: []
 }
 const JoinCommunityScreen = () => {
@@ -33,7 +33,7 @@ const JoinCommunityScreen = () => {
     });
     const onSubmit: SubmitHandler<JoinCommunityDataType> = (data) => {
         console.log(data);
-        mutate({communityId: data.communityId, powerPlants: data.powerPlants.map((powerPlant) => powerPlant.powerPlantId)})
+        mutate({community: data.community, powerPlants: data.powerPlants.map((powerPlant) => powerPlant.powerPlantId)})
     };
 
     const onError: SubmitErrorHandler<CreateCommunityDataType> = (errors) => {
@@ -46,9 +46,9 @@ const JoinCommunityScreen = () => {
                 <View className='px-2'>
                     <FormProvider {...form}>
                         <ControlledInput
-                            name="communityId"
-                            label="ID skupnosti"
-                            placeholder="ID"
+                            name="community"
+                            label="Ime skupnosti"
+                            placeholder="Ime"
                         />
                         <Text className='dark:text-white mb-3 ml-0.5 mt-6'>Izberite elektrarno</Text>
                         <FlatList className='max-h-52' nestedScrollEnabled keyExtractor={item => item._id} data={powerPlants} renderItem={({item}) => (
