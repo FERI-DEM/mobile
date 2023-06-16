@@ -102,7 +102,6 @@ const CommunityDashboardTab = () => {
         style={{ height: 300, backgroundColor: '#1C1B2D' }}
       >
         {pieChartData?.map((data, index) => (
-          <Fragment key={index}>
             <Path
               key={index}
               d={getPieChartPiecePath(100, data.from, data.to)}
@@ -110,31 +109,33 @@ const CommunityDashboardTab = () => {
               stroke={'#1C1B2D'}
               strokeWidth={2}
             />
+        ))}
+        {pieChartData?.map((data, index) => (
             <G
-              transform={`rotate(0, ${data.textPosition.x}, ${data.textPosition.y})`}
-              x={data.textPosition.x}
-              y={data.textPosition.y}
+                key={index}
+                transform={`rotate(0, ${data.textPosition.x}, ${data.textPosition.y})`}
+                x={data.textPosition.x}
+                y={data.textPosition.y}
             >
               <SvgText
-                stroke="white"
-                textAnchor="middle"
-                fontSize={10}
-                fontWeight={1}
-                y={-6}
+                  stroke="white"
+                  textAnchor="middle"
+                  fontSize={10}
+                  fontWeight={1}
+                  y={-6}
               >
                 {data.user}
               </SvgText>
               <SvgText
-                stroke="white"
-                textAnchor="middle"
-                fontSize={10}
-                fontWeight={1}
-                y={6}
+                  stroke="white"
+                  textAnchor="middle"
+                  fontSize={10}
+                  fontWeight={1}
+                  y={6}
               >
                 {data.share + '%'}
               </SvgText>
             </G>
-          </Fragment>
         ))}
       </Svg>
     </ScrollView>
