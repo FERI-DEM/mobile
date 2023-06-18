@@ -11,7 +11,7 @@ import {graphHeight, graphHorizontalMargin} from "../constants/line-chart";
 import LineChart from "./LineChart";
 import DataView from "./DataView";
 import PieChartPiece from "./PieChartPiece";
-import ViewportAwareView from "./ViewportAwareView";
+import ViewportAwareView, {ViewportAwareViewMode} from "./ViewportAwareView";
 
 const CommunityPieChart = () => {
     const pieChartHeight = 300;
@@ -49,7 +49,7 @@ const CommunityPieChart = () => {
         }}
     >
         {(data) => (
-            <ViewportAwareView>
+            <ViewportAwareView  mode={ViewportAwareViewMode.CENTER}>
             <Svg
                 viewBox="0 0 200 200"
                 className="w-full"

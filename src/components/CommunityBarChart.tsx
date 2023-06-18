@@ -1,19 +1,12 @@
 import {useCommunityStore} from "../store/community-store";
 import useCommunityMonthlyPowerProduction from "../hooks/useCommunityMonthlyPowerProduction";
-import Svg, {Path, Rect, Text as SvgText} from "react-native-svg";
-import {graphHorizontalMargin, innerOffset, padding} from "../constants/line-chart";
-import {Fragment, useEffect, useMemo, useRef} from "react";
+import Svg from "react-native-svg";
+import {useMemo} from "react";
 import {getColor} from "../utils/random-color";
-import {convertFromBaseUnit} from "../utils/units";
 import Bar from "./Bar";
-import ViewportAwareView from "./ViewportAwareView";
-import {
-    barChartGap,
-    barChartHeight,
-    barChartHorizontalMargin,
-    viewBoxSize
-} from "../constants/bar-chart";
-import {Dimensions, useWindowDimensions} from "react-native";
+import ViewportAwareView, {ViewportAwareViewMode} from "./ViewportAwareView";
+import {barChartGap, barChartHeight, barChartHorizontalMargin, viewBoxSize} from "../constants/bar-chart";
+import {useWindowDimensions} from "react-native";
 
 
 const CommunityBarChart = () => {

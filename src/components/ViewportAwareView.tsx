@@ -9,9 +9,15 @@ import {
 import {TodoContext} from "./ScrollViewWithViewportTracker";
 import {ScrollView, View} from "react-native";
 
+export enum ViewportAwareViewMode {
+    'START',
+    'CENTER',
+    'END'
+}
+
 interface ViewportAwareViewProps {
     children: ReactNode;
-    onInViewport?: () => void;
+    mode?: ViewportAwareViewMode
 }
 
 export interface ViewportState {
@@ -27,7 +33,8 @@ interface ParentRefType {
     }
 }
 
-const ViewportAwareView = ({children, onInViewport}: ViewportAwareViewProps) => {
+
+const ViewportAwareView = ({children, mode = ViewportAwareViewMode.END}: ViewportAwareViewProps) => {
     const {addScrollListener} = useContext(TodoContext)
     const [isInViewport, setIsInViewport] = useState(false)
     const ref = useRef<View>(null)
@@ -36,13 +43,30 @@ const ViewportAwareView = ({children, onInViewport}: ViewportAwareViewProps) => 
         (parentRef as unknown as ParentRefType).current?.measure((parentfx, parentfy, parentwidth, parentheight, parentpx, parentpy) => {
             ref.current?.measure((fx, fy, width, height, px, py) => {
                 const parentBottom = parentpy + parentheight
-                const elementBottom = py + height
+                const elementBottom = py + height - 1
 
-                if(elementBottom - 1 < parentBottom && elementBottom > parentpy) {
-                    setIsInViewport(true)
+                if(mode === ViewportAwareViewMode.START) {
+                    if(py < parentBottom) {
+                        setIsInViewport(true)
+                    }
+                    else {
+                        setIsInViewport(false)
+                    }
                 }
-                else {
-                    setIsInViewport(false)
+                else if(mode === ViewportAwareViewMode.CENTER) {
+                    if(py + height / 2 < parentBottom) {
+                        setIsInViewport(true)
+                    }
+                    else {
+                        setIsInViewport(false)
+                    }
+                }
+                else if(mode === ViewportAwareViewMode.END) {
+                    if (elementBottom < parentBottom && elementBottom > parentpy) {
+                        setIsInViewport(true)
+                    } else {
+                        setIsInViewport(false)
+                    }
                 }
             })
         })
