@@ -58,6 +58,8 @@ const CommunityDashboardTab = () => {
           unit="kWh"
         />
       </View>
+            <Text className="text-white mb-5 mt-10">Proizvodnja za tekoči mesec</Text>
+            <CommunityBarChart/>
       <Text className="text-white mb-2">Trenutna proizvodnja članov</Text>
       {membersCurrentProduction?.powerPlants.map((powerPlant, index) => {
         return (
@@ -69,8 +71,7 @@ const CommunityDashboardTab = () => {
           />
         );
       })}
-        <Text className="text-white mb-5 mt-10">Proizvodnja za tekoči mesec</Text>
-        <CommunityBarChart/>
+
       <Text className="text-white mb-5 mt-5">Delež proizvodnje članov</Text>
       <CommunityPieChart/></>
     </ScrollViewWithViewportTracker>
