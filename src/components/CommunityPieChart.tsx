@@ -1,14 +1,10 @@
 import useCommunityMembersPowerShare from '../hooks/useCommunityMembersPowerShare';
-import Svg, { G, Path, Text as SvgText } from 'react-native-svg';
+import Svg, { G, Text as SvgText } from 'react-native-svg';
 import {
     calculatePointOnCircle,
-    getPieChartPiecePath,
 } from '../utils/pie-chart';
-import { getColor} from '../utils/random-color';
 import {useCommunityStore} from "../store/community-store";
 import React, {useMemo} from "react";
-import {graphHeight, graphHorizontalMargin} from "../constants/line-chart";
-import LineChart from "./LineChart";
 import DataView from "./DataView";
 import PieChartPiece from "./PieChartPiece";
 import ViewportAwareView, {ViewportAwareViewMode} from "./ViewportAwareView";

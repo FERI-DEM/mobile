@@ -2,15 +2,13 @@ import {createContext, ReactNode, RefObject, useRef, useState} from "react";
 import {ScrollView} from "react-native";
 import {twMerge} from "tailwind-merge";
 
-export interface ScrollViewState {
+export interface ViewportTrackerContextType {
     scrollListeners: Array<(parentRef: RefObject<ScrollView>) => void>
     addScrollListener: (listener: (parentRef: RefObject<ScrollView>) => void) => void
-    ref: RefObject<ScrollView> | null
 }
-export const TodoContext = createContext<ScrollViewState>({
+export const ViewportTrackerContext = createContext<ViewportTrackerContextType>({
     scrollListeners: [],
     addScrollListener: () => {},
-    ref: null
 });
 
 interface ScrollViewWithViewportTrackerProps {
@@ -19,7 +17,7 @@ interface ScrollViewWithViewportTrackerProps {
 }
 
 const ScrollViewWithViewportTracker = ({children, classNames}: ScrollViewWithViewportTrackerProps) => {
-    const [scrollListeners, setScrollListeners] = useState<ScrollViewState['scrollListeners']>([])
+    const [scrollListeners, setScrollListeners] = useState<ViewportTrackerContextType['scrollListeners']>([])
     const ref = useRef<ScrollView>(null)
     const addScrollListener = (listener: (parentRef: RefObject<ScrollView>) => void) => {
         setScrollListeners([...scrollListeners, listener])
@@ -33,10 +31,10 @@ const ScrollViewWithViewportTracker = ({children, classNames}: ScrollViewWithVie
         notifyScrollListeners()
     }
 
-    return <TodoContext.Provider value={{scrollListeners, addScrollListener, ref}}>
+    return <ViewportTrackerContext.Provider value={{scrollListeners, addScrollListener}}>
         <ScrollView ref={ref} className={twMerge('flex', classNames)} onScroll={notifyScrollListeners} onLayout={onLayout}>
             {children}
         </ScrollView>
-    </TodoContext.Provider>
+    </ViewportTrackerContext.Provider>
 }
 export default ScrollViewWithViewportTracker;

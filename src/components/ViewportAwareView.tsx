@@ -6,7 +6,7 @@ import {
     useRef,
     useState
 } from "react";
-import {TodoContext} from "./ScrollViewWithViewportTracker";
+import {ViewportTrackerContext} from "./ScrollViewWithViewportTracker";
 import {ScrollView, View} from "react-native";
 
 export enum ViewportAwareViewMode {
@@ -20,10 +20,10 @@ interface ViewportAwareViewProps {
     mode?: ViewportAwareViewMode
 }
 
-export interface ViewportState {
+export interface ViewportContextType {
     isInViewport: boolean;
 }
-export const ViewportContext = createContext<ViewportState>({
+export const ViewportContext = createContext<ViewportContextType>({
     isInViewport: false,
 });
 
@@ -35,18 +35,18 @@ interface ParentRefType {
 
 
 const ViewportAwareView = ({children, mode = ViewportAwareViewMode.END}: ViewportAwareViewProps) => {
-    const {addScrollListener} = useContext(TodoContext)
+    const {addScrollListener} = useContext(ViewportTrackerContext)
     const [isInViewport, setIsInViewport] = useState(false)
     const ref = useRef<View>(null)
 
     const onScroll = (parentRef: RefObject<ScrollView>) => {
-        (parentRef as unknown as ParentRefType).current?.measure((parentfx, parentfy, parentwidth, parentheight, parentpx, parentpy) => {
-            ref.current?.measure((fx, fy, width, height, px, py) => {
-                const parentBottom = parentpy + parentheight
-                const elementBottom = py + height - 1
+        (parentRef as unknown as ParentRefType).current?.measure((parentX, parentY, parentWidth, parentHeight, parentPageX, parentPageY) => {
+            ref.current?.measure((elementX, elementY, elementWidth, elementHeight, elementPageX, elementPageY) => {
+                const parentBottom = parentPageY + parentHeight
+                const elementBottom = elementPageY + elementHeight - 1
 
                 if(mode === ViewportAwareViewMode.START) {
-                    if(py < parentBottom) {
+                    if(elementPageY < parentBottom) {
                         setIsInViewport(true)
                     }
                     else {
@@ -54,7 +54,7 @@ const ViewportAwareView = ({children, mode = ViewportAwareViewMode.END}: Viewpor
                     }
                 }
                 else if(mode === ViewportAwareViewMode.CENTER) {
-                    if(py + height / 2 < parentBottom) {
+                    if(elementPageY + elementHeight / 2 < parentBottom) {
                         setIsInViewport(true)
                     }
                     else {
@@ -62,7 +62,7 @@ const ViewportAwareView = ({children, mode = ViewportAwareViewMode.END}: Viewpor
                     }
                 }
                 else if(mode === ViewportAwareViewMode.END) {
-                    if (elementBottom < parentBottom && elementBottom > parentpy) {
+                    if (elementBottom < parentBottom) {
                         setIsInViewport(true)
                     } else {
                         setIsInViewport(false)

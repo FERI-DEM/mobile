@@ -4,7 +4,7 @@ import Svg from "react-native-svg";
 import {useMemo} from "react";
 import {getColor} from "../utils/random-color";
 import Bar from "./Bar";
-import ViewportAwareView, {ViewportAwareViewMode} from "./ViewportAwareView";
+import ViewportAwareView from "./ViewportAwareView";
 import {barChartGap, barChartHeight, barChartHorizontalMargin, viewBoxSize} from "../constants/bar-chart";
 import {useWindowDimensions} from "react-native";
 
