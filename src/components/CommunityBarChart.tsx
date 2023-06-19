@@ -1,12 +1,15 @@
 import {useCommunityStore} from "../store/community-store";
 import useCommunityMonthlyPowerProduction from "../hooks/useCommunityMonthlyPowerProduction";
 import Svg from "react-native-svg";
-import {useMemo} from "react";
+import React, {useMemo} from "react";
 import {getColor} from "../utils/random-color";
 import Bar from "./Bar";
 import ViewportAwareView from "./ViewportAwareView";
 import {barChartGap, barChartHeight, barChartHorizontalMargin, viewBoxSize} from "../constants/bar-chart";
 import {useWindowDimensions} from "react-native";
+import DataView from "./DataView";
+import pieChartPiece from "./PieChartPiece";
+import Skeleton from "./Skeleton";
 
 
 const CommunityBarChart = () => {
@@ -20,7 +23,7 @@ const CommunityBarChart = () => {
     );
 
     const barChartData = useMemo(() => {
-        if(!monthlyPowerProduction || monthlyPowerProduction.powerPlants.length === 0) return [];
+        if(!monthlyPowerProduction || monthlyPowerProduction.powerPlants.length === 0) return undefined;
 
         let max = Math.max(...monthlyPowerProduction.powerPlants.map(item => item.production)) * 1.1;
         const barWidth = (viewBoxSize.width - (monthlyPowerProduction.powerPlants.length - 1) * barChartGap) / monthlyPowerProduction.powerPlants.length
@@ -43,16 +46,24 @@ const CommunityBarChart = () => {
         })
     }, [monthlyPowerProduction]);
 
-    return <ViewportAwareView>
-        <Svg
-            preserveAspectRatio="none"
-            viewBox={`0 0 ${viewBoxSize.width} ${viewBoxSize.height}`}
-            style={{ height: barChartHeight, backgroundColor: '#1C1B2D', width: graphWidth }}
-        >
-            {barChartData.map((data, index) => (
-                <Bar data={data} key={index} graphWidth={graphWidth}/>
-            ))}
-        </Svg>
-    </ViewportAwareView>
+    return <DataView
+        isLoading={isLoading}
+        data={barChartData}
+        loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'} style={{height: barChartHeight}}/>}
+    >
+        {barChartData => (
+            <ViewportAwareView>
+                <Svg
+                    preserveAspectRatio="none"
+                    viewBox={`0 0 ${viewBoxSize.width} ${viewBoxSize.height}`}
+                    style={{ height: barChartHeight, backgroundColor: '#1C1B2D', width: graphWidth }}
+                >
+                    {barChartData.map((data, index) => (
+                        <Bar data={data} key={index} graphWidth={graphWidth}/>
+                    ))}
+                </Svg>
+            </ViewportAwareView>
+        )}
+    </DataView>
 }
 export default CommunityBarChart;

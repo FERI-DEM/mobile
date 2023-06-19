@@ -8,6 +8,7 @@ import React, {useMemo} from "react";
 import DataView from "./DataView";
 import PieChartPiece from "./PieChartPiece";
 import ViewportAwareView, {ViewportAwareViewMode} from "./ViewportAwareView";
+import Skeleton from "./Skeleton";
 
 const CommunityPieChart = () => {
     const pieChartHeight = 300;
@@ -39,10 +40,7 @@ const CommunityPieChart = () => {
     return <DataView
         data={pieChartData}
         isLoading={isLoading}
-        classNameLoadingContainer={``}
-        styleLoadingContainer={{
-            height: pieChartHeight,
-        }}
+        loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'} style={{height: pieChartHeight}}/>}
     >
         {(data) => (
             <ViewportAwareView  mode={ViewportAwareViewMode.CENTER}>

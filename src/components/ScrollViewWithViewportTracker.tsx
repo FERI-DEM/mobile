@@ -32,7 +32,7 @@ const ScrollViewWithViewportTracker = ({children, classNames}: ScrollViewWithVie
     }
 
     return <ViewportTrackerContext.Provider value={{scrollListeners, addScrollListener}}>
-        <ScrollView ref={ref} className={twMerge('flex', classNames)} onScroll={notifyScrollListeners} onLayout={onLayout}>
+        <ScrollView nestedScrollEnabled  ref={ref} className={twMerge('flex', classNames)} onScroll={notifyScrollListeners} onLayout={onLayout}>
             {children}
         </ScrollView>
     </ViewportTrackerContext.Provider>
