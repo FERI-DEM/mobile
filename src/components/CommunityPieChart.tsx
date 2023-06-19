@@ -1,5 +1,5 @@
 import useCommunityMembersPowerShare from '../hooks/useCommunityMembersPowerShare';
-import Svg, { G, Text as SvgText } from 'react-native-svg';
+import Svg, {G, Path, Rect, Text as SvgText} from 'react-native-svg';
 import {
     calculatePointOnCircle,
 } from '../utils/pie-chart';
@@ -37,10 +37,25 @@ const CommunityPieChart = () => {
             }
         });
     }, [membersPowerShare]);
+
+    console.log(calculatePointOnCircle(70, (200) / 2, {
+        x: 100,
+        y: 100,
+    }))
+
     return <DataView
         data={pieChartData}
         isLoading={isLoading}
-        loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'} style={{height: pieChartHeight}}/>}
+        loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'} style={{height: pieChartHeight}}>
+            <Svg viewBox='0 0 200 200' style={{ height: pieChartHeight, backgroundColor: '#1C1B2D' }}>
+                <Path d='M 100 0 A 100 100 0 1 1 65.8 194 L 100 100 L 100 0 Z' fill={'#292A3E'} stroke={'#1C1B2D'}/>
+                <Path d='M 65.8 194 A 100 100 0 0 1 13.4 150 L 100 100 L 65.8 194 Z' fill={'#292A3E'} stroke={'#1C1B2D'}/>
+                <Path d='M 13.4 150 A 100 100 0 0 1 100 0 L 100 100 L 13.4 150 Z' fill={'#292A3E'} stroke={'#1C1B2D'}/>
+                <Rect fill={'#3d3e5f'} width={30} height={10} x={155} y={95}/>
+                <Rect fill={'#3d3e5f'} width={30} height={10} x={35} y={153}/>
+                <Rect fill={'#3d3e5f'} width={30} height={10} x={28} y={50}/>
+            </Svg>
+        </Skeleton>}
     >
         {(data) => (
             <ViewportAwareView  mode={ViewportAwareViewMode.CENTER}>

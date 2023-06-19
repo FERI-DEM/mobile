@@ -20,7 +20,8 @@ const Skeleton = ({classNameContainer, style, children}: SkeletonProps) => {
         transform: [{translateX: translateX.value}, {translateY: translateY.value}],
         position: 'absolute',
         width: '200%',
-        height: '200%'
+        height: '200%',
+        zIndex: 100
     }))
     const onLayout = (event: LayoutChangeEvent) => {
         const width = event.nativeEvent.layout.width
@@ -39,7 +40,7 @@ const Skeleton = ({classNameContainer, style, children}: SkeletonProps) => {
 
     return <View onLayout={onLayout} className={twMerge('bg-dark-element flex-1 grow relative overflow-hidden', classNameContainer)} style={style}>
         <AnimatedLG
-            colors={["#292a3e", "#303149", "#303149", "#292a3e"]}
+            colors={["rgba(41,42,62,0)", "rgba(48,49,73,0.65)", "rgba(48,49,73,0.64)", "rgba(41,42,62,0)"]}
             start={{ x: 0.35, y: 0.35 }}
             end={{ x: 0.65, y: 0.65 }}
             style={animatedStyle}

@@ -49,6 +49,9 @@ const PieChartPiece = ({data, index}: PieChartPieceProps) => {
 
     const animatedProps = useAnimatedProps(() => ({ d: piecePath.value }));
 
+    console.log(getPieChartPiecePath(100, 200, 240))
+    console.log(getPieChartPiecePath(100, 240, 360))
+
     return <AnimatedPath
         animatedProps={animatedProps}
         fill={getColor(index)}

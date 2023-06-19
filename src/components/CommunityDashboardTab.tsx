@@ -1,12 +1,5 @@
-import PowerDisplay from './PowerDisplay';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import React from 'react';
-import MemberProductionListItem from './MemberProductionListItem';
-import { useCommunityStore } from '../store/community-store';
-import useUser from '../hooks/useUser';
-import useCommunitiesPredictionByDays from '../hooks/useCommunitiesPredictionByDays';
-import { roundToTwoDecimalPlaces } from '../utils/power';
-import useCommunityMembersCurrentProduction from '../hooks/useCommunityMembersCurrentProduction';
 import CommunityPieChart from "./CommunityPieChart";
 import CommunityBarChart from "./CommunityBarChart";
 import ScrollViewWithViewportTracker from "./ScrollViewWithViewportTracker";
