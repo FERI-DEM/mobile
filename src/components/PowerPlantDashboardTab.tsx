@@ -1,6 +1,6 @@
 import PowerDisplay from './PowerDisplay';
-import { ScrollView, View } from 'react-native';
-import React, { useMemo } from 'react';
+import { ScrollView, View, RefreshControl } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
 import usePrediction from '../hooks/usePrediction';
 import { usePowerPlantStore } from '../store/power-plant-store';
 import usePredictionByDays from '../hooks/usePredictionByDays';
@@ -18,9 +18,14 @@ import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
 import PowerPlantProductionLineChart from './PowerPlantProductionLineChart';
 import PowerDifferenceCard from './PowerDifferenceCard';
+import { QueryKey } from '../types/keys.types';
+import { useQueryClient } from '@tanstack/react-query';
 
 const PowerPlantDashboardTab = () => {
   const { showToast } = useToastStore();
+  const [refreshing, setRefreshing] = useState(false);
+  const queryClient = useQueryClient();
+
   const selectedPowerPlant = usePowerPlantStore(
     (state) => state.selectedPowerPlant
   );
@@ -48,6 +53,23 @@ const PowerPlantDashboardTab = () => {
       },
     });
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    queryClient.removeQueries([QueryKey.POWER_PLANT_POWER_PREDICTION]);
+    queryClient.removeQueries([QueryKey.POWER_PLANT_POWER_PREDICTION_BY_DAYS]);
+
+    queryClient.invalidateQueries({
+      queryKey: [
+        QueryKey.POWER_PLANT_POWER_PREDICTION,
+        QueryKey.POWER_PLANT_POWER_PREDICTION_BY_DAYS,
+      ],
+    });
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
   const data = useMemo(() => {
     if (!prediction || !predictionByDays) return undefined;
     return { prediction, predictionByDays };
@@ -57,6 +79,9 @@ const PowerPlantDashboardTab = () => {
     <ScrollView
       className="dark:bg-dark-main flex-1"
       contentContainerStyle={{ flexGrow: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     >
       <DateView<typeof data>
         isLoading={isLoadingPrediction || isLoadingPredictionByDays}

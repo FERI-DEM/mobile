@@ -21,11 +21,11 @@ const PowerDifferenceCard: FC<PowerDifferenceCardProps> = ({
   return (
     <View className="shadow-lg shadow-black rounded-xl dark:bg-dark-element dark:text-white py-6 flex flex-row items-center justify-around grow ml-4">
       {calculatePowerDifference(power1, power2) >= 0 ? (
-        <ArrowUpCircleIcon color="green" size={35} />
+        <ArrowUpCircleIcon color="green" size={45} />
       ) : (
-        <ArrowDownCircleIcon color="red" size={35} />
+        <ArrowDownCircleIcon color="red" size={45} />
       )}
-      <View className="flex flex-2 ml-5">
+      <View className="flex flex-2">
         <Text className="text-white opacity-40 text-center text-xs">
           {`Ob ${getTimeString(date)}`}
         </Text>
