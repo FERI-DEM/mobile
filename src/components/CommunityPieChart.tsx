@@ -39,11 +39,6 @@ const CommunityPieChart = () => {
         });
     }, [membersPowerShare]);
 
-    console.log(calculatePointOnCircle(70, (200) / 2, {
-        x: 100,
-        y: 100,
-    }))
-
     return <DataView
         data={pieChartData}
         isLoading={isLoading}
