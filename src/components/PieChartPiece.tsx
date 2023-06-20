@@ -6,8 +6,7 @@ import Animated, {
     runOnJS, runOnUI,
     useAnimatedProps,
     useAnimatedReaction,
-    useDerivedValue,
-    useSharedValue, withDelay,
+    useSharedValue,
     withTiming
 } from "react-native-reanimated";
 import {ViewportContext} from "./ViewportAwareView";

@@ -1,4 +1,4 @@
-import {CommunityMembersPowerShareRes, CommunityMonthlyPowerProductionRes} from '../types/community.types';
+import { CommunityMonthlyPowerProductionRes} from '../types/community.types';
 import { QueryKey } from '../types/keys.types';
 import CommunityService from '../api/community.service';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
