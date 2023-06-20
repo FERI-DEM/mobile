@@ -1,6 +1,7 @@
 import {TextInput, View, Text, TextInputProps} from "react-native";
 import {FC} from "react";
 import {twMerge} from "tailwind-merge";
+import {colors} from "../constants/colors";
 
 interface InputProps extends TextInputProps{
     label: string;
@@ -19,7 +20,7 @@ const Input:FC<InputProps> = ({label, value, onChangeText, className, classNameL
                 className={twMerge('shadow-lg shadow-black rounded-md dark:bg-dark-element dark:text-white py-3 px-4', className)}
                 value={value}
                 onChangeText={onChangeText}
-                placeholderTextColor={'#7b7b7b'}
+                placeholderTextColor={colors.common.placeholder}
                 {...props}
             />
         </View>

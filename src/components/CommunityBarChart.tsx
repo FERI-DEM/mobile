@@ -9,6 +9,7 @@ import {barChartGap, barChartHeight, barChartHorizontalMargin, viewBoxSize} from
 import {useWindowDimensions, View} from "react-native";
 import DataView from "./DataView";
 import Skeleton from "./Skeleton";
+import {colors} from "../constants/colors";
 
 
 const CommunityBarChart = () => {
@@ -60,7 +61,7 @@ const CommunityBarChart = () => {
                 <Svg
                     preserveAspectRatio="none"
                     viewBox={`0 0 ${viewBoxSize.width} ${viewBoxSize.height}`}
-                    style={{ height: barChartHeight, backgroundColor: '#1C1B2D', width: graphWidth }}
+                    style={{ height: barChartHeight, backgroundColor: colors.dark.primary, width: graphWidth }}
                 >
                     {barChartData.map((data, index) => (
                         <Bar data={data} key={index} graphWidth={graphWidth}/>

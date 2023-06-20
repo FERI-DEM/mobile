@@ -11,6 +11,7 @@ import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
 import React from "react";
 import useCommunityJoinMutation from "../hooks/useCommunityJoinMutation";
+import {colors} from "../constants/colors";
 
 const DefaultCommunityData: JoinCommunityDataType = {
     community: '',
@@ -54,7 +55,7 @@ const JoinCommunityScreen = () => {
                             <View className='flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-dark-element rounded-md justify-between'>
                                 <Text className='text-white'>{item.displayName}</Text>
                                 <Checkbox
-                                    color='#236BFE'
+                                    color={colors.common.tint}
                                     value={fields.some((field) => field.powerPlantId === item._id)}
                                     onValueChange={(value) => value ? append({ powerPlantId: item._id}) : remove(fields.findIndex((field) => field.powerPlantId === item._id))}
                                 />

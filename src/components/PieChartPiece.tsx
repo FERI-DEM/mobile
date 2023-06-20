@@ -11,6 +11,7 @@ import Animated, {
     withTiming
 } from "react-native-reanimated";
 import {ViewportContext} from "./ViewportAwareView";
+import {colors} from "../constants/colors";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 interface PieChartPieceProps {
@@ -55,7 +56,7 @@ const PieChartPiece = ({data, index}: PieChartPieceProps) => {
     return <AnimatedPath
         animatedProps={animatedProps}
         fill={getColor(index)}
-        stroke={'#1C1B2D'}
+        stroke={colors.dark.primary}
         strokeWidth={2}
     />
 }

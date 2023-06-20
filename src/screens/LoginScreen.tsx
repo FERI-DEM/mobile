@@ -12,6 +12,7 @@ import {navigate} from "../navigation/navigate";
 import {Routes} from "../navigation/routes";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 import useSignIn from "../hooks/useSignIn";
+import {colors} from "../constants/colors";
 
 const DefaultLoginData: SignInCredentialsType = {
     email: '',
@@ -39,7 +40,7 @@ const LoginScreen = () => {
                 <Svg width="100%" height="263" viewBox="0 0 390 263" fill="none">
                     <Path fill-rule="evenodd" clip-rule="evenodd"
                           d="M190.39 -133.382C255.918 -127.803 327.827 -139.887 373.896 -98.7146C424.524 -53.4683 436.472 13.7329 424.97 76.2637C412.34 144.931 381.081 215.767 310.255 247.284C238.063 279.408 155.138 256.577 80.2113 229.675C-3.05431 199.779 -96.7114 167.391 -122.491 91.9084C-149.618 12.4795 -117.236 -81.6408 -44.0973 -134.305C19.4134 -180.036 108.541 -140.351 190.39 -133.382Z"
-                          fill="#236BFE"/>
+                          fill={colors.common.tint}/>
                 </Svg>
                 <Text className='text-4xl text-white font-bold text-center absolute ml-6'>Prijava</Text>
             </View>

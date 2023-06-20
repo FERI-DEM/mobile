@@ -31,6 +31,7 @@ import {
   xUnit,
 } from '../constants/line-chart';
 import LineChartBackToPresentButton from './LineChartBackToPresentButton';
+import {colors} from "../constants/colors";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedGroup = Animated.createAnimatedComponent(G);
@@ -297,14 +298,14 @@ const LineChart = ({
               style={{
                 width: graphWidth,
                 height: graphHeight,
-                backgroundColor: '#292A3E',
+                backgroundColor: colors.dark.element,
               }}
             >
               <Rect
                 y={-innerOffset.y}
                 width={graphWidth}
                 height={innerOffset.y}
-                fill="#292A3E"
+                fill={colors.dark.element}
               />
               <AnimatedGroup animatedProps={animatedTranslateProps}>
                 <AnimatedPath
@@ -331,7 +332,7 @@ const LineChart = ({
                 x={-innerOffset.x}
                 height={viewBoxSize.height}
                 y={-innerOffset.y}
-                fill="#292A3E"
+                fill={colors.dark.element}
               />
               <AnimatedPath
                 x={-innerOffset.x / 2}
@@ -341,7 +342,7 @@ const LineChart = ({
                 stroke="white"
               />
               <Path
-                fill="#1C1B2D"
+                fill={colors.dark.primary}
                 d={createPathForRoundedCorners(
                   {
                     x: -innerOffset.x,

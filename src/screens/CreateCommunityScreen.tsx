@@ -27,6 +27,7 @@ import {
   CommunityTab,
   useCommunityTabsStore,
 } from '../store/community-tabs-store';
+import {colors} from "../constants/colors";
 
 const DefaultCommunityData: CreateCommunityDataType = {
   communityName: '',
@@ -89,7 +90,7 @@ const CreateCommunityScreen: FC = () => {
                 <View className="flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-dark-element rounded-md justify-between">
                   <Text className="text-white">{item.displayName}</Text>
                   <Checkbox
-                    color="#236BFE"
+                    color={colors.common.tint}
                     value={fields.some(
                       (field) => field.powerPlantId === item._id
                     )}

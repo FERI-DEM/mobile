@@ -9,6 +9,7 @@ import DataView from "./DataView";
 import PieChartPiece from "./PieChartPiece";
 import ViewportAwareView, {ViewportAwareViewMode} from "./ViewportAwareView";
 import Skeleton from "./Skeleton";
+import {colors} from "../constants/colors";
 
 const CommunityPieChart = () => {
     const pieChartHeight = 300;
@@ -47,13 +48,13 @@ const CommunityPieChart = () => {
         data={pieChartData}
         isLoading={isLoading}
         loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'} style={{height: pieChartHeight}}>
-            <Svg viewBox='0 0 200 200' style={{ height: pieChartHeight, backgroundColor: '#1C1B2D' }}>
-                <Path d='M 100 0 A 100 100 0 1 1 65.8 194 L 100 100 L 100 0 Z' fill={'#292A3E'} stroke={'#1C1B2D'}/>
-                <Path d='M 65.8 194 A 100 100 0 0 1 13.4 150 L 100 100 L 65.8 194 Z' fill={'#292A3E'} stroke={'#1C1B2D'}/>
-                <Path d='M 13.4 150 A 100 100 0 0 1 100 0 L 100 100 L 13.4 150 Z' fill={'#292A3E'} stroke={'#1C1B2D'}/>
-                <Rect fill={'#3d3e5f'} width={30} height={10} x={155} y={95}/>
-                <Rect fill={'#3d3e5f'} width={30} height={10} x={35} y={153}/>
-                <Rect fill={'#3d3e5f'} width={30} height={10} x={28} y={50}/>
+            <Svg viewBox='0 0 200 200' style={{ height: pieChartHeight, backgroundColor: colors.dark.primary }}>
+                <Path d='M 100 0 A 100 100 0 1 1 65.8 194 L 100 100 L 100 0 Z' fill={colors.dark.element} stroke={colors.dark.primary}/>
+                <Path d='M 65.8 194 A 100 100 0 0 1 13.4 150 L 100 100 L 65.8 194 Z' fill={colors.dark.element} stroke={colors.dark.primary}/>
+                <Path d='M 13.4 150 A 100 100 0 0 1 100 0 L 100 100 L 13.4 150 Z' fill={colors.dark.element} stroke={colors.dark.primary}/>
+                <Rect fill={colors.dark.skeletonContent} width={30} height={10} x={155} y={95}/>
+                <Rect fill={colors.dark.skeletonContent} width={30} height={10} x={35} y={153}/>
+                <Rect fill={colors.dark.skeletonContent} width={30} height={10} x={28} y={50}/>
             </Svg>
         </Skeleton>}
     >
@@ -62,7 +63,7 @@ const CommunityPieChart = () => {
             <Svg
                 viewBox="0 0 200 200"
                 className="w-full"
-                style={{ height: pieChartHeight, backgroundColor: '#1C1B2D' }}
+                style={{ height: pieChartHeight, backgroundColor: colors.dark.primary }}
             >
                 {data?.map((data, index) => (
                     <PieChartPiece data={data} key={index} index={index}/>
