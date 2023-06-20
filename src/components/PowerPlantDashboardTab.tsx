@@ -1,11 +1,10 @@
 import PowerDisplay from './PowerDisplay';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import React, { useMemo } from 'react';
 import usePrediction from '../hooks/usePrediction';
 import { usePowerPlantStore } from '../store/power-plant-store';
 import usePredictionByDays from '../hooks/usePredictionByDays';
 import {
-  calculatePowerDifference,
   calculatePowerPercentageDifference,
   roundToTwoDecimalPlaces,
 } from '../utils/power';
@@ -13,16 +12,12 @@ import AlertCard from './AlertCard';
 import DateView from './DataView';
 import { navigationRef } from '../navigation/navigate';
 import { Routes } from '../navigation/routes';
-import {
-  ArrowDownCircleIcon,
-  ArrowUpCircleIcon,
-} from 'react-native-heroicons/outline';
-import { CountUp } from 'use-count-up';
 import { getTimeString } from '../utils/date';
 import { StackActions } from '@react-navigation/native';
 import { useToastStore } from '../store/toast-store';
 import { ToastTypes } from '../types/toast.types';
 import PowerPlantProductionLineChart from './PowerPlantProductionLineChart';
+import PowerDifferenceCard from './PowerDifferenceCard';
 
 const PowerPlantDashboardTab = () => {
   const { showToast } = useToastStore();
@@ -120,40 +115,11 @@ const PowerPlantDashboardTab = () => {
                   />
                 )}
                 {prediction && (
-                  <View className="shadow-lg shadow-black rounded-xl dark:bg-dark-element dark:text-white py-6 px-6 flex flex-row items-center justify-around grow ml-4">
-                    {calculatePowerDifference(
-                      prediction![0].power,
-                      prediction![1].power
-                    ) >= 0 ? (
-                      <ArrowUpCircleIcon color="green" size={35} />
-                    ) : (
-                      <ArrowDownCircleIcon color="red" size={35} />
-                    )}
-                    <View className="flex flex-2 ml-5">
-                      <Text className="text-white opacity-40 text-center text-xs">
-                        {`Ob ${getTimeString(prediction[1].date)}`}
-                      </Text>
-                      <Text className="text-lg pt-2 text-white  text-center font-semibold">
-                        {calculatePowerDifference(
-                          prediction![0].power,
-                          prediction![1].power
-                        ) >= 0
-                          ? '+'
-                          : '-'}
-                        <CountUp
-                          isCounting
-                          end={Math.abs(
-                            calculatePowerDifference(
-                              prediction![0].power,
-                              prediction![1].power
-                            )
-                          )}
-                          duration={1}
-                        />
-                        kW
-                      </Text>
-                    </View>
-                  </View>
+                  <PowerDifferenceCard
+                    date={prediction[1].date}
+                    power1={prediction![0].power}
+                    power2={prediction![1].power}
+                  />
                 )}
               </View>
             </View>
