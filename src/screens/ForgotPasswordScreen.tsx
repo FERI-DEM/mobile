@@ -58,7 +58,7 @@ const ForgotPasswordScreen: FC = () => {
         <FormProvider {...form}>
           <ControlledInput
             name="email"
-            label="Elektronski naslov"
+            label="Elektronski naslov *"
             placeholder="janez.novak@gmail.com"
             keyboardType="email-address"
           />

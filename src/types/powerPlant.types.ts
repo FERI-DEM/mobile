@@ -24,7 +24,11 @@ export interface PowerPlantPowerHistoryReq {
   from: Date;
   to: Date;
 }
-
+export interface PowerPlantProductionByMonthRes {
+  month: number;
+  year: number;
+  production: number;
+}
 export interface PowerPlant {
   displayName: string;
   latitude: number;

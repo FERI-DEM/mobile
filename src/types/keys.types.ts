@@ -2,6 +2,7 @@ export enum QueryKey {
   'FORWARD_GEOCODING_BY_ADDRESS' = 'forwardGeocodingByAddress',
   'USER_GEOCODED_LOCATION' = 'userGeocodedLocation',
   'POWER_PLANT_POWER_PREDICTION' = 'powerPlantPowerPrediction',
+  'POWER_PLANT_POWER_PREDICTION_BY_MONTHS' = 'powerPlantPowerPredictionByMonths',
   'POWER_PLANT_POWER_PREDICTION_BY_DAYS' = 'powerPlantPowerPredictionByDays',
   'COMMUNITIES' = 'communities',
   'COMMUNITY' = 'community',
