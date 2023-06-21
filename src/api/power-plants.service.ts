@@ -5,6 +5,7 @@ import {
   PowerPlantCreateReq,
   PowerPlantPowerHistoryReq,
   PowerPlantPowerHistoryRes,
+  PowerPlantProductionByMonthRes,
   PowerPlantRes,
   PredictedValue,
 } from '../types/powerPlant.types';
@@ -47,6 +48,12 @@ const PowerPlantsService = {
           powerPlantIds: [data.id],
         },
       }
+    );
+    return response.data;
+  },
+  getHistoryProductionByMonth: async (id: string) => {
+    const response = await apiInstance.get<PowerPlantProductionByMonthRes[]>(
+      `power-plants/production-by-month/${id}`
     );
     return response.data;
   },

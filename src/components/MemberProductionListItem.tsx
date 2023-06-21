@@ -5,7 +5,7 @@ import { CountUp } from 'use-count-up';
 interface MemberListItemProps {
   member: string;
   power: number;
-  active: boolean;
+  active?: boolean;
 }
 
 const MemberProductionListItem: FC<MemberListItemProps> = ({

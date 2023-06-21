@@ -1,5 +1,5 @@
 import PowerDisplay from './PowerDisplay';
-import { ScrollView, View, RefreshControl } from 'react-native';
+import { ScrollView, View, RefreshControl, Text } from 'react-native';
 import React, { useCallback, useMemo, useState } from 'react';
 import usePrediction from '../hooks/usePrediction';
 import { usePowerPlantStore } from '../store/power-plant-store';
@@ -20,6 +20,7 @@ import PowerPlantProductionLineChart from './PowerPlantProductionLineChart';
 import PowerDifferenceCard from './PowerDifferenceCard';
 import { QueryKey } from '../types/keys.types';
 import { useQueryClient } from '@tanstack/react-query';
+import PowerPlantHistoryProductionByMonths from './PowerPlantHistoryProductionByMonths';
 
 const PowerPlantDashboardTab = () => {
   const { showToast } = useToastStore();
@@ -152,6 +153,12 @@ const PowerPlantDashboardTab = () => {
                     power2={prediction![1].power}
                   />
                 )}
+              </View>
+              <View className="mb-5 mx-4">
+                <Text className="text-white mb-4">
+                  Zgodovinska proizvodnja po mesecih
+                </Text>
+                <PowerPlantHistoryProductionByMonths />
               </View>
             </View>
           </View>
