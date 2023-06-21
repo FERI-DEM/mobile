@@ -5,8 +5,10 @@ import CommunityBarChart from './CommunityBarChart';
 import ScrollViewWithViewportTracker from './ScrollViewWithViewportTracker';
 import CommunityPowerDisplays from './CommunityPowerDisplays';
 import CommunityMembersCurrentProduction from './CommunityMembersCurrentProduction';
-import { QueryKey } from '../types/keys.types';
+import {QueryKey} from '../types/keys.types';
 import RefreshControlView from "./RefreshControlView";
+import CommunityProductionLineChart from "./CommunityProductionLineChart";
+import {useQueryClient} from "@tanstack/react-query";
 
 const CommunityDashboardTab = () => {
 
@@ -16,10 +18,13 @@ const CommunityDashboardTab = () => {
       QueryKey.COMMUNITY_MONTHLY_POWER_PRODUCTION,
       QueryKey.COMMUNITY_MEMBERS_POWER_SHARE,
       QueryKey.COMMUNITIES_MEMBERS_CURRENT_PRODUCTION,
+        QueryKey.COMMUNITY_POWER_HISTORY,
+        QueryKey.COMMUNITY_POWER_PRODUCTION,
     ]}>
       <ScrollViewWithViewportTracker classNames="mb-5 mx-4 flex">
         <>
           <CommunityPowerDisplays />
+          <CommunityProductionLineChart/>
           <Text className="text-white mb-2">Trenutna proizvodnja članov</Text>
           <CommunityMembersCurrentProduction />
           <Text className="text-white mb-5 mt-10">

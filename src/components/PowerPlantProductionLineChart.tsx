@@ -7,10 +7,6 @@ import DataView from './DataView';
 import { graphHeight, graphHorizontalMargin } from '../constants/line-chart';
 import { useDashboardTabsStore } from '../store/dashboard-tabs-store';
 
-function View() {
-  return null;
-}
-
 const PowerPlantProductionLineChart = () => {
   const selectedPowerPlant = usePowerPlantStore(
     (state) => state.selectedPowerPlant
@@ -35,6 +31,7 @@ const PowerPlantProductionLineChart = () => {
 
   const data = useMemo(() => {
     if (!predictions || !history) return undefined;
+    console.log(predictions[0])
 
     const reversedHistory = [...history.pages].reverse();
     const preparedHistory = reversedHistory.flat().map((item) => ({

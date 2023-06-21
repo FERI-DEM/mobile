@@ -15,6 +15,8 @@ export enum QueryKey {
   'COMMUNITIES_POWER_PREDICTION_BY_DAYS' = 'communitiesPowerPredictionByDays',
   'COMMUNITIES_MEMBERS_CURRENT_PRODUCTION' = 'communitiesMembersCurrentPoduction',
   'COMMUNITY_MONTHLY_POWER_PRODUCTION' = 'communityMonthlyPowerProduction',
+  'COMMUNITY_POWER_PRODUCTION' = 'communityPowerProduction',
+  'COMMUNITY_POWER_HISTORY' = 'communityPowerHistory',
 }
 
 export enum MutationKey {

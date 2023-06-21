@@ -1,13 +1,14 @@
 import { apiInstance } from './axios';
 import {
   CommunityCurrentProductionRes,
-  CommunityMembersPowerShareRes, CommunityMonthlyPowerProductionRes,
+  CommunityMembersPowerShareRes, CommunityMonthlyPowerProductionRes, CommunityPowerHistoryReq, CommunityPowerHistoryRes,
   CommunityReq,
   CommunityReqJoin,
   CommunityRes,
   CommunityUpdate,
   JoinCommunityRequestProcess,
 } from '../types/community.types';
+import {PredictedValue} from "../types/powerPlant.types";
 
 const CommunityService = {
   createCommunity: async (community: CommunityReq) => {
@@ -89,6 +90,21 @@ const CommunityService = {
     );
     return response.data;
   },
+  getPrediction: async (id: string) => {
+    const response = await apiInstance.get<PredictedValue[]>(
+      `communities/predict-power-production/${id}`
+    );
+    return response.data;
+  },
+  getHistory: async (id: string, data: CommunityPowerHistoryReq) => {
+    const response = await apiInstance.get<CommunityPowerHistoryRes[]>(
+      `communities/history/${id}`, {params: {
+            dateFrom: data.from.toISOString(),
+            dateTo: data.to.toISOString(),
+          },}
+    );
+    return response.data;
+  }
 };
 
 export default CommunityService;

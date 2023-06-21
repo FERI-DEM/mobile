@@ -20,6 +20,15 @@ export interface Community {
   adminId: string;
 }
 
+export interface CommunityPowerHistoryReq {
+  from: Date;
+  to: Date;
+}
+export interface CommunityPowerHistoryRes {
+  predictedPower: number;
+  timestamp: number;
+}
+
 export interface CommunityReq {
   name: string;
   powerPlants: { powerPlantId: string }[];
