@@ -38,7 +38,13 @@ const CommunityDashboardTab = () => {
   return (
     <ScrollViewWithViewportTracker
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={['#FFFFFF']}
+          progressBackgroundColor="#236BFE"
+          tintColor="#236BFE"
+        />
       }
       classNames="mb-5 mx-4 flex"
     >

@@ -80,7 +80,13 @@ const PowerPlantDashboardTab = () => {
       className="dark:bg-dark-main flex-1"
       contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <RefreshControl
+          colors={['#FFFFFF']}
+          progressBackgroundColor="#236BFE"
+          tintColor="#236BFE"
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
       }
     >
       <DateView<typeof data>
