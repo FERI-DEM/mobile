@@ -7,6 +7,7 @@ import Skeleton from './Skeleton';
 import { usePowerPlantStore } from '../store/power-plant-store';
 import usePowerPlantProductionHistoryByMonth from '../hooks/usePowerPlantProductionHistoryByMonth';
 import { getMonthName } from '../utils/date';
+import ProductionListSkeleton from "./ProductionListSkeleton";
 
 const PowerPlantHistoryProductionByMonths = () => {
   const selectedPowerPlant = usePowerPlantStore(
@@ -14,7 +15,7 @@ const PowerPlantHistoryProductionByMonths = () => {
   );
   const {
     data: powerPlantHistoryProductionByMonth,
-    isLoading: isLoadingPowerPlantHistoryProductionByMonth,
+    isFetching: isFetchingPowerPlantHistoryProductionByMonth,
   } = usePowerPlantProductionHistoryByMonth(selectedPowerPlant?.id || '', {
     enabled: !!selectedPowerPlant,
     retry: false,
@@ -27,26 +28,9 @@ const PowerPlantHistoryProductionByMonths = () => {
     );
   return (
     <DataView
-      isLoading={isLoadingPowerPlantHistoryProductionByMonth}
+      isLoading={isFetchingPowerPlantHistoryProductionByMonth}
       data={powerPlantHistoryProductionByMonth}
-      loadingComponent={
-        <Skeleton
-          classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'}
-        >
-          <View className="border-l-2 border-l-dark-skeleton-content h-16 w-full bg flex flex-row justify-between px-5 items-center border-b-2 border-b-dark-main">
-            <View className="bg-dark-skeleton-content w-32 h-5"></View>
-            <View className="bg-dark-skeleton-content w-14 h-5"></View>
-          </View>
-          <View className="border-l-2 border-dark-skeleton-content h-16 w-full flex flex-row justify-between px-5 items-center border-b-2 border-b-dark-main">
-            <View className="bg-dark-skeleton-content w-32 h-5"></View>
-            <View className="bg-dark-skeleton-content w-14 h-5"></View>
-          </View>
-          <View className="border-l-2 border-dark-skeleton-content h-16 w-full flex flex-row justify-between px-5 items-center">
-            <View className="bg-dark-skeleton-content w-32 h-5"></View>
-            <View className="bg-dark-skeleton-content w-14 h-5"></View>
-          </View>
-        </Skeleton>
-      }
+      loadingComponent={<ProductionListSkeleton/>}
     >
       {(powerPlantHistoryProductionByMonth) => (
         <ScrollView className="max-h-56" nestedScrollEnabled>

@@ -1,26 +1,24 @@
-import LineChart from './LineChart';
 import usePowerPlantPowerHistory from '../hooks/usePowerPlantPowerHistory';
-import React, { useMemo } from 'react';
+import React, { useMemo} from 'react';
 import usePrediction from '../hooks/usePrediction';
 import { usePowerPlantStore } from '../store/power-plant-store';
 import DataView from './DataView';
-import { graphHeight, graphHorizontalMargin } from '../constants/line-chart';
-import { useDashboardTabsStore } from '../store/dashboard-tabs-store';
+import { graphHeight } from '../constants/line-chart';
+import LineChartSkeleton from "./LineChartSkeleton";
+import LineChart from "./LineChart";
 
 const PowerPlantProductionLineChart = () => {
   const selectedPowerPlant = usePowerPlantStore(
     (state) => state.selectedPowerPlant
   );
-  const activeTab = useDashboardTabsStore((state) => state.activeTab);
-  const { data: predictions } = usePrediction(selectedPowerPlant?.id || '', {
+  const { data: predictions, isFetching: isFetchingPredictions } = usePrediction(selectedPowerPlant?.id || '', {
     enabled: !!selectedPowerPlant,
     retry: false,
   });
-  const { data: history, fetchNextPage } = usePowerPlantPowerHistory(
+  const { data: history, fetchNextPage, isFetching: isFetchingHistory, isFetchingNextPage } = usePowerPlantPowerHistory(
     selectedPowerPlant?.id || '',
     {
       retry: false,
-      keepPreviousData: true,
       enabled: !!selectedPowerPlant,
     }
   );
@@ -31,7 +29,6 @@ const PowerPlantProductionLineChart = () => {
 
   const data = useMemo(() => {
     if (!predictions || !history) return undefined;
-    console.log(predictions[0])
 
     const reversedHistory = [...history.pages].reverse();
     const preparedHistory = reversedHistory.flat().map((item) => ({
@@ -44,23 +41,21 @@ const PowerPlantProductionLineChart = () => {
     return { predictions, history: preparedHistory.reverse() };
   }, [predictions, history]);
 
+  console.log('data', data?.history.length, isFetchingPredictions, isFetchingHistory, isFetchingNextPage, new Date(), (isFetchingPredictions || isFetchingHistory) && !isFetchingNextPage)
+
   return (
     <DataView
       data={data}
-      isLoading={!data}
-      classNameLoadingContainer={`rounded-lg bg-dark-element shadow-lg shadow-black`}
-      styleLoadingContainer={{
-        height: graphHeight,
-        marginHorizontal: graphHorizontalMargin,
-      }}
+      isLoading={(isFetchingPredictions || isFetchingHistory) && !isFetchingNextPage}
+      loadingComponent={<LineChartSkeleton height={graphHeight}/>}
     >
       {(data) => (
-        <LineChart
-          key={selectedPowerPlant?.id}
-          predictions={data.predictions}
-          history={data.history}
-          onStopScrolling={onStopScrolling}
-        />
+            <LineChart
+                key={selectedPowerPlant?.id}
+                predictions={data.predictions}
+                history={data.history}
+                onStopScrolling={onStopScrolling}
+            />
       )}
     </DataView>
   );

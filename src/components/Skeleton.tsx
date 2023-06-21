@@ -38,7 +38,7 @@ const Skeleton = ({classNameContainer, style, children}: SkeletonProps) => {
         }),-1, false);
     }
 
-    return <View onLayout={onLayout} className={twMerge('bg-dark-element flex-1 grow relative overflow-hidden', classNameContainer)} style={style}>
+    return <View onLayout={onLayout} className={twMerge('bg-dark-element grow h-full relative overflow-hidden', classNameContainer)} style={style}>
         <AnimatedLG
             colors={["rgba(41,42,62,0)", "rgba(48,49,73,0.65)", "rgba(48,49,73,0.64)", "rgba(41,42,62,0)"]}
             start={{ x: 0.35, y: 0.35 }}

@@ -268,6 +268,10 @@ const LineChart = ({
     []
   );
 
+  useEffect(() => {
+    console.log('zdaj', new Date())
+  }, [])
+
   const animatedProps = useAnimatedProps(() => ({ d: linePath.value }));
   const areaAnimatedProps = useAnimatedProps(() => ({ d: areaPath.value }));
   const animatedTranslateProps = useAnimatedProps(() => ({
@@ -277,7 +281,6 @@ const LineChart = ({
   const animatedYLegendProps = useAnimatedProps(() => ({ d: yLegend.value }));
 
   return (
-    <>
       <View
         className="rounded-lg bg-red-500 flex items-center bg-dark-element mx-auto relative"
         style={{ width: graphWidth, height: graphHeight }}
@@ -359,7 +362,6 @@ const LineChart = ({
           </GestureDetector>
         </GestureDetector>
       </View>
-    </>
   );
 };
 export default LineChart;

@@ -6,6 +6,7 @@ import useCommunitiesPredictionByDays from '../hooks/useCommunitiesPredictionByD
 import { useCommunityStore } from '../store/community-store';
 import DataView from './DataView';
 import Skeleton from './Skeleton';
+import PowerDisplaysSkeleton from "./PowerDisplaysSkeleton";
 
 const CommunityPowerDisplays = () => {
   const selectedCommunity = useCommunityStore(
@@ -22,25 +23,7 @@ const CommunityPowerDisplays = () => {
     <DataView
       isLoading={isFetchingPredictions}
       data={predictions}
-      loadingComponent={
-        <View className="flex flex-row pb-5">
-          <Skeleton classNameContainer="h-36 pt-7 pb-8 shadow-lg shadow-black rounded-xl grow dark:bg-dark-element flex flex-col justify-between items-center">
-            <View className="bg-dark-skeleton-content w-10 h-3"></View>
-            <View className="bg-dark-skeleton-content w-12 h-6"></View>
-            <View className="bg-dark-skeleton-content w-10 h-4"></View>
-          </Skeleton>
-          <Skeleton classNameContainer="h-36 pt-7 mx-2 pb-8 shadow-lg shadow-black rounded-xl grow dark:bg-dark-element flex flex-col justify-between items-center">
-            <View className="bg-dark-skeleton-content w-10 h-3"></View>
-            <View className="bg-dark-skeleton-content w-12 h-6"></View>
-            <View className="bg-dark-skeleton-content w-10 h-4"></View>
-          </Skeleton>
-          <Skeleton classNameContainer="h-36 pt-7 pb-8 shadow-lg shadow-black rounded-xl grow dark:bg-dark-element flex flex-col justify-between items-center">
-            <View className="bg-dark-skeleton-content w-10 h-3"></View>
-            <View className="bg-dark-skeleton-content w-12 h-6"></View>
-            <View className="bg-dark-skeleton-content w-10 h-4"></View>
-          </Skeleton>
-        </View>
-      }
+      loadingComponent={<PowerDisplaysSkeleton/>}
     >
       {(predictions) => (
         <View className="flex flex-row justify-around pb-5">

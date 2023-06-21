@@ -10,7 +10,7 @@ const viewBoxSize = {
 };
 
 export const graphHeight = 300;
-export const graphHorizontalMargin = 15;
+export const graphHorizontalMargin = 16;
 const fontSize = 1.3;
 const charWidth = 1.5;
 const fontWidth = 0.2;
