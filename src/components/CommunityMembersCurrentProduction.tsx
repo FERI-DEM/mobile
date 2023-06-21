@@ -14,7 +14,7 @@ const CommunityMembersCurrentProduction = () => {
     );
     const {
         data: membersCurrentProduction,
-        isLoading: isLoadingMembersCurrentProduction,
+        isFetching: isFetchingMembersCurrentProduction,
     } = useCommunityMembersCurrentProduction(selectedCommunity?.id || '', {
         enabled: !!selectedCommunity,
         retry: false,
@@ -22,7 +22,7 @@ const CommunityMembersCurrentProduction = () => {
     const {data: user} = useUser();
 
     return <DataView
-        isLoading={isLoadingMembersCurrentProduction}
+        isLoading={isFetchingMembersCurrentProduction}
         data={membersCurrentProduction}
         loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'}>
             <View className='border-l-2 border-l-dark-skeleton-content h-16 w-full bg flex flex-row justify-between px-5 items-center border-b-2 border-b-dark-main'>

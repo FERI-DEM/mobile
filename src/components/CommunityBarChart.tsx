@@ -17,7 +17,7 @@ const CommunityBarChart = () => {
     const window = useWindowDimensions();
     const graphWidth = window.width - barChartHorizontalMargin * 2;
 
-    const { data: monthlyPowerProduction, isLoading } = useCommunityMonthlyPowerProduction(
+    const { data: monthlyPowerProduction, isFetching } = useCommunityMonthlyPowerProduction(
         selectedCommunity?.id || '',
         { enabled: !!selectedCommunity }
     );
@@ -47,7 +47,7 @@ const CommunityBarChart = () => {
     }, [monthlyPowerProduction]);
 
     return <DataView
-        isLoading={isLoading}
+        isLoading={isFetching}
         data={barChartData}
         loadingComponent={<Skeleton classNameContainer='shadow-lg shadow-black dark:bg-dark-main flex flex-row items-end' style={{height: barChartHeight}}>
             <View className='bg-dark-element grow' style={{height: barChartHeight * 0.6}}></View>

@@ -12,7 +12,7 @@ const CommunityPowerDisplays = () => {
     (state) => state.selectedCommunity
   );
 
-  const { data: predictions, isLoading: arePredictionsLoading } =
+  const { data: predictions, isFetching: isFetchingPredictions } =
     useCommunitiesPredictionByDays(selectedCommunity?.id || '', {
       enabled: !!selectedCommunity,
       retry: false,
@@ -20,7 +20,7 @@ const CommunityPowerDisplays = () => {
 
   return (
     <DataView
-      isLoading={arePredictionsLoading}
+      isLoading={isFetchingPredictions}
       data={predictions}
       loadingComponent={
         <View className="flex flex-row pb-5">

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, RefObject, useRef, useState } from 'react';
+import {createContext, ReactNode, RefObject, useRef, useState} from 'react';
 import { ScrollView, ScrollViewProps } from 'react-native';
 import { twMerge } from 'tailwind-merge';
 
@@ -33,14 +33,11 @@ const ScrollViewWithViewportTracker = ({
     listener: (parentRef: RefObject<ScrollView>) => void
   ) => {
     setScrollListeners([...scrollListeners, listener]);
+    listener(ref)
   };
 
   const notifyScrollListeners = () => {
     scrollListeners.forEach((listener) => listener(ref));
-  };
-
-  const onLayout = () => {
-    notifyScrollListeners();
   };
 
   return (
@@ -53,7 +50,6 @@ const ScrollViewWithViewportTracker = ({
         ref={ref}
         className={twMerge('flex', classNames)}
         onScroll={notifyScrollListeners}
-        onLayout={onLayout}
       >
         {children}
       </ScrollView>

@@ -15,7 +15,7 @@ const CommunityPieChart = () => {
     const pieChartHeight = 300;
     const selectedCommunity = useCommunityStore(state => state.selectedCommunity);
 
-    const { data: membersPowerShare, isLoading } = useCommunityMembersPowerShare(
+    const { data: membersPowerShare, isFetching } = useCommunityMembersPowerShare(
         selectedCommunity?.id || '',
         { enabled: !!selectedCommunity }
     );
@@ -41,7 +41,7 @@ const CommunityPieChart = () => {
 
     return <DataView
         data={pieChartData}
-        isLoading={isLoading}
+        isLoading={isFetching}
         loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'} style={{height: pieChartHeight}}>
             <Svg viewBox='0 0 200 200' style={{ height: pieChartHeight, backgroundColor: colors.dark.primary }}>
                 <Path d='M 100 0 A 100 100 0 1 1 65.8 194 L 100 100 L 100 0 Z' fill={colors.dark.element} stroke={colors.dark.primary}/>
