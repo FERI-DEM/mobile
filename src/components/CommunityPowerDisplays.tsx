@@ -50,14 +50,14 @@ const CommunityPowerDisplays = () => {
             unit="kWh"
           />
           <PowerDisplay
-            power={roundToTwoDecimalPlaces(predictions[0])}
-            text="Danes"
+            power={roundToTwoDecimalPlaces(predictions[1])}
+            text="Jutri"
             unit="kWh"
             classNameContainer="mx-2"
           />
           <PowerDisplay
-            power={roundToTwoDecimalPlaces(predictions[0])}
-            text="Danes"
+            power={roundToTwoDecimalPlaces(predictions[2])}
+            text="Pojutrišnjem"
             unit="kWh"
           />
         </View>
