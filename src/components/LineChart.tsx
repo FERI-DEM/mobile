@@ -268,10 +268,6 @@ const LineChart = ({
     []
   );
 
-  useEffect(() => {
-    console.log('zdaj', new Date())
-  }, [])
-
   const animatedProps = useAnimatedProps(() => ({ d: linePath.value }));
   const areaAnimatedProps = useAnimatedProps(() => ({ d: areaPath.value }));
   const animatedTranslateProps = useAnimatedProps(() => ({

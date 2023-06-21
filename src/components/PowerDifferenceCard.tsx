@@ -36,7 +36,7 @@ const PowerDifferenceCard: FC<PowerDifferenceCardProps> = ({
             end={Math.abs(calculatePowerDifference(power1, power2))}
             duration={1}
           />
-          kW
+          {` kW`}
         </Text>
       </View>
     </View>

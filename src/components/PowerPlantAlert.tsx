@@ -40,7 +40,7 @@ const PowerPlantAlert  = () => {
         return calculatePowerPercentageDifference(now.power, next.power);
     }, [predictions])
 
-    if (!difference) {
+    if (!difference || isFetchingPredictions) {
         return null;
     }
 

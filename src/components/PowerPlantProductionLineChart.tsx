@@ -41,7 +41,6 @@ const PowerPlantProductionLineChart = () => {
     return { predictions, history: preparedHistory.reverse() };
   }, [predictions, history]);
 
-  console.log('data', data?.history.length, isFetchingPredictions, isFetchingHistory, isFetchingNextPage, new Date(), (isFetchingPredictions || isFetchingHistory) && !isFetchingNextPage)
 
   return (
     <DataView

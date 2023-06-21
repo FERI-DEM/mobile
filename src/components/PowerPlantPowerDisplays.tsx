@@ -39,7 +39,7 @@ const PowerPlantPowerDisplays = () => {
             loadingComponent={<PowerDisplaysSkeleton/>}
         >
             {(predictions) => (
-                <View className="flex flex-row justify-around pb-5">
+                <View className="flex flex-row justify-around">
                     <PowerDisplay
                         power={roundToTwoDecimalPlaces(predictions[0])}
                         text="Danes"

@@ -8,7 +8,7 @@ interface AlertCardProps {
 }
 const AlertCard: FC<AlertCardProps> = ({title, message}) => {
     return (
-        <View className='shadow-lg shadow-black rounded-xl dark:bg-dark-element dark:text-white py-6 flex flex-row mt-4 items-center justify-around mx-4'>
+        <View className='shadow-lg shadow-black rounded-xl dark:bg-dark-element dark:text-white py-6 flex flex-row mt-0 items-center justify-around mb-7'>
             <View className='shrink px-6'>
                 <Text className='text-white text-lg font-bold pb-2'>{title}</Text>
                 <Text className='text-white opacity-40 mt-2'>{message}</Text>

@@ -8,6 +8,7 @@ import PowerPlantAlert from "./PowerPlantAlert";
 import PowerDisplayForNextTimeUnit from "./PowerDisplayForNextTimeUnit";
 import PowerPlantPowerDifferenceCard from "./PowerPlantPowerDifferenceCard";
 import PowerPlantPowerDisplays from "./PowerPlantPowerDisplays";
+import Section from "./Section";
 
 const PowerPlantDashboardTab = () => {
   return (
@@ -21,22 +22,22 @@ const PowerPlantDashboardTab = () => {
               className="dark:bg-dark-main flex-1 mb-5 mx-4"
               contentContainerStyle={{ flexGrow: 1 }}
           >
-              <View className='pb-5'>
+              <Section>
                   <PowerPlantPowerDisplays/>
+              </Section>
+              <Section classNameContainer='mb-0'>
                   <PowerPlantAlert/>
+              </Section>
+              <Section heading='Graf proizvodnje'>
                   <PowerPlantProductionLineChart />
-
-
-                  <View className="my-4 flex flex-row">
-                      <PowerDisplayForNextTimeUnit/>
-                      <PowerPlantPowerDifferenceCard/>
-                  </View>
-
-                  <Text className="text-white mb-4">
-                      Zgodovinska proizvodnja po mesecih
-                  </Text>
+              </Section>
+              <Section classNameContainer='flex flex-row'>
+                  <PowerDisplayForNextTimeUnit/>
+                  <PowerPlantPowerDifferenceCard/>
+              </Section>
+              <Section heading='Zgodovinska proizvodnja po mesecih'>
                   <PowerPlantHistoryProductionByMonths />
-              </View>
+              </Section>
           </ScrollView>
       </RefreshControlView>
   );

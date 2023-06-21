@@ -1,4 +1,3 @@
-import {Text} from 'react-native';
 import React from 'react';
 import CommunityPieChart from './CommunityPieChart';
 import CommunityBarChart from './CommunityBarChart';
@@ -8,7 +7,7 @@ import CommunityMembersCurrentProduction from './CommunityMembersCurrentProducti
 import {QueryKey} from '../types/keys.types';
 import RefreshControlView from "./RefreshControlView";
 import CommunityProductionLineChart from "./CommunityProductionLineChart";
-import {useQueryClient} from "@tanstack/react-query";
+import Section from "./Section";
 
 const CommunityDashboardTab = () => {
 
@@ -23,16 +22,21 @@ const CommunityDashboardTab = () => {
     ]}>
       <ScrollViewWithViewportTracker classNames="mb-5 mx-4 flex">
         <>
-          <CommunityPowerDisplays />
-          <CommunityProductionLineChart/>
-          <Text className="text-white mb-2">Trenutna proizvodnja članov</Text>
-          <CommunityMembersCurrentProduction />
-          <Text className="text-white mb-5 mt-10">
-            Proizvodnja za tekoči mesec
-          </Text>
-          <CommunityBarChart />
-          <Text className="text-white mb-5 mt-5">Delež proizvodnje članov</Text>
-          <CommunityPieChart />
+          <Section>
+            <CommunityPowerDisplays />
+          </Section>
+          <Section heading='Graf proizvodnje'>
+            <CommunityProductionLineChart/>
+          </Section>
+          <Section heading='Trenutna proizvodnja članov'>
+            <CommunityMembersCurrentProduction />
+          </Section>
+          <Section heading='Proizvodnja trenutni mesec'>
+            <CommunityBarChart />
+          </Section>
+          <Section heading='Delež velikosti elektrarn'>
+            <CommunityPieChart />
+          </Section>
         </>
       </ScrollViewWithViewportTracker>
     </RefreshControlView>

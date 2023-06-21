@@ -24,7 +24,7 @@ const MemberProductionListItem: FC<MemberListItemProps> = ({
       </Text>
       <Text className={`text-white ${active && 'text-tint font-bold'}`}>
         <CountUp isCounting end={power} duration={1} />
-        kW
+        {` kW`}
       </Text>
     </Pressable>
   );
