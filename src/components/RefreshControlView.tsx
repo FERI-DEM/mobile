@@ -23,7 +23,9 @@ const RefreshControlView = ({children, queryKeysForInvalidation}: RefreshControl
     return <>
         {Children.map(children, child => {
             return cloneElement(child, {
-                refreshControl: <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                refreshControl: <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#FFFFFF']}
+                                                progressBackgroundColor="#236BFE"
+                                                tintColor="#236BFE"/>
         })
     })}
 </>
