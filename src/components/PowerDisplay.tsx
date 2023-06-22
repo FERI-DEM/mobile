@@ -18,7 +18,7 @@ const PowerDisplay: FC<PowerDisplayProps> = ({
   classNameInnerContainer,
 }) => {
   return (
-    <View className={classNameContainer}>
+    <View className={twMerge('flex-1 h-36', classNameContainer)}>
       <View
         className={twMerge(
           'py-6 shadow-lg shadow-black rounded-xl grow dark:bg-dark-element flex item-center',

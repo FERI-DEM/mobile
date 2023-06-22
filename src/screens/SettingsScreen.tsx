@@ -8,7 +8,6 @@ import { ChangePasswordSchema } from '../schemas/user.schema';
 import { ChangePasswordType } from '../types/user.types';
 import { twMerge } from 'tailwind-merge';
 import { useUserStore } from '../store/user-store';
-import { useToastStore } from '../store/toast-store';
 import useSignOut from '../hooks/useSignOut';
 import useUpdatePasswordMutation from '../hooks/useUpdatePasswordMutation';
 
@@ -21,7 +20,6 @@ const SettingsScreen = () => {
   const { user } = useUserStore();
   const [provider, setProvider] = useState<string>('');
   const [formOpened, setFormOpened] = useState<boolean>(true);
-  const showToast = useToastStore((state) => state.showToast);
   const { mutate: signOut, isLoading: isSignOutLoading } = useSignOut();
   const { mutate: updatePassword, isLoading: isUpdatePasswordLoading } =
     useUpdatePasswordMutation();
@@ -55,7 +53,9 @@ const SettingsScreen = () => {
       >
         <View className="h-full">
           <View className="px-2">
-            <Text className="text-white text-base font-bold mb-2">Profil</Text>
+            <Text className="text-white text-base font-bold mb-2">
+              Vaš e-mail
+            </Text>
             <Text className="text-white text-base mb-4">{user?.email}</Text>
           </View>
           {provider === 'password' && (

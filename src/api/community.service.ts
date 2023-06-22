@@ -1,11 +1,14 @@
 import { apiInstance } from './axios';
 import {
-  CommunityMembersPowerShareRes,
+  CommunityCurrentProductionRes,
+  CommunityMembersPowerShareRes, CommunityMonthlyPowerProductionRes, CommunityPowerHistoryReq, CommunityPowerHistoryRes,
   CommunityReq,
   CommunityReqJoin,
   CommunityRes,
+  CommunityUpdate,
   JoinCommunityRequestProcess,
 } from '../types/community.types';
+import {PredictedValue} from "../types/powerPlant.types";
 
 const CommunityService = {
   createCommunity: async (community: CommunityReq) => {
@@ -26,6 +29,12 @@ const CommunityService = {
   getCommunityMembersPowerShare: async (id: string) => {
     const response = await apiInstance.get<CommunityMembersPowerShareRes[]>(
       `communities/${id}/members-power-share`
+    );
+    return response.data;
+  },
+  getCommunityMonthlyPowerProduction: async (id: string) => {
+    const response = await apiInstance.get<CommunityMonthlyPowerProductionRes>(
+        `communities/power-production/${id}`
     );
     return response.data;
   },
@@ -58,6 +67,44 @@ const CommunityService = {
     );
     return response.data;
   },
+  getPredictionByDays: async (id: string) => {
+    const response = await apiInstance.get<number[]>(
+      `communities/predict-by-days/${id}`
+    );
+    return response.data;
+  },
+  update: async (community: CommunityUpdate, id: string) => {
+    const response = await apiInstance.patch(`communities/${id}`, community);
+    return response.data;
+  },
+  getMembersCurrentProduction: async (id: string) => {
+    const response = await apiInstance.get<CommunityCurrentProductionRes>(
+      `communities/current-production/${id}`
+    );
+    return response.data;
+  },
+  leaveCommunity: async (id: string, powerPlantId: string) => {
+    const response = await apiInstance.delete<unknown>(
+      `communities/leave/${id}`,
+      { data: { powerPlantIds: [powerPlantId] } }
+    );
+    return response.data;
+  },
+  getPrediction: async (id: string) => {
+    const response = await apiInstance.get<PredictedValue[]>(
+      `communities/predict-power-production/${id}`
+    );
+    return response.data;
+  },
+  getHistory: async (id: string, data: CommunityPowerHistoryReq) => {
+    const response = await apiInstance.get<CommunityPowerHistoryRes[]>(
+      `communities/history/${id}`, {params: {
+            dateFrom: data.from.toISOString(),
+            dateTo: data.to.toISOString(),
+          },}
+    );
+    return response.data;
+  }
 };
 
 export default CommunityService;

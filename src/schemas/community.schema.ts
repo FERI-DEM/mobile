@@ -7,7 +7,7 @@ export const CreateCommunityDataSchema = z.object({
     })).min(1, { message: "Dodati je potrebno vsaj eno elektrarno" })
 });
 export const JoinCommunityDataSchema = z.object({
-    communityId: z.string().min(3, { message: "Organizacija s tako kratkim ID ne obstaja" }),
+    community: z.string().min(3, { message: "Energetska skupnost s tako kratkim imenom ne obstaja" }),
     powerPlants: z.array(z.object({
         powerPlantId: z.string(),
     })).min(1, { message: "Dodati je potrebno vsaj eno elektrarno" })

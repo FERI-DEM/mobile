@@ -1,141 +1,45 @@
-import PowerDisplay from './PowerDisplay';
-import { ScrollView, Text, View } from 'react-native';
-import React, { Fragment, useMemo } from 'react';
-import MemberProductionListItem from './MemberProductionListItem';
-import { useCommunityStore } from '../store/community-store';
-import useCommunity from '../hooks/useCommunity';
-import useCommunityMembersPowerShare from '../hooks/useCommunityMembersPowerShare';
-import Svg, { G, Path, Text as SvgText } from 'react-native-svg';
-import {
-  calculatePointOnCircle,
-  getPieChartPiecePath,
-} from '../utils/pie-chart';
-import { colors } from '../utils/random-color';
-import useUser from '../hooks/useUser';
+import React from 'react';
+import CommunityPieChart from './CommunityPieChart';
+import CommunityBarChart from './CommunityBarChart';
+import ScrollViewWithViewportTracker from './ScrollViewWithViewportTracker';
+import CommunityPowerDisplays from './CommunityPowerDisplays';
+import CommunityMembersCurrentProduction from './CommunityMembersCurrentProduction';
+import {QueryKey} from '../types/keys.types';
+import RefreshControlView from "./RefreshControlView";
+import CommunityProductionLineChart from "./CommunityProductionLineChart";
+import Section from "./Section";
 
 const CommunityDashboardTab = () => {
-  const selectedCommunity = useCommunityStore(
-    (state) => state.selectedCommunity
-  );
-  const { data: user } = useUser();
-
-  const { data: communityData } = useCommunity(selectedCommunity?.id || '', {
-    enabled: !!selectedCommunity,
-  });
-  const { data: membersPowerShare } = useCommunityMembersPowerShare(
-    selectedCommunity?.id || '',
-    { enabled: !!selectedCommunity }
-  );
-
-  const pieChartData = useMemo(() => {
-    if (!membersPowerShare) return [];
-    return membersPowerShare.map((member, index, array) => {
-      if (index === 0)
-        return {
-          share: (member.share * 100).toFixed(0),
-          user: member.user,
-          from: 0,
-          to: member.share * 360,
-          textPosition: calculatePointOnCircle(70, (member.share * 360) / 2, {
-            x: 100,
-            y: 100,
-          }),
-        };
-      else
-        return {
-          share: (member.share * 100).toFixed(0),
-          user: member.user,
-          from: array[index - 1].share * 360,
-          to: array[index - 1].share * 360 + member.share * 360,
-          textPosition: calculatePointOnCircle(
-            70,
-            (array[index - 1].share * 360 +
-              (array[index - 1].share * 360 + member.share * 360)) /
-              2,
-            { x: 100, y: 100 }
-          ),
-        };
-    });
-  }, [membersPowerShare]);
-
-  if (!communityData) return <Text>Loading...</Text>;
 
   return (
-    <ScrollView className="my-5 mx-4 flex">
-      <View className="flex flex-row justify-around pb-5">
-        <PowerDisplay
-          power={15}
-          text="Danes"
-          classNameContainer="w-1/3 pr-2"
-          unit="kWh"
-        />
-        <PowerDisplay
-          power={22}
-          text="Jutri"
-          classNameContainer="w-1/3 px-1"
-          unit="kWh"
-        />
-        <PowerDisplay
-          power={10}
-          text="Pojutrišnjem"
-          classNameContainer="w-1/3 pl-2"
-          unit="kWh"
-        />
-      </View>
-      <Text className="text-white mb-2">Proizvodnja članov</Text>
-      {communityData?.members.map((member, index) => {
-        return (
-          <MemberProductionListItem
-            member={member.userName + ' ~ ' + member.powerPlantName}
-            power={100}
-            active={user?.id === member.userId}
-            key={index}
-          />
-        );
-      })}
-      <Text className="text-white mb-5 mt-5">Delež proizvodnje članov</Text>
-      <Svg
-        viewBox="0 0 200 200"
-        className="w-full"
-        style={{ height: 300, backgroundColor: '#1C1B2D' }}
-      >
-        {pieChartData?.map((data, index) => (
-          <Fragment key={index}>
-            <Path
-              key={index}
-              d={getPieChartPiecePath(100, data.from, data.to)}
-              fill={colors[index]}
-              stroke={'#1C1B2D'}
-              strokeWidth={2}
-            />
-            <G
-              transform={`rotate(0, ${data.textPosition.x}, ${data.textPosition.y})`}
-              x={data.textPosition.x}
-              y={data.textPosition.y}
-            >
-              <SvgText
-                stroke="white"
-                textAnchor="middle"
-                fontSize={10}
-                fontWeight={1}
-                y={-6}
-              >
-                {data.user}
-              </SvgText>
-              <SvgText
-                stroke="white"
-                textAnchor="middle"
-                fontSize={10}
-                fontWeight={1}
-                y={6}
-              >
-                {data.share + '%'}
-              </SvgText>
-            </G>
-          </Fragment>
-        ))}
-      </Svg>
-    </ScrollView>
+    <RefreshControlView queryKeysForInvalidation={[
+      QueryKey.COMMUNITIES_POWER_PREDICTION_BY_DAYS,
+      QueryKey.COMMUNITY_MONTHLY_POWER_PRODUCTION,
+      QueryKey.COMMUNITY_MEMBERS_POWER_SHARE,
+      QueryKey.COMMUNITIES_MEMBERS_CURRENT_PRODUCTION,
+        QueryKey.COMMUNITY_POWER_HISTORY,
+        QueryKey.COMMUNITY_POWER_PRODUCTION,
+    ]}>
+      <ScrollViewWithViewportTracker classNames="mb-5 mx-4 flex">
+        <>
+          <Section>
+            <CommunityPowerDisplays />
+          </Section>
+          <Section heading='Graf proizvodnje'>
+            <CommunityProductionLineChart/>
+          </Section>
+          <Section heading='Trenutna proizvodnja članov'>
+            <CommunityMembersCurrentProduction />
+          </Section>
+          <Section heading='Proizvodnja trenutni mesec'>
+            <CommunityBarChart />
+          </Section>
+          <Section heading='Delež velikosti elektrarn'>
+            <CommunityPieChart />
+          </Section>
+        </>
+      </ScrollViewWithViewportTracker>
+    </RefreshControlView>
   );
 };
 export default CommunityDashboardTab;
