@@ -41,7 +41,7 @@ const PowerDisplayForNextTimeUnit = () => {
                 power={roundToTwoDecimalPlaces(prediction.power)}
                 text={`Ob ${getTimeString(prediction.date)}`}
                 unit="kW"
-                classNameContainer="w-1/3 max-w-52"
+                classNameContainer="w-1/3 max-w-52 flex-1"
             />
         )}
     </DataView>

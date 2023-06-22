@@ -28,16 +28,18 @@ const CommunityMembersCurrentProduction = () => {
         loadingComponent={<ProductionListSkeleton/>}
     >
         {(membersCurrentProduction) => (
-                <ScrollView className='max-h-56' nestedScrollEnabled>
-                    {membersCurrentProduction?.powerPlants.map((powerPlant, index) => (
-                            <MemberProductionListItem
-                                member={powerPlant.username + ' ~ ' + powerPlant.displayName}
-                                power={roundToTwoDecimalPlaces(powerPlant.production.power)}
-                                active={user?.id === powerPlant.userId}
-                                key={index}
-                            />
-                        )
-                    )}
+                <ScrollView nestedScrollEnabled>
+                    <View className='max-h-56'>
+                        {membersCurrentProduction?.powerPlants.map((powerPlant, index) => (
+                                <MemberProductionListItem
+                                    member={powerPlant.username + ' ~ ' + powerPlant.displayName}
+                                    power={roundToTwoDecimalPlaces(powerPlant.production.power)}
+                                    active={user?.id === powerPlant.userId}
+                                    key={index}
+                                />
+                            )
+                        )}
+                    </View>
                 </ScrollView>
         )}
     </DataView>

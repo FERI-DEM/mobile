@@ -33,22 +33,24 @@ const PowerPlantHistoryProductionByMonths = () => {
       loadingComponent={<ProductionListSkeleton/>}
     >
       {(powerPlantHistoryProductionByMonth) => (
-        <ScrollView className="max-h-56" nestedScrollEnabled>
-          {powerPlantHistoryProductionByMonth
-            .slice(0)
-            .reverse()
-            .map((powerPlantProduction, index) => (
-              <MemberProductionListItem
-                member={
-                  getMonthName(powerPlantProduction.month) +
-                  ' (' +
-                  powerPlantProduction.year +
-                  ')'
-                }
-                power={roundToTwoDecimalPlaces(powerPlantProduction.production)}
-                key={index}
-              />
-            ))}
+        <ScrollView nestedScrollEnabled>
+          <View className="max-h-56 flex-1">
+            {powerPlantHistoryProductionByMonth
+                .slice(0)
+                .reverse()
+                .map((powerPlantProduction, index) => (
+                    <MemberProductionListItem
+                        member={
+                            getMonthName(powerPlantProduction.month) +
+                            ' (' +
+                            powerPlantProduction.year +
+                            ')'
+                        }
+                        power={roundToTwoDecimalPlaces(powerPlantProduction.production)}
+                        key={index}
+                    />
+                ))}
+          </View>
         </ScrollView>
       )}
     </DataView>

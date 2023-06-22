@@ -31,10 +31,10 @@ const PowerPlantDashboardTab = () => {
               <Section heading='Graf proizvodnje'>
                   <PowerPlantProductionLineChart />
               </Section>
-              <Section classNameContainer='flex flex-row'>
-                  <PowerDisplayForNextTimeUnit/>
-                  <PowerPlantPowerDifferenceCard/>
-              </Section>
+              {/*<Section classNameContainer='flex flex-row'>*/}
+              {/*    <PowerDisplayForNextTimeUnit/>*/}
+              {/*    <PowerPlantPowerDifferenceCard/>*/}
+              {/*</Section>*/}
               <Section heading='Zgodovinska proizvodnja po mesecih'>
                   <PowerPlantHistoryProductionByMonths />
               </Section>
