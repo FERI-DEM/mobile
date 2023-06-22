@@ -35,7 +35,7 @@ const CommunitySettingsTab = () => {
   const { data: communityData } = useCommunity(selectedCommunity?.id || '', {
     enabled: !!selectedCommunity,
   });
-  const { mutate: deleteCommunity } = useCommunityDeleteMutation(
+  const { mutate: deleteCommunity, isLoading: isLoadingDeleteCommunity } = useCommunityDeleteMutation(
     selectedCommunity?.id || '',
     {
       onSuccess: async () => {
@@ -108,6 +108,7 @@ const CommunitySettingsTab = () => {
       </ScrollView>
       {user?.id === communityData?.adminId && (
         <Button
+            loading={isLoadingDeleteCommunity}
           text="Izbriši skupnost"
           onPress={deleteCommunity}
           classname="bg-danger m-auto my-4"

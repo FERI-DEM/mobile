@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity } from 'react-native';
+import React, {FC, ReactNode, useRef} from 'react';
+import {ActivityIndicator, LayoutChangeEvent, Text, TouchableOpacity} from 'react-native';
 import { twMerge } from 'tailwind-merge';
 import Animated, {
   useAnimatedStyle,
@@ -26,6 +26,7 @@ const Button: FC<ButtonProps> = ({
   loading = false,
 }) => {
   const scale = useSharedValue(1);
+  const size = useRef<{width: number, height: number}>(null);
 
   const onPressIn = () => {
     scale.value = withTiming(0.9, { duration: 100 });
@@ -38,8 +39,15 @@ const Button: FC<ButtonProps> = ({
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ scale: scale.value }],
+        width: size.current?.width,
+        height: size.current?.height,
     };
   });
+
+  const onLayout = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
+    size.current = { width, height };
+  }
 
   return (
     <Animated.View
@@ -47,6 +55,7 @@ const Button: FC<ButtonProps> = ({
         'bg-tint rounded-md self-start flex items-center justify-center',
         classname
       )}
+      onLayout={onLayout}
       style={animatedStyle}
     >
       {loading ? (

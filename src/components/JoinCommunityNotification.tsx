@@ -44,7 +44,7 @@ const JoinCommunityNotification: FC<NotificationCardProps> = ({
           <Text className="text-white text-sm">
             {notification.data.message}
           </Text>
-          <View className="flex flex-row justify-end w-full mt-5">
+          <View className="flex flex-row justify-end w-full mt-5 h-11 h-full grow">
             <Button
               text="Zavrni"
               classname="mr-3 w-22 h-11 bg-transparent border-2 border-white"

@@ -8,7 +8,7 @@ import JoinCommunityNotification from "../components/JoinCommunityNotification";
 const NotificationScreen: FC = () => {
     const {data: notifications, isLoading} = useNotifications()
     return (
-        <View className='px-4 flex-1 bg-dark-main'>
+        <View className='px-4 flex-1 bg-dark-main' key={notifications?.length}>
             <DataView<JoinCommunityNotificationType[]> isLoading={isLoading} data={notifications} fallbackText={'Trenutno nimate nobenih obvestil'}>
                 {(notifications) => (
                     <ScrollView className='flex-1 bg-dark-main'>
