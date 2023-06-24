@@ -1,4 +1,4 @@
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView} from 'react-native';
 import React from 'react';
 import PowerPlantProductionLineChart from './PowerPlantProductionLineChart';
 import { QueryKey } from '../types/keys.types';
@@ -19,10 +19,10 @@ const PowerPlantDashboardTab = () => {
               QueryKey.POWER_PLANT_POWER_HISTORY]
       }>
           <ScrollView
-              className="bg-light-main dark:bg-dark-main flex-1 mb-5 mx-4"
+              className="bg-light-main dark:bg-dark-main flex-1 mb-5"
               contentContainerStyle={{ flexGrow: 1 }}
           >
-              <Section>
+              <Section classNameContainer='px-0'>
                   <PowerPlantPowerDisplays/>
               </Section>
               <Section classNameContainer='mb-0'>

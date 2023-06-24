@@ -47,10 +47,10 @@ const PowerPlantPowerDifferenceCard = () => {
         isLoading={isFetchingPredictions}
         data={preparedPredictions}
         loadingComponent={<Skeleton classNameContainer='h-36 ml-4 pt-7 pb-8 shadow-lg shadow-black rounded-xl flex flex-row justify-around items-center'>
-            <View className="bg-dark-skeleton-content w-14 h-10"/>
+            <View className="bg-light-skeleton-content dark:bg-dark-skeleton-content w-14 h-10"/>
             <View>
-                <View className="bg-dark-skeleton-content w-10 h-5"/>
-                <View className="bg-dark-skeleton-content w-10 h-5 mt-5"/>
+                <View className="bg-light-skeleton-content dark:bg-dark-skeleton-content w-10 h-5"/>
+                <View className="bg-light-skeleton-content dark:bg-dark-skeleton-content w-10 h-5 mt-5"/>
             </View>
         </Skeleton>
     }>

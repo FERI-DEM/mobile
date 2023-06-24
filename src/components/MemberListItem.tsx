@@ -17,6 +17,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import useCommunityLeaveMutation from '../hooks/useCommunityLeaveMutation';
 import { Routes } from '../navigation/routes';
 import { navigate } from '../navigation/navigate';
+import {useColorScheme} from "nativewind";
+import {colors} from '../constants/colors'
 
 interface TestMemberListItemProps {
   communityId: string;
@@ -28,7 +30,8 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
   communityId,
   adminId,
 }) => {
-  const { showToast } = useToastStore();
+    const {colorScheme} = useColorScheme()
+    const { showToast } = useToastStore();
   const { data: user } = useUser();
   const queryClient = useQueryClient();
 
@@ -70,10 +73,10 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
   };
 
   return (
-    <View className="flex flex-row justify-between rounded-md bg-dark-element py-3 px-5 mb-0.5 items-center">
+    <View className="flex flex-row justify-between rounded-md bg-light-element dark:bg-dark-element py-3 px-5 mb-0.5 items-center">
       <View className="flex gap-2">
         <View className="flex flex-row items-center">
-          <UserCircleIcon color="white" />
+          <UserCircleIcon color={colors[colorScheme].text} />
           <Text
             className={`${
               user?.id === member.userId ? 'text-tint' : 'dark:text-white'
@@ -96,8 +99,8 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
       <View>
         {user?.id === adminId && user?.id != member.userId && (
           <Button
-            classname="bg-dark-element"
-            text={<XCircleIcon color="white" />}
+            classname="bg-light-element dark:bg-dark-element"
+            text={<XCircleIcon color={colors[colorScheme].text} />}
             onPress={onRemoveMember}
             loading={isRemoveMemberLoading}
           />
@@ -105,7 +108,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
         {!member.isAdmin && user?.id === member.userId && (
           <Button
             classname="bg-gray-500"
-            text={<ArrowRightOnRectangleIcon color="white" />}
+            text={<ArrowRightOnRectangleIcon color={colors[colorScheme].text} />}
             onPress={onLeaveCommunity}
             loading={isLeaveCommunityLoading}
           />

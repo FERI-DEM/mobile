@@ -5,11 +5,14 @@ import { ActivityIndicator, View } from 'react-native';
 import { PowerPlant } from '../types/powerPlant.types';
 import PowerPlantsService from '../api/power-plants.service';
 import { useQueryClient } from '@tanstack/react-query';
+import {useColorScheme} from "nativewind";
+import {colors} from '../constants/colors'
 
 interface StoresInitializerProps {
   children: (initialRoute: Routes) => ReactNode;
 }
 const AppInitializer = ({ children }: StoresInitializerProps) => {
+  const {colorScheme} = useColorScheme()
   const setSelectedPowerPlant = usePowerPlantStore(
     (state) => state.setSelectedPowerPlant
   );
@@ -42,7 +45,7 @@ const AppInitializer = ({ children }: StoresInitializerProps) => {
   if (isLoading)
     return (
       <View className="flex-1 bg-light-main dark:bg-dark-main items-center justify-center">
-        <ActivityIndicator size={35} color="white" />
+        <ActivityIndicator size={35} color={colors[colorScheme].text} />
       </View>
     );
 

@@ -36,7 +36,7 @@ const Accordion: FC<NotificationCardProps> = ({title, content, contentHeight:tar
     })
 
     return (
-        <TouchableOpacity className='shadow-md shadow-black rounded-md dark:bg-dark-element dark:text-white py-4 px-4 mt-4' activeOpacity={0.8} onPress={onPressItem}>
+        <TouchableOpacity className='mx-4 shadow-md shadow-black rounded-md bg-light-element dark:bg-dark-element dark:text-white py-4 px-4 mt-4' activeOpacity={0.8} onPress={onPressItem}>
             <View className='flex justify-between flex-row items-center'>
                 <Text className={twMerge('dark:text-white font-bold px-3', classNameTitle)}>{title}</Text>
                 <Animated.View style={arrowDownAnimatedStyle}><ChevronDownIcon color='white' size={20}/></Animated.View>

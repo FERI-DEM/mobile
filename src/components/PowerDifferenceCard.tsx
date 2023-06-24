@@ -19,7 +19,7 @@ const PowerDifferenceCard: FC<PowerDifferenceCardProps> = ({
   date,
 }) => {
   return (
-    <View className="shadow-lg shadow-black rounded-xl dark:bg-dark-element dark:text-white py-6 flex flex-row items-center justify-around grow ml-4">
+    <View className="shadow-lg shadow-black rounded-xl bg-light-element dark:bg-dark-element dark:text-white py-6 flex flex-row items-center justify-around grow ml-4">
       {calculatePowerDifference(power1, power2) >= 0 ? (
         <ArrowUpCircleIcon color="green" size={45} />
       ) : (

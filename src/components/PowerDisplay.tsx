@@ -21,7 +21,7 @@ const PowerDisplay: FC<PowerDisplayProps> = ({
     <View className={twMerge('flex-1 h-36', classNameContainer)}>
       <View
         className={twMerge(
-          'py-6 shadow-lg shadow-black rounded-xl grow dark:bg-dark-element flex item-center',
+          'py-6 shadow-lg shadow-[#333] dark:shadow-black rounded-xl grow bg-light-element dark:bg-dark-element flex item-center',
           classNameInnerContainer
         )}
       >

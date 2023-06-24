@@ -10,7 +10,7 @@ import { twMerge } from 'tailwind-merge';
 import { useUserStore } from '../store/user-store';
 import useSignOut from '../hooks/useSignOut';
 import useUpdatePasswordMutation from '../hooks/useUpdatePasswordMutation';
-import ColorModeToggle from "../components/ColorModeToggle";
+import ColorSchemeToggle from "../components/ColorSchemeToggle";
 
 const DefaultChangePasswordData: ChangePasswordType = {
   password: '',
@@ -98,7 +98,11 @@ const SettingsScreen = () => {
               )}
             </View>
           )}
-          <ColorModeToggle />
+          <Text
+              className="dark:text-white text-base font-bold mb-4 mt-5">
+            Temni način
+          </Text>
+          <ColorSchemeToggle />
           <Button
             loading={isSignOutLoading}
             text="Odjava"

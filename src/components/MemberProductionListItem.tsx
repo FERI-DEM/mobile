@@ -15,7 +15,7 @@ const MemberProductionListItem: FC<MemberListItemProps> = ({
 }) => {
   return (
     <Pressable
-      className={`flex flex-row justify-between bg-dark-element py-5 px-5 mb-0.5 items-center ${
+      className={`flex flex-row justify-between bg-light-element dark:bg-dark-element py-5 px-5 mb-0.5 items-center ${
         active && 'border-l-tint border-2 border-y-0 border-r-0'
       }`}
     >

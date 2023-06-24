@@ -1,6 +1,8 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Dispatch, FC, SetStateAction } from 'react';
 import Svg, { Path } from 'react-native-svg';
+import {useColorScheme} from "nativewind";
+import {colors} from '../constants/colors'
 
 export interface HeaderDropdownItem {
   label: string;
@@ -20,6 +22,7 @@ const HeaderDropdown: FC<HeaderDropdownProps> = ({
   onPressItem: onPressItemFromProps,
   title,
 }) => {
+  const {colorScheme} = useColorScheme()
   const onPressItem = (item: HeaderDropdownItem) => {
     setOpened(false);
     onPressItemFromProps(item);
@@ -45,7 +48,7 @@ const HeaderDropdown: FC<HeaderDropdownProps> = ({
         >
           <Path
             d="M15 1L8 8L1 1"
-            stroke="white"
+            stroke={colors[colorScheme].text}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -53,7 +56,7 @@ const HeaderDropdown: FC<HeaderDropdownProps> = ({
         </Svg>
       </TouchableOpacity>
       {opened && (
-        <View className="absolute top-16 w-72 left-3 bg-dark-element z-50 py-2 px-3 rounded-lg shadow-xl shadow-white shadow-black">
+        <View className="absolute top-16 w-72 left-3 bg-light-element dark:bg-dark-element z-50 py-2 px-3 rounded-lg shadow-xl shadow-white shadow-black">
           {items.map((item, index) => (
             <TouchableOpacity
               onPress={() => onPressItem(item)}

@@ -5,7 +5,6 @@ import React from 'react';
 import useCommunitiesPredictionByDays from '../hooks/useCommunitiesPredictionByDays';
 import { useCommunityStore } from '../store/community-store';
 import DataView from './DataView';
-import Skeleton from './Skeleton';
 import PowerDisplaysSkeleton from "./PowerDisplaysSkeleton";
 
 const CommunityPowerDisplays = () => {
@@ -26,7 +25,7 @@ const CommunityPowerDisplays = () => {
       loadingComponent={<PowerDisplaysSkeleton/>}
     >
       {(predictions) => (
-        <View className="flex flex-row justify-around">
+        <View className="flex flex-row justify-around pt-1 px-4">
           <PowerDisplay
             power={roundToTwoDecimalPlaces(predictions[0])}
             text="Danes"

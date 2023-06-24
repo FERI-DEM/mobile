@@ -280,7 +280,7 @@ const LineChart = ({
 
   return (
       <View
-        className="rounded-lg bg-red-500 flex items-center bg-dark-element mx-auto relative"
+        className="rounded-lg bg-red-500 flex items-center bg-light-element dark:bg-dark-element mx-auto relative"
         style={{ width: graphWidth, height: graphHeight }}
       >
         <LineChartBackToPresentButton
@@ -323,7 +323,7 @@ const LineChart = ({
                 <AnimatedPath
                   animatedProps={animatedXLegendProps}
                   strokeWidth="0.2"
-                  stroke="white"
+                  stroke={colors[colorScheme].text}
                 />
                 {/*<Path stroke='white' strokeWidth={0.1} d='M 0,0 L 0,3 M 0,6 L 0,9 M 0,12 L 0,15 M 0,18 L 0,21'/>*/}
               </AnimatedGroup>
@@ -340,7 +340,7 @@ const LineChart = ({
                 y={-fontSize / 2}
                 animatedProps={animatedYLegendProps}
                 strokeWidth="0.2"
-                stroke="white"
+                stroke={colors[colorScheme].text}
               />
               <Path
                 fill={colors[colorScheme].primary}

@@ -50,7 +50,7 @@ const JoinCommunityScreen = () => {
                         />
                         <Text className='dark:text-white mb-3 ml-0.5 mt-6'>Izberite elektrarno</Text>
                         <FlatList className='max-h-52' nestedScrollEnabled keyExtractor={item => item._id} data={powerPlants} renderItem={({item}) => (
-                            <View className='flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-dark-element rounded-md justify-between'>
+                            <View className='flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-light-element dark:bg-dark-element rounded-md justify-between'>
                                 <Text className='dark:text-white'>{item.displayName}</Text>
                                 <Checkbox
                                     color={colors.common.tint}

@@ -51,11 +51,11 @@ const CommunityBarChart = () => {
     return <DataView
         isLoading={isFetching}
         data={barChartData}
-        loadingComponent={<Skeleton classNameContainer='shadow-lg shadow-black bg-light-main dark:bg-dark-main flex flex-row items-end' style={{height: barChartHeight}}>
-            <View className='bg-dark-element grow' style={{height: barChartHeight * 0.6}}></View>
-            <View className='bg-dark-element mx-2 grow' style={{height: barChartHeight * 0.9}}></View>
-            <View className='bg-dark-element mr-2 grow' style={{height: barChartHeight * 0.3}}></View>
-            <View className='bg-dark-element grow' style={{height: barChartHeight * 0.3}}></View>
+        loadingComponent={<Skeleton classNameContainer='shadow-lg shadow-white dark:shadow-black bg-light-main dark:bg-dark-main flex flex-row items-end' style={{height: barChartHeight}}>
+            <View className='bg-light-element dark:bg-dark-element grow' style={{height: barChartHeight * 0.6}}></View>
+            <View className='bg-light-element dark:bg-dark-element mx-2 grow' style={{height: barChartHeight * 0.9}}></View>
+            <View className='bg-light-element dark:bg-dark-element mr-2 grow' style={{height: barChartHeight * 0.3}}></View>
+            <View className='bg-light-element dark:bg-dark-element grow' style={{height: barChartHeight * 0.3}}></View>
         </Skeleton>}
     >
         {barChartData => (

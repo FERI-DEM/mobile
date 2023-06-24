@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { twMerge } from 'tailwind-merge';
+import {useColorScheme} from "nativewind";
 
 interface LoadingViewProps {
   loadingClassName?: string;
@@ -19,13 +20,14 @@ export const QueryBoundaries = ({
   return <>{children}</>;
 };
 
-const LoadingView = ({ loadingClassName }: LoadingViewProps) => (
-  <View
-    className={twMerge(
-      'h-full w-full flex items-center justify-center',
-      loadingClassName
-    )}
-  >
-    <ActivityIndicator color="white" size={35} />
-  </View>
-);
+const LoadingView = ({ loadingClassName }: LoadingViewProps) => {
+  const {colorScheme} = useColorScheme()
+  return <View
+          className={twMerge(
+              'h-full w-full flex items-center justify-center',
+              loadingClassName
+          )}
+      >
+        <ActivityIndicator color="white" size={35}/>
+      </View>
+};

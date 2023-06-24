@@ -87,7 +87,7 @@ const CreateCommunityScreen: FC = () => {
               keyExtractor={(item) => item._id}
               data={powerPlants}
               renderItem={({ item }) => (
-                <View className="flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-dark-element rounded-md justify-between">
+                <View className="flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-light-element dark:bg-dark-element rounded-md justify-between">
                   <Text className="dark:text-white">{item.displayName}</Text>
                   <Checkbox
                     color={colors.common.tint}

@@ -31,7 +31,7 @@ const LandingScreen = () => {
         />
         <Button
           text="Registracija"
-          classname="bg-dark-element self-center"
+          classname="bg-light-element dark:bg-dark-element self-center"
           onPress={() => navigate(Routes.REGISTER)}
         />
       </View>

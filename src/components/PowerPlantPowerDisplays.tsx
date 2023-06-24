@@ -2,10 +2,7 @@ import PowerDisplay from './PowerDisplay';
 import { roundToTwoDecimalPlaces } from '../utils/power';
 import { View } from 'react-native';
 import React from 'react';
-import useCommunitiesPredictionByDays from '../hooks/useCommunitiesPredictionByDays';
-import { useCommunityStore } from '../store/community-store';
 import DataView from './DataView';
-import Skeleton from './Skeleton';
 import usePredictionByDays from "../hooks/usePredictionByDays";
 import {navigationRef} from "../navigation/navigate";
 import {StackActions} from "@react-navigation/native";
@@ -39,7 +36,7 @@ const PowerPlantPowerDisplays = () => {
             loadingComponent={<PowerDisplaysSkeleton/>}
         >
             {(predictions) => (
-                <View className="flex flex-row justify-around">
+                <View className="flex flex-row justify-around px-4 pt-1">
                     <PowerDisplay
                         power={roundToTwoDecimalPlaces(predictions[0])}
                         text="Danes"

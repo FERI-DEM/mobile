@@ -7,6 +7,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import { twMerge } from 'tailwind-merge';
+import {useColorScheme} from "nativewind";
+import {colors} from "../constants/colors";
 
 interface DataViewProps<T> {
   isLoading: boolean;
@@ -29,6 +31,7 @@ const DataView = <T,>({
   classNameLoadingContainer,
   styleLoadingContainer,
 }: DataViewProps<T>) => {
+  const {colorScheme} = useColorScheme()
   return (
     <>
       {isLoading
@@ -43,7 +46,7 @@ const DataView = <T,>({
               <ActivityIndicator
                 size={35}
                 className="py-1.5 px-6"
-                color="white"
+                color={colors[colorScheme].text}
               />
             </View>
           )

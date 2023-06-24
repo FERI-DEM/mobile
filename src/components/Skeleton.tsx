@@ -3,6 +3,8 @@ import {twMerge} from "tailwind-merge";
 import {ReactNode} from "react";
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from "react-native-reanimated";
 import {LinearGradient} from "expo-linear-gradient";
+import {colors} from "../constants/colors";
+import {useColorScheme} from "nativewind";
 
 const AnimatedLG = Animated.createAnimatedComponent(LinearGradient);
 
@@ -12,6 +14,7 @@ interface SkeletonProps {
     children?: ReactNode
 }
 const Skeleton = ({classNameContainer, style, children}: SkeletonProps) => {
+    const {colorScheme} = useColorScheme()
     const translateX = useSharedValue(-0)
     const translateY = useSharedValue(-0)
     const duration = 2000
@@ -38,9 +41,9 @@ const Skeleton = ({classNameContainer, style, children}: SkeletonProps) => {
         }),-1, false);
     }
 
-    return <View onLayout={onLayout} className={twMerge('bg-dark-element grow h-full relative overflow-hidden', classNameContainer)} style={style}>
+    return <View onLayout={onLayout} className={twMerge('bg-light-element dark:bg-dark-element grow h-full relative overflow-hidden', classNameContainer)} style={style}>
         <AnimatedLG
-            colors={["rgba(41,42,62,0)", "rgba(48,49,73,0.65)", "rgba(48,49,73,0.64)", "rgba(41,42,62,0)"]}
+            colors={["rgba(41,42,62,0)", colors[colorScheme].skeletonPartiallyTransparent, colors[colorScheme].skeletonPartiallyTransparent, "rgba(41,42,62,0)"]}
             start={{ x: 0.35, y: 0.35 }}
             end={{ x: 0.65, y: 0.65 }}
             style={animatedStyle}

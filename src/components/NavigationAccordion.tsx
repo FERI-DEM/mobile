@@ -7,6 +7,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {useColorScheme} from "nativewind";
+import {colors} from '../constants/colors'
 
 interface SideMenuSubRoute {
   title: string;
@@ -32,6 +34,7 @@ interface NavigationAccordionProps {
   group: SideMenuGroup;
 }
 const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
+  const {colorScheme} = useColorScheme()
   const [isOpened, setIsOpened] = useState(false);
   const height = useSharedValue(0);
   const rotate = useSharedValue(90);
@@ -78,7 +81,7 @@ const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
           </View>
           {(group.subRoutes || group.items) && (
             <Animated.View className="mt-1 mr-5" style={arrowDownAnimatedStyle}>
-              <ChevronDownIcon size={16} color="white" />
+              <ChevronDownIcon size={16} color={colors[colorScheme].text} />
             </Animated.View>
           )}
         </View>
@@ -87,7 +90,7 @@ const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
         className="flex flex-col overflow-hidden"
         style={animatedStyle}
       >
-        <ScrollView className="max-h-[140px]" indicatorStyle="white">
+        <ScrollView className="max-h-[140px]">
           {group.items?.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -100,7 +103,7 @@ const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
           ))}
         </ScrollView>
         {group.items?.length !== 0 && (
-          <View className="w-full h-[1px] bg-dark-element" />
+          <View className="w-full h-[1px] opacity-10 dark:opacity-100 bg-dark-element" />
         )}
         {group.subRoutes?.map((subRoute, index) => (
           <TouchableOpacity

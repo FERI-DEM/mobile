@@ -6,6 +6,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {colors} from '../constants/colors'
+import {useColorScheme} from "nativewind";
 
 interface ButtonProps {
   children?: ReactNode;
@@ -25,6 +27,7 @@ const Button: FC<ButtonProps> = ({
   classNameText,
   loading = false,
 }) => {
+  const {colorScheme} = useColorScheme()
   const scale = useSharedValue(1);
   const size = useRef<{width: number, height: number} | null>(null);
 
@@ -59,7 +62,7 @@ const Button: FC<ButtonProps> = ({
       style={animatedStyle}
     >
       {loading ? (
-        <ActivityIndicator size={28} className="py-1.5 px-6" color="white" />
+        <ActivityIndicator size={28} className="py-1.5 px-6" color={colors[colorScheme].text} />
       ) : (
         <TouchableOpacity
           onPressOut={onPressOut}
@@ -68,7 +71,7 @@ const Button: FC<ButtonProps> = ({
           onPress={onPress}
           className="py-2.5 px-4"
         >
-          <Text className={twMerge('dark:text-white font-bold', classNameText)}>
+          <Text className={twMerge('text-white font-bold', classNameText)}>
             {text}
           </Text>
           {children}

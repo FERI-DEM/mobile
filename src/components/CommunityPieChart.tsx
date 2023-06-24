@@ -44,7 +44,7 @@ const CommunityPieChart = () => {
     return <DataView
         data={pieChartData}
         isLoading={isFetching}
-        loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-black dark:bg-dark-element'} style={{height: pieChartHeight}}>
+        loadingComponent={<Skeleton classNameContainer={'shadow-lg shadow-white dark:shadow-black dark:bg-dark-element'} style={{height: pieChartHeight}}>
             <Svg viewBox='0 0 200 200' style={{ height: pieChartHeight, backgroundColor: colors[colorScheme].primary }}>
                 <Path d='M 100 0 A 100 100 0 1 1 65.8 194 L 100 100 L 100 0 Z' fill={colors[colorScheme].element} stroke={colors[colorScheme].primary}/>
                 <Path d='M 65.8 194 A 100 100 0 0 1 13.4 150 L 100 100 L 65.8 194 Z' fill={colors[colorScheme].element} stroke={colors[colorScheme].primary}/>
@@ -73,7 +73,7 @@ const CommunityPieChart = () => {
                         y={data.textPosition.y}
                     >
                         <SvgText
-                            stroke="white"
+                            stroke={colors[colorScheme].text}
                             textAnchor="middle"
                             fontSize={10}
                             fontWeight={1}
@@ -82,7 +82,7 @@ const CommunityPieChart = () => {
                             {data.user}
                         </SvgText>
                         <SvgText
-                            stroke="white"
+                            stroke={colors[colorScheme].text}
                             textAnchor="middle"
                             fontSize={10}
                             fontWeight={1}

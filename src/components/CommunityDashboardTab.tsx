@@ -20,9 +20,9 @@ const CommunityDashboardTab = () => {
         QueryKey.COMMUNITY_POWER_HISTORY,
         QueryKey.COMMUNITY_POWER_PRODUCTION,
     ]}>
-      <ScrollViewWithViewportTracker classNames="mb-5 mx-4 flex">
+      <ScrollViewWithViewportTracker classNames="mb-5 flex">
         <>
-          <Section>
+          <Section classNameContainer='px-0'>
             <CommunityPowerDisplays />
           </Section>
           <Section heading='Graf proizvodnje'>

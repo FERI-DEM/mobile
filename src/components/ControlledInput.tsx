@@ -55,9 +55,9 @@ const ControlledInputInner: FC<TextInputProps> = ({
           autoCapitalize="none"
           textAlign="left"
           className={twMerge(
-            'shadow-lg shadow-black rounded-md dark:bg-dark-element dark:text-white py-3 px-4',
+            'shadow-lg shadow-black rounded-md bg-light-element dark:bg-dark-element dark:text-white py-3 px-4',
             classNameInput,
-            isFocused ? 'border-tint border' : 'border border-dark-element',
+            isFocused ? 'border-tint border' : 'border border-light-element dark:border-dark-element',
             editable ? 'opacity-100' : 'opacity-60'
           )}
           onChangeText={field.onChange}
