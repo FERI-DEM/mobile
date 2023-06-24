@@ -22,7 +22,7 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
 }) {
   return (
-    <View className="flex-1 bg-dark-main">
+    <View className="flex-1 bg-light-main dark:bg-dark-main">
       <NavigationContainer
         ref={navigationRef}
         theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}

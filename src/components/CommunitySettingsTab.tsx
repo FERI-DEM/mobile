@@ -89,8 +89,8 @@ const CommunitySettingsTab = () => {
   };
 
   return (
-    <View className="dark:bg-dark-main flex-1 px-4">
-      <ScrollView className="dark:bg-dark-main flex-1">
+    <View className="bg-light-main dark:bg-dark-main flex-1 px-4">
+      <ScrollView className="bg-light-main dark:bg-dark-main flex-1">
           <FormProvider {...form}>
             <ControlledInput
               name="name"

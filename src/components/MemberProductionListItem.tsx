@@ -19,10 +19,10 @@ const MemberProductionListItem: FC<MemberListItemProps> = ({
         active && 'border-l-tint border-2 border-y-0 border-r-0'
       }`}
     >
-      <Text className={`text-white ${active && 'text-tint font-bold'}`}>
+      <Text className={`dark:text-white ${active && 'text-tint font-bold'}`}>
         {member}
       </Text>
-      <Text className={`text-white ${active && 'text-tint font-bold'}`}>
+      <Text className={`dark:text-white ${active && 'text-tint font-bold'}`}>
         <CountUp isCounting end={power} duration={1} />
         {` kW`}
       </Text>

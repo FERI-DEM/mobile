@@ -22,7 +22,7 @@ const PowerPlantHistoryProductionByMonths = () => {
   });
   if (powerPlantHistoryProductionByMonth?.length === 0)
     return (
-      <Text className="text-white opacity-40 mb-4">
+      <Text className="dark:text-white opacity-40 mb-4">
         Trenutno ni podatkov o zgodovini proizvodnje elektrarne.
       </Text>
     );

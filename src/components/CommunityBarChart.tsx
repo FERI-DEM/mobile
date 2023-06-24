@@ -10,9 +10,11 @@ import {useWindowDimensions, View} from "react-native";
 import DataView from "./DataView";
 import Skeleton from "./Skeleton";
 import {colors} from "../constants/colors";
+import {useColorScheme} from "nativewind";
 
 
 const CommunityBarChart = () => {
+    const {colorScheme} = useColorScheme()
     const selectedCommunity = useCommunityStore(state => state.selectedCommunity);
     const window = useWindowDimensions();
     const graphWidth = window.width - barChartHorizontalMargin * 2;
@@ -49,7 +51,7 @@ const CommunityBarChart = () => {
     return <DataView
         isLoading={isFetching}
         data={barChartData}
-        loadingComponent={<Skeleton classNameContainer='shadow-lg shadow-black dark:bg-dark-main flex flex-row items-end' style={{height: barChartHeight}}>
+        loadingComponent={<Skeleton classNameContainer='shadow-lg shadow-black bg-light-main dark:bg-dark-main flex flex-row items-end' style={{height: barChartHeight}}>
             <View className='bg-dark-element grow' style={{height: barChartHeight * 0.6}}></View>
             <View className='bg-dark-element mx-2 grow' style={{height: barChartHeight * 0.9}}></View>
             <View className='bg-dark-element mr-2 grow' style={{height: barChartHeight * 0.3}}></View>
@@ -61,7 +63,7 @@ const CommunityBarChart = () => {
                 <Svg
                     preserveAspectRatio="none"
                     viewBox={`0 0 ${viewBoxSize.width} ${viewBoxSize.height}`}
-                    style={{ height: barChartHeight, backgroundColor: colors.dark.primary, width: graphWidth }}
+                    style={{ height: barChartHeight, backgroundColor: colors[colorScheme].primary, width: graphWidth }}
                 >
                     {barChartData.map((data, index) => (
                         <Bar data={data} key={index} graphWidth={graphWidth}/>

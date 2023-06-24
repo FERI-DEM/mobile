@@ -32,6 +32,7 @@ import {
 } from '../constants/line-chart';
 import LineChartBackToPresentButton from './LineChartBackToPresentButton';
 import {colors} from "../constants/colors";
+import {useColorScheme} from "nativewind";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedGroup = Animated.createAnimatedComponent(G);
@@ -47,6 +48,7 @@ const LineChart = ({
   history,
   onStopScrolling,
 }: LineChartProps) => {
+  const {colorScheme} = useColorScheme()
   const window = useWindowDimensions();
   const graphWidth = window.width - graphHorizontalMargin * 2;
 
@@ -297,14 +299,14 @@ const LineChart = ({
               style={{
                 width: graphWidth,
                 height: graphHeight,
-                backgroundColor: colors.dark.element,
+                backgroundColor: colors[colorScheme].element,
               }}
             >
               <Rect
                 y={-innerOffset.y}
                 width={graphWidth}
                 height={innerOffset.y}
-                fill={colors.dark.element}
+                fill={colors[colorScheme].element}
               />
               <AnimatedGroup animatedProps={animatedTranslateProps}>
                 <AnimatedPath
@@ -331,7 +333,7 @@ const LineChart = ({
                 x={-innerOffset.x}
                 height={viewBoxSize.height}
                 y={-innerOffset.y}
-                fill={colors.dark.element}
+                fill={colors[colorScheme].element}
               />
               <AnimatedPath
                 x={-innerOffset.x / 2}
@@ -341,7 +343,7 @@ const LineChart = ({
                 stroke="white"
               />
               <Path
-                fill={colors.dark.primary}
+                fill={colors[colorScheme].primary}
                 d={createPathForRoundedCorners(
                   {
                     x: -innerOffset.x,

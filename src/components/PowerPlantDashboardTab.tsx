@@ -19,7 +19,7 @@ const PowerPlantDashboardTab = () => {
               QueryKey.POWER_PLANT_POWER_HISTORY]
       }>
           <ScrollView
-              className="dark:bg-dark-main flex-1 mb-5 mx-4"
+              className="bg-light-main dark:bg-dark-main flex-1 mb-5 mx-4"
               contentContainerStyle={{ flexGrow: 1 }}
           >
               <Section>
@@ -31,10 +31,10 @@ const PowerPlantDashboardTab = () => {
               <Section heading='Graf proizvodnje'>
                   <PowerPlantProductionLineChart />
               </Section>
-              {/*<Section classNameContainer='flex flex-row'>*/}
-              {/*    <PowerDisplayForNextTimeUnit/>*/}
-              {/*    <PowerPlantPowerDifferenceCard/>*/}
-              {/*</Section>*/}
+              <Section classNameContainer='flex flex-row'>
+                  <PowerDisplayForNextTimeUnit/>
+                  <PowerPlantPowerDifferenceCard/>
+              </Section>
               <Section heading='Zgodovinska proizvodnja po mesecih'>
                   <PowerPlantHistoryProductionByMonths />
               </Section>

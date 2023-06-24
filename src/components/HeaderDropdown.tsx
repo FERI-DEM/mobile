@@ -35,7 +35,7 @@ const HeaderDropdown: FC<HeaderDropdownProps> = ({
         onPress={onPressIcon}
         activeOpacity={0.6}
       >
-        <Text className="text-2xl text-white font-bold">{title}</Text>
+        <Text className="text-2xl dark:text-white font-bold">{title}</Text>
         <Svg
           className="ml-3 mt-2"
           width="16"
@@ -60,7 +60,7 @@ const HeaderDropdown: FC<HeaderDropdownProps> = ({
               className="my-2"
               key={index}
             >
-              <Text className="text-white">{item.label}</Text>
+              <Text className="dark:text-white">{item.label}</Text>
             </TouchableOpacity>
           ))}
         </View>

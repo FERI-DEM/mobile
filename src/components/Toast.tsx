@@ -50,7 +50,7 @@ const Toast: FC = () => {
         <>
             {isVisible && (
                 <Animated.View ref={toastRef} className={`${getToastBackgroundColor(type)} p-4 absolute bottom-0 w-full items-center`} style={animatedStyle}>
-                    <Text className='text-white text-center'>{text}</Text>
+                    <Text className='dark:text-white text-center'>{text}</Text>
                 </Animated.View>
             )}
         </>

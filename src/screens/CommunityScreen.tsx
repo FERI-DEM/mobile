@@ -18,7 +18,7 @@ const CommunityScreen: FC = () => {
   );
 
   return (
-    <View className="dark:bg-dark-main flex-1 pt-2">
+    <View className="bg-light-main dark:bg-dark-main flex-1 pt-2">
       <QueryBoundaries isLoading={!selectedCommunity}>
         <Tabs
           activeTab={activeTab}

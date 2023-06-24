@@ -26,10 +26,10 @@ const PowerDifferenceCard: FC<PowerDifferenceCardProps> = ({
         <ArrowDownCircleIcon color="red" size={45} />
       )}
       <View className="flex flex-2">
-        <Text className="text-white opacity-40 text-center text-xs">
+        <Text className="dark:text-white opacity-40 text-center text-xs">
           {`Ob ${getTimeString(date)}`}
         </Text>
-        <Text className="text-lg pt-2 text-white  text-center font-semibold">
+        <Text className="text-lg pt-2 dark:text-white  text-center font-semibold">
           {calculatePowerDifference(power1, power2) >= 0 ? '+' : '-'}
           <CountUp
             isCounting

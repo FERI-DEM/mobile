@@ -26,7 +26,7 @@ const Button: FC<ButtonProps> = ({
   loading = false,
 }) => {
   const scale = useSharedValue(1);
-  const size = useRef<{width: number, height: number}>(null);
+  const size = useRef<{width: number, height: number} | null>(null);
 
   const onPressIn = () => {
     scale.value = withTiming(0.9, { duration: 100 });
@@ -68,7 +68,7 @@ const Button: FC<ButtonProps> = ({
           onPress={onPress}
           className="py-2.5 px-4"
         >
-          <Text className={twMerge('text-white font-bold', classNameText)}>
+          <Text className={twMerge('dark:text-white font-bold', classNameText)}>
             {text}
           </Text>
           {children}

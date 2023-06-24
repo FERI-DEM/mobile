@@ -13,7 +13,7 @@ const DashboardScreen:FC = () => {
     const selectedPowerPlant = usePowerPlantStore(state => state.selectedPowerPlant)
 
     return (
-        <View className='dark:bg-dark-main flex-1 pt-2'>
+        <View className='bg-light-main dark:bg-dark-main flex-1 pt-2'>
             <QueryBoundaries isLoading={!selectedPowerPlant}>
                 <Tabs tabs={Object.values(PowerPlantsTab)} onClickTab={setActiveTab} activeTab={activeTab}/>
                     {activeTab === PowerPlantsTab.DASHBOARD && <PowerPlantDashboardTab />}

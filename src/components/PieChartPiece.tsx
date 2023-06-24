@@ -11,6 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import {ViewportContext} from "./ViewportAwareView";
 import {colors} from "../constants/colors";
+import {useColorScheme} from "nativewind";
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 interface PieChartPieceProps {
@@ -21,6 +22,7 @@ interface PieChartPieceProps {
     index: number;
 }
 const PieChartPiece = ({data, index}: PieChartPieceProps) => {
+    const {colorScheme} = useColorScheme()
     const loadedAngle = useSharedValue(data.from)
     const piecePath = useSharedValue('')
 
@@ -52,7 +54,7 @@ const PieChartPiece = ({data, index}: PieChartPieceProps) => {
     return <AnimatedPath
         animatedProps={animatedProps}
         fill={getColor(index)}
-        stroke={colors.dark.primary}
+        stroke={colors[colorScheme].primary}
         strokeWidth={2}
     />
 }

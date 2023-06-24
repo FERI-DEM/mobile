@@ -10,6 +10,7 @@ import { twMerge } from 'tailwind-merge';
 import { useUserStore } from '../store/user-store';
 import useSignOut from '../hooks/useSignOut';
 import useUpdatePasswordMutation from '../hooks/useUpdatePasswordMutation';
+import ColorModeToggle from "../components/ColorModeToggle";
 
 const DefaultChangePasswordData: ChangePasswordType = {
   password: '',
@@ -45,7 +46,7 @@ const SettingsScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-dark-main px-3 pt-5">
+    <View className="flex-1 bg-light-main dark:bg-dark-main px-3 pt-5">
       <ScrollView
         className="w-full flex flex-1"
         contentContainerStyle={{ flexGrow: 1 }}
@@ -53,15 +54,15 @@ const SettingsScreen = () => {
       >
         <View className="h-full">
           <View className="px-2">
-            <Text className="text-white text-base font-bold mb-2">
+            <Text className="dark:text-white text-base font-bold mb-2">
               Vaš e-mail
             </Text>
-            <Text className="text-white text-base mb-4">{user?.email}</Text>
+            <Text className="dark:text-white text-base mb-4">{user?.email}</Text>
           </View>
           {provider === 'password' && (
             <View className="px-2 my-5">
               <Text
-                className="text-white text-base font-bold"
+                className="dark:text-white text-base font-bold"
                 onPress={() => setFormOpened(!formOpened)}
               >
                 Spremeni geslo
@@ -97,6 +98,7 @@ const SettingsScreen = () => {
               )}
             </View>
           )}
+          <ColorModeToggle />
           <Button
             loading={isSignOutLoading}
             text="Odjava"

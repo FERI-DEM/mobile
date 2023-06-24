@@ -9,7 +9,7 @@ const InputWithIcon:FC<InputProps> = ({ helperText, ...props}) => {
     return (
         <View className={'w-full flex flex-row items-end'}>
             <ControlledInput classNameContainer={'w-auto grow'} classNameInput={'rounded-r-none'}  {...props}></ControlledInput>
-            <View className='bg-tint px-5 py-3.5 rounded-r-md'><Text className='text-white text-center'>{helperText}</Text></View>
+            <View className='bg-tint px-5 py-3.5 rounded-r-md'><Text className='dark:text-white text-center'>{helperText}</Text></View>
         </View>
     );
 }

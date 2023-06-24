@@ -83,7 +83,7 @@ const AddPowerPlantForm = () => {
 
   return (
     <ScrollView
-      className="pt-5 w-full bg-dark-main"
+      className="pt-5 w-full bg-light-main dark:bg-dark-main"
       keyboardShouldPersistTaps="always"
     >
       <View className="px-4 mb-6">

@@ -49,8 +49,8 @@ const DataView = <T,>({
           )
         : !data
         ? fallback ?? (
-            <View className="flex-1 bg-dark-main">
-              <Text className="text-white">
+            <View className="flex-1 bg-light-main dark:bg-dark-main">
+              <Text className="dark:text-white">
                 {fallbackText || 'Ni podatkov'}
               </Text>
             </View>

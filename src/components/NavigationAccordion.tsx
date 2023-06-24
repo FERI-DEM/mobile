@@ -72,7 +72,7 @@ const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
         <View className="flex flex-row justify-between w-full">
           <View className="flex flex-row items-center">
             <View className="w-4 h-4">{group.icon}</View>
-            <Text className="ml-3 text-white text-md font-bold mr-3">
+            <Text className="ml-3 dark:text-white text-md font-bold mr-3">
               {group.title}
             </Text>
           </View>
@@ -95,7 +95,7 @@ const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
               onPress={() => item.onPress()}
             >
               <View className="w-4 h-4">{item.icon}</View>
-              <Text className="ml-2  text-white text-xs">{item.title}</Text>
+              <Text className="ml-2  dark:text-white text-xs">{item.title}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -109,7 +109,7 @@ const NavigationAccordion = ({ group }: NavigationAccordionProps) => {
             onPress={() => subRoute.onPress(subRoute)}
           >
             <View className="w-4 h-4">{subRoute.icon}</View>
-            <Text className="ml-2 mb-0.5 text-white text-xs">
+            <Text className="ml-2 mb-0.5 dark:text-white text-xs">
               {subRoute.title}
             </Text>
           </TouchableOpacity>

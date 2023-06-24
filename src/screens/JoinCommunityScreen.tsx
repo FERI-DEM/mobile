@@ -39,7 +39,7 @@ const JoinCommunityScreen = () => {
     };
 
     return (
-        <View className='dark:bg-dark-main flex-1 px-2'>
+        <View className='bg-light-main dark:bg-dark-main flex-1 px-2'>
             <View className='mt-5 w-full'>
                 <View className='px-2'>
                     <FormProvider {...form}>
@@ -51,7 +51,7 @@ const JoinCommunityScreen = () => {
                         <Text className='dark:text-white mb-3 ml-0.5 mt-6'>Izberite elektrarno</Text>
                         <FlatList className='max-h-52' nestedScrollEnabled keyExtractor={item => item._id} data={powerPlants} renderItem={({item}) => (
                             <View className='flex flex-row items-center pl-3 pr-4 py-4 my-1 bg-dark-element rounded-md justify-between'>
-                                <Text className='text-white'>{item.displayName}</Text>
+                                <Text className='dark:text-white'>{item.displayName}</Text>
                                 <Checkbox
                                     color={colors.common.tint}
                                     value={fields.some((field) => field.powerPlantId === item._id)}

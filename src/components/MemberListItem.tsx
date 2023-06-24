@@ -76,7 +76,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
           <UserCircleIcon color="white" />
           <Text
             className={`${
-              user?.id === member.userId ? 'text-tint' : 'text-white'
+              user?.id === member.userId ? 'text-tint' : 'dark:text-white'
             } ml-2`}
           >
             {member.userName}
@@ -86,7 +86,7 @@ const MemberListItem: FC<TestMemberListItemProps> = ({
           <BoltIcon color="orange" />
           <Text
             className={`${
-              user?.id === member.userId ? 'text-tint' : 'text-white'
+              user?.id === member.userId ? 'text-tint' : 'dark:text-white'
             } ml-2`}
           >
             {member.powerPlantName}

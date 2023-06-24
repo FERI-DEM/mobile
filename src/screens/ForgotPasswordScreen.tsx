@@ -40,7 +40,7 @@ const ForgotPasswordScreen: FC = () => {
   };
 
   return (
-    <View className="flex-1 bg-dark-main ">
+    <View className="flex-1 bg-light-main dark:bg-dark-main ">
       <View className="flex w-full justify-center">
         <Svg width="100%" height="263" viewBox="0 0 390 263" fill="none">
           <Path
@@ -50,7 +50,7 @@ const ForgotPasswordScreen: FC = () => {
             fill={colors.common.tint}
           />
         </Svg>
-        <Text className="text-3xl text-white font-bold text-center absolute ml-6">
+        <Text className="text-3xl dark:text-white font-bold text-center absolute ml-6">
           Ponastavitev gesla
         </Text>
       </View>

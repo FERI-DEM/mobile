@@ -41,7 +41,7 @@ const JoinCommunityNotification: FC<NotificationCardProps> = ({
       contentHeight={height}
       content={
         <>
-          <Text className="text-white text-sm">
+          <Text className="dark:text-white text-sm">
             {notification.data.message}
           </Text>
           <View className="flex flex-row justify-end w-full mt-5 h-11 h-full grow">

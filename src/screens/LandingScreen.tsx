@@ -8,7 +8,7 @@ import { colors } from '../constants/colors';
 
 const LandingScreen = () => {
   return (
-    <View className="flex-1 items-center dark:bg-dark-main">
+    <View className="flex-1 items-center bg-light-main dark:bg-dark-main">
       <StatusBar color={colors.common.tint} />
       <View className="flex w-full items-center justify-center">
         <Svg width="100%" height="393" viewBox="0 0 390 393" fill="none">
@@ -19,7 +19,7 @@ const LandingScreen = () => {
             fill={colors.common.tint}
           />
         </Svg>
-        <Text className="text-4xl text-white font-bold text-center absolute">
+        <Text className="text-4xl dark:text-white font-bold text-center absolute">
           Watt⚡Cast
         </Text>
       </View>
@@ -37,7 +37,7 @@ const LandingScreen = () => {
       </View>
       <View>
         <Text
-          className="text-white opacity-50 text-center mt-10"
+          className="dark:text-white opacity-50 text-center mt-10"
           onPress={() => navigate(Routes.FORGOT_PASSWORD)}
         >
           Ste pozabili geslo?

@@ -37,7 +37,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <View className="flex-1 items-center dark:bg-dark-main">
+    <View className="flex-1 items-center bg-light-main dark:bg-dark-main">
       <View className="flex w-full justify-center">
         <Svg width="100%" height="263" viewBox="0 0 390 263" fill="none">
           <Path
@@ -47,7 +47,7 @@ const LoginScreen = () => {
             fill={colors.common.tint}
           />
         </Svg>
-        <Text className="text-4xl text-white font-bold text-center absolute ml-6">
+        <Text className="text-4xl dark:text-white font-bold text-center absolute ml-6">
           Prijava
         </Text>
       </View>

@@ -1,6 +1,7 @@
 const lightColors = {
     primary: '#f5f5f5',
     element: '#fff',
+    skeletonContent: '#ebebeb',
 }
 const darkColors = {
     primary: '#1C1B2D',

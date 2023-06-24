@@ -58,7 +58,7 @@ const CalibrationForm: FC = () => {
   };
 
   return (
-    <View className="dark:bg-dark-main flex-1 px-3">
+    <View className="bg-light-main dark:bg-dark-main flex-1 px-3">
       <ScrollView className="mt-5 w-full" keyboardShouldPersistTaps="always">
         <View className="px-2">
           <FormProvider {...form}>

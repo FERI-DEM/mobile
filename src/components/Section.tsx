@@ -10,7 +10,7 @@ interface ScreenSectionProps {
 }
 const Section = ({heading, children, classNameHeading, classNameContainer}: ScreenSectionProps) => {
     return <View className={twMerge('mb-7 flex-1', classNameContainer)}>
-        {heading && <Text className={twMerge('text-white mb-3', classNameHeading)}>
+        {heading && <Text className={twMerge('dark:text-white mb-3', classNameHeading)}>
             {heading}
         </Text>}
         {children}

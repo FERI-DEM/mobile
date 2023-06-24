@@ -25,13 +25,13 @@ const PowerDisplay: FC<PowerDisplayProps> = ({
           classNameInnerContainer
         )}
       >
-        <Text className="text-white opacity-40 text-center text-xs">
+        <Text className="dark:text-white opacity-40 text-center text-xs">
           {text}
         </Text>
-        <Text className="text-lg pt-2 text-white  text-center font-semibold">
+        <Text className="text-lg pt-2 dark:text-white  text-center font-semibold">
           <CountUp isCounting end={power} duration={1} />
         </Text>
-        <Text className="text-md pt-2 text-white  text-center font-semibold">
+        <Text className="text-md pt-2 dark:text-white  text-center font-semibold">
           {unit}
         </Text>
       </View>

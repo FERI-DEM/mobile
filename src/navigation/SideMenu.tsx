@@ -198,7 +198,7 @@ const SideMenu = () => {
           </Animated.View>
         }
         <Animated.View
-          className={`w-[220px] dark:bg-dark-main h-full items-center pt-9`}
+          className={`w-[220px] bg-light-main dark:bg-dark-main h-full items-center pt-9`}
           style={animatedStyle}
         >
           <SideMenuLogo />

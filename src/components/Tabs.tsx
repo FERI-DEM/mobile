@@ -11,7 +11,7 @@ const Tabs = <T extends string>({ tabs, onClickTab, activeTab }:TabsProps<T>) =>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className='gap-5 pb-6'>
             {tabs.map((tab, index) => (
                 <TouchableOpacity key={index} activeOpacity={0.6} onPress={() => onClickTab(tab)}>
-                    <Text className={`text-white opacity-40 ${tab === activeTab && 'text-tint opacity-100'}`}>{tab}</Text>
+                    <Text className={`dark:text-white opacity-40 ${tab === activeTab && 'text-tint opacity-100'}`}>{tab}</Text>
                 </TouchableOpacity>
             ))}
         </ScrollView>

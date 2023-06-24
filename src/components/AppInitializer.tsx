@@ -41,7 +41,7 @@ const AppInitializer = ({ children }: StoresInitializerProps) => {
 
   if (isLoading)
     return (
-      <View className="flex-1 bg-dark-main items-center justify-center">
+      <View className="flex-1 bg-light-main dark:bg-dark-main items-center justify-center">
         <ActivityIndicator size={35} color="white" />
       </View>
     );
