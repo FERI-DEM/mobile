@@ -28,9 +28,7 @@ const useUserGeocodedLocation = (
       } catch (e) {
         throw new Error('Permission to access location was denied');
       }
-      console.log('skozi');
       const location = await Location.getCurrentPositionAsync();
-      console.log(location);
       const data = await MapboxService.geocodeByCoordinates(location.coords);
       return mapboxToUserLocation(data);
     },

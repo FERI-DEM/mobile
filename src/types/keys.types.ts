@@ -2,6 +2,7 @@ export enum QueryKey {
   'FORWARD_GEOCODING_BY_ADDRESS' = 'forwardGeocodingByAddress',
   'USER_GEOCODED_LOCATION' = 'userGeocodedLocation',
   'POWER_PLANT_POWER_PREDICTION' = 'powerPlantPowerPrediction',
+  'POWER_PLANT_POWER_PREDICTION_BY_MONTHS' = 'powerPlantPowerPredictionByMonths',
   'POWER_PLANT_POWER_PREDICTION_BY_DAYS' = 'powerPlantPowerPredictionByDays',
   'COMMUNITIES' = 'communities',
   'COMMUNITY' = 'community',
@@ -10,6 +11,12 @@ export enum QueryKey {
   'POWER_PLANT' = 'powerPlant',
   'APP_INITIALIZE' = 'appInitialize',
   'USER' = 'user',
+  'POWER_PLANT_POWER_HISTORY' = 'powerPlantPowerHistory',
+  'COMMUNITIES_POWER_PREDICTION_BY_DAYS' = 'communitiesPowerPredictionByDays',
+  'COMMUNITIES_MEMBERS_CURRENT_PRODUCTION' = 'communitiesMembersCurrentPoduction',
+  'COMMUNITY_MONTHLY_POWER_PRODUCTION' = 'communityMonthlyPowerProduction',
+  'COMMUNITY_POWER_PRODUCTION' = 'communityPowerProduction',
+  'COMMUNITY_POWER_HISTORY' = 'communityPowerHistory',
 }
 
 export enum MutationKey {
@@ -20,6 +27,7 @@ export enum MutationKey {
   'UPDATE_POWER_PLANT' = 'updatePowerPlant',
   'DELETE_POWER_PLANT' = 'deletePowerPlant',
   'REMOVE_MEMBER_FROM_COMMUNITY' = 'removeMemberFromCommunity',
+  'LEAVE_COMMUNITY' = 'leaveCommunity',
   'SIGN_OUT' = 'signOut',
   'SIGN_IN' = 'signIn',
   'UPDATE_PASSWORD' = 'updatePassword',

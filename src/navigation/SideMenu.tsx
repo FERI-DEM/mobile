@@ -133,7 +133,6 @@ const SideMenu = () => {
   };
 
   const createSideMenuGroupItems = (group: SideMenuGroup) => {
-    console.log('group', group.title);
     if (group.title === 'Elektrarne') {
       return powerPlants?.map((powerPlant, index) => ({
         title: powerPlant.displayName,

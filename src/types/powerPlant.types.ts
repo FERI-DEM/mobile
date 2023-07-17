@@ -12,6 +12,23 @@ export interface PowerPlantRes {
   powerPlants: PowerPlant[];
 }
 
+export interface PowerPlantPowerHistoryRes {
+  powerPlantId: string;
+  power: number;
+  solar: number;
+  predictedPower: number;
+  timestamp: number;
+}
+export interface PowerPlantPowerHistoryReq {
+  id: string;
+  from: Date;
+  to: Date;
+}
+export interface PowerPlantProductionByMonthRes {
+  month: number;
+  year: number;
+  production: number;
+}
 export interface PowerPlant {
   displayName: string;
   latitude: number;
@@ -39,7 +56,18 @@ export interface PredictedValue {
   power: number;
 }
 
+export interface LineChartInputData {
+  date: string;
+  power: number;
+}
+
 export type CalibrationDataType = z.infer<typeof CalibrationDataSchema>;
 export type UpdatePowerPlantDataType = z.infer<
   typeof UpdatePowerPlantDataSchema
 >;
+
+export interface LineChartData {
+  date: string;
+  x: number;
+  y: number;
+}

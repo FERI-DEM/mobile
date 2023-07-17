@@ -5,6 +5,8 @@ import {
 } from '../schemas/community.schema';
 import { InviteMemberDataSchema } from '../schemas/organizationUser.schema';
 import { NotificationType } from './common.types';
+import firebase from "firebase/compat";
+import Timestamp = firebase.firestore.Timestamp;
 
 export type CreateCommunityDataType = z.infer<typeof CreateCommunityDataSchema>;
 export type JoinCommunityDataType = z.infer<typeof JoinCommunityDataSchema>;
@@ -18,13 +20,22 @@ export interface Community {
   adminId: string;
 }
 
+export interface CommunityPowerHistoryReq {
+  from: Date;
+  to: Date;
+}
+export interface CommunityPowerHistoryRes {
+  predictedPower: number;
+  timestamp: number;
+}
+
 export interface CommunityReq {
   name: string;
   powerPlants: { powerPlantId: string }[];
 }
 
 export interface CommunityReqJoin {
-  communityId: string;
+  community: string;
   powerPlants: string[];
 }
 
@@ -49,6 +60,18 @@ export interface CommunityMembersPowerShareRes {
   user: string;
   share: number;
 }
+export interface CommunityMonthlyPowerProductionRes {
+  from: string;
+  to: string;
+  powerPlants: {
+    from: string;
+    to: string;
+    powerPlantId: string;
+    email: string;
+    production: number;
+  }[];
+  production: number;
+}
 export interface JoinCommunityNotification {
   id: string;
   receiverId: string;
@@ -61,10 +84,30 @@ export interface JoinCommunityNotification {
     message: string;
   };
   processed: boolean;
-  createdAt: string;
+  createdAt: Timestamp;
 }
 
 export interface JoinCommunityRequestProcess {
   notificationId: string;
   accepted: boolean;
+}
+
+export interface CommunityUpdate {
+  name: string;
+}
+
+export interface CommunityCurrentProductionRes {
+  powerPlants: CommunityCurrentProduction[];
+  production: number;
+}
+
+export interface CommunityCurrentProduction {
+  username: string;
+  userId: string;
+  powerPlantId: string;
+  displayName: string;
+  production: {
+    date: string;
+    power: number;
+  };
 }
