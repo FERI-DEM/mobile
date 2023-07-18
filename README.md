@@ -1,5 +1,6 @@
 # Mobile
 Available on Android and iOS
+<br/>
 More on: https://watt4cast.si/
 <br/>
 <img src="https://github.com/FERI-DEM/mobile/assets/78727019/22da7559-9f44-47b9-ba58-37d2c1ae6d09" width="200">
